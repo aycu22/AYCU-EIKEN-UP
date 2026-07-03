@@ -1223,13 +1223,13 @@ function VocabGameScreen({ category, onComplete }) {
 /* ── Part A ── */
 function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, categoryId }) {
   const [matchDone,    setMatchDone]    = useState(false);
-  const [matchedWord,  setMatchedWord]  = useState(null); // tracks what they actually clicked
+  const [matchedWord,  setMatchedWord]  = useState(null);
   const [spellVal,     setSpellVal]     = useState("");
   const [spellState,   setSpellState]   = useState(null);
   const [spellDone,    setSpellDone]    = useState(false);
   const [showHint,     setShowHint]     = useState(false);
+  const spellRef = useRef(null);
 
-  // Only months and days of the week need capital letters enforced
   const needsCapital = ["months","days"].includes(categoryId);
 
   const choices = useMemo(() => {
@@ -1243,13 +1243,12 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
     setMatchedWord(w.en);
     setMatchDone(true);
     onScore("match", correct);
-    // Auto-play the correct answer sound after a short delay
     setTimeout(() => speak(word.en, 0.85), 300);
+    if (!isDialogue) setTimeout(() => spellRef.current?.focus(), 350);
   };
 
   const handleSpell = () => {
     if (spellDone) return;
-    // Case-sensitive only for words that require capitals (months, days)
     const typed = spellVal.trim();
     const ok = needsCapital
       ? typed === word.en
@@ -1257,10 +1256,17 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
     setSpellState(ok ? "correct" : "wrong");
     setSpellDone(true);
     onScore("spell", ok);
+    if (ok) setTimeout(onNext, 1500);
   };
 
-  // Dialogue mode: only matching, no spelling
-  const canNext = isDialogue ? matchDone : (matchDone && spellDone);
+  // Dialogue mode: auto-advance after match if correct
+  useEffect(() => {
+    if (isDialogue && matchDone && matchedWord === word.en) {
+      setTimeout(onNext, 1500);
+    }
+  }, [matchDone]);
+
+  const canNext = isDialogue ? (matchDone && matchedWord !== word.en) : (matchDone && spellDone && spellState !== "correct");
 
   return (
     <div>
@@ -1313,10 +1319,10 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
             </div>
             <SpeakBtn text={word.en} size={28} />
           </div>
-          <input className={`sinput ${spellState||""}`} type="text" value={spellVal}
+          <input ref={spellRef} className={`sinput ${spellState||""}`} type="text" value={spellVal}
             onChange={e => setSpellVal(e.target.value)}
-            onKeyDown={e => e.key==="Enter" && !spellDone && handleSpell()}
-            disabled={spellDone} placeholder="type the word..."
+            onKeyDown={e => e.key==="Enter" && !spellDone && spellVal.trim() && handleSpell()}
+            disabled={spellDone} placeholder="type the word… then press Enter ↵"
             autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
           {!word.isOrdinal && (
             <>
@@ -1383,8 +1389,8 @@ function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
     if (done) return;
     const correct = w.en === word.en;
     setChosen(w.en); setDone(true); onScore(correct);
-    // Auto-play correct answer sound
     setTimeout(() => speak(word.en, 0.85), 300);
+    if (correct) setTimeout(onNext, 1500);
   };
 
   return (
@@ -1427,7 +1433,7 @@ function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
           </div>
         )}
       </div>
-      {done && (
+      {done && chosen !== word.en && (
         <button type="button" className="btn"
           style={{background:color,boxShadow:`0 4px 0 ${shadow}`}} onClick={onNext}>
           Next →
@@ -1458,11 +1464,18 @@ function PartC({ word, color, shadow, onNext }) {
   const check = () => {
     if (answer.map(a=>a.tile).join(" ")===word.answer) {
       setResult("correct");
+      setTimeout(onNext, 1500);
     } else {
       setShake(true); setResult("wrong");
       setTimeout(()=>{ setShake(false); setResult(null); }, 500);
     }
   };
+
+  useEffect(() => {
+    const onKey = e => { if (e.key === "Enter" && result !== "correct" && answer.length > 0) check(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [answer, result]);
 
   return (
     <div>
@@ -1494,12 +1507,8 @@ function PartC({ word, color, shadow, onNext }) {
               onClick={check} disabled={answer.length===0}>Check ✓</button>
           </div>
         )}
-        {result==="correct" && <div className="fb ok">✅ Perfect sentence! 🎉</div>}
+        {result==="correct" && <div className="fb ok">✅ Perfect sentence! 🎉 Moving on…</div>}
       </div>
-      {result==="correct" && (
-        <button type="button" className="btn"
-          style={{background:color,boxShadow:`0 4px 0 ${shadow}`}} onClick={onNext}>Next →</button>
-      )}
     </div>
   );
 }
