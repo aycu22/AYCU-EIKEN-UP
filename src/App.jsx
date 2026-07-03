@@ -1443,13 +1443,98 @@ function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
   );
 }
 
+/* ── Part C grammar lesson ── */
+function GrammarLesson({ answer, onClose }) {
+  // Split answer into tokens (remove trailing period/punctuation for analysis)
+  const tokens = answer.replace(/ \.$/, "").replace(/ !$/, "").replace(/ \?$/, "").split(" ");
+
+  // Heuristic slot labels for common simple sentence patterns
+  // We colour the first 1-2 tokens blue (subject), next 1-2 green (verb/action), rest orange (details)
+  const getSlots = ts => {
+    // Detect patterns: "Let's ...", "There are/is ...", "Does ...", "Is ...", "Please ..."
+    const first = ts[0].toLowerCase();
+    if (first === "let's" || first === "please") {
+      return ts.map((t,i) => i===0 ? "starter" : i===1 ? "action" : "detail");
+    }
+    if (first === "there") {
+      return ts.map((t,i) => i<=1 ? "starter" : i===2 ? "subject" : "detail");
+    }
+    if (["does","is","can","do","are","was","were"].includes(first)) {
+      return ts.map((t,i) => i===0 ? "action" : i===1 ? "subject" : i===2 ? "action" : "detail");
+    }
+    // Default SVO: first 1 or 2 = subject, next 1-2 = verb, rest = detail
+    const subjectEnd = ts[1] && ["is","are","was","were","can","will","has","have","goes","likes","loves","plays","gets","works","lives","makes","gives","puts","buys","eats","sees","goes","turns","study","eat","go","like","play","watch"].includes(ts[1].toLowerCase()) ? 1 :
+                       ts[2] && ["is","are","was","were","can","will","has","have","goes","likes","loves","plays","gets","works","lives","makes","gives","puts","buys","eats","sees","goes","turns","study","eat","go","like","play","watch"].includes(ts[2].toLowerCase()) ? 2 : 1;
+    return ts.map((t,i) => i < subjectEnd ? "subject" : i === subjectEnd || i === subjectEnd+1 ? "action" : "detail");
+  };
+
+  const slots = getSlots(tokens);
+  const slotInfo = {
+    subject: { label:"Who / What", color:"#3b82f6", bg:"#dbeafe" },
+    action:  { label:"Action / Verb", color:"#16a34a", bg:"#dcfce7" },
+    detail:  { label:"Details", color:"#d97706", bg:"#fef3c7" },
+    starter: { label:"Starter", color:"#7c3aed", bg:"#ede9fe" },
+  };
+
+  // Unique slot types present, in order
+  const presentSlots = [...new Set(slots)];
+
+  return (
+    <div style={{background:"#fffbf0",border:"2px solid #e6aa68",borderRadius:16,padding:"14px 16px",marginTop:10}}>
+      <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#02020b",marginBottom:8,textAlign:"center"}}>
+        💡 Grammar Hint — English Word Order
+      </div>
+
+      {/* Rule */}
+      <div style={{background:"#fff",borderRadius:11,padding:"10px 12px",marginBottom:10,border:"1px solid #f0e0c0"}}>
+        <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:6,textAlign:"center"}}>In English, sentences follow this order:</div>
+        <div style={{display:"flex",gap:5,justifyContent:"center",flexWrap:"wrap"}}>
+          {[{s:"subject",l:"① Who/What"},{s:"action",l:"② Action"},{s:"detail",l:"③ Details"}].map(({s,l})=>(
+            <div key={s} style={{background:slotInfo[s].bg,color:slotInfo[s].color,borderRadius:8,padding:"4px 10px",fontSize:12,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>
+              {l}
+            </div>
+          ))}
+        </div>
+        <div style={{fontSize:11,color:"#718096",textAlign:"center",marginTop:6,fontFamily:"'Nunito',sans-serif"}}>
+          ⚠️ Japanese puts details first — English puts <b>Who/What first!</b>
+        </div>
+      </div>
+
+      {/* This sentence broken down */}
+      <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:5,textAlign:"center",fontFamily:"'Nunito',sans-serif"}}>This sentence:</div>
+      <div style={{display:"flex",flexWrap:"wrap",gap:4,justifyContent:"center",marginBottom:8}}>
+        {tokens.map((t,i) => {
+          const s = slotInfo[slots[i]];
+          return (
+            <div key={i} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:2}}>
+              <div style={{background:s.bg,color:s.color,borderRadius:7,padding:"4px 9px",fontSize:14,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>{t}</div>
+              <div style={{fontSize:9,fontWeight:700,color:s.color,fontFamily:"'Nunito',sans-serif"}}>{s.label}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      <button type="button" onClick={onClose}
+        style={{width:"100%",padding:"9px",borderRadius:11,border:"none",background:"#7fb069",color:"#fff",fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,cursor:"pointer"}}>
+        Got it! Let me try again 💪
+      </button>
+    </div>
+  );
+}
+
 /* ── Part C ── */
 function PartC({ word, color, shadow, onNext }) {
   const tiles = useMemo(() => shuffle(word.tiles), [word.en]);
-  const [answer, setAnswer] = useState([]);
-  const [used,   setUsed]   = useState(new Set());
-  const [result, setResult] = useState(null);
-  const [shake,  setShake]  = useState(false);
+  const [answer,      setAnswer]      = useState([]);
+  const [used,        setUsed]        = useState(new Set());
+  const [result,      setResult]      = useState(null);
+  const [shake,       setShake]       = useState(false);
+  const [peekCount,   setPeekCount]   = useState(0);
+  const [peekVisible, setPeekVisible] = useState(false);
+  const [showLesson,  setShowLesson]  = useState(false);
+
+  // Strip %% markers from trans for clean Japanese display
+  const jpText = word.trans ? word.trans.replace(/%%/g, "") : null;
 
   const add = (tile, i) => {
     if (used.has(i) || result==="correct") return;
@@ -1471,6 +1556,14 @@ function PartC({ word, color, shadow, onNext }) {
     }
   };
 
+  const handlePeek = () => {
+    const next = peekCount + 1;
+    setPeekCount(next);
+    setPeekVisible(true);
+    setTimeout(() => setPeekVisible(false), 3000);
+    if (next >= 5) setShowLesson(true);
+  };
+
   useEffect(() => {
     const onKey = e => { if (e.key === "Enter" && result !== "correct" && answer.length > 0) check(); };
     window.addEventListener("keydown", onKey);
@@ -1480,9 +1573,26 @@ function PartC({ word, color, shadow, onNext }) {
   return (
     <div>
       <div className="card">
-        <div style={{fontSize:12,color:"#718096",textAlign:"center",marginBottom:10}}>
-          {word.hint?.replace("_____",`[${word.en}]`)}
-        </div>
+        {/* Japanese clue */}
+        {jpText && (
+          <div style={{textAlign:"center",marginBottom:8}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:4}}>Japanese clue 🇯🇵</div>
+            <div style={{fontSize:17,fontWeight:700,color:"#02020b",fontFamily:"'Nunito',sans-serif",lineHeight:1.6}}>{jpText}</div>
+          </div>
+        )}
+
+        {/* Peek button + flash */}
+        {!peekVisible ? (
+          <button type="button" onClick={handlePeek}
+            style={{width:"100%",marginBottom:8,padding:"6px",borderRadius:10,border:"2px dashed #e6aa68",background:"#fffbf0",fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:12,color:"#d97706",cursor:"pointer"}}>
+            👀 Peek at the English sentence {peekCount > 0 ? `(${peekCount}×)` : ""}
+          </button>
+        ) : (
+          <div style={{background:"#fef9c3",border:"2px solid #fde68a",borderRadius:10,padding:"8px 12px",marginBottom:8,textAlign:"center",fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:14,color:"#92400e"}}>
+            {word.answer.replace(" .",".").replace(" !","!").replace(" ?","?")} ⏱️
+          </div>
+        )}
+
         <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:5}}>Build the sentence:</div>
         <div className={`tile-area ${shake?"shk":""}`}>
           {answer.map((a,pos)=>(
@@ -1509,6 +1619,10 @@ function PartC({ word, color, shadow, onNext }) {
         )}
         {result==="correct" && <div className="fb ok">✅ Perfect sentence! 🎉 Moving on…</div>}
       </div>
+
+      {showLesson && !result && (
+        <GrammarLesson answer={word.answer} onClose={() => setShowLesson(false)} />
+      )}
     </div>
   );
 }
