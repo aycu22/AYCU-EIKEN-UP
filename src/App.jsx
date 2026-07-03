@@ -576,6 +576,31 @@ const VOCAB_CATEGORIES_5 = [
       { en:"always",         kanji:"いつも",       kana:"いつも",       trans:"私は%%いつも%%朝ごはんを食べます。",                   hint:"I _____ eat breakfast.",                     tiles:["I","always","eat","breakfast","."],                        answer:"I always eat breakfast ." },
     ],
   },
+  {
+    id: "what_questions", title: "What ___? Questions / 何〜？", emoji: "🔵",
+    color: "#3b82f6", shadow: "#1d4ed8",
+    words: [
+      { en:"What color",   kanji:"何色",         kana:"なにいろ",        hint:"_____ do you like? — I like blue.",          tiles:["What","color","do","you","like","?"],       answer:"What color do you like ?" },
+      { en:"What time",    kanji:"何時",         kana:"なんじ",          hint:"_____ is it now? — It's 3:25.",              tiles:["What","time","is","it","now","?"],          answer:"What time is it now ?" },
+      { en:"What day",     kanji:"何曜日",       kana:"なんようび",      hint:"_____ is it today? — It's Monday.",          tiles:["What","day","is","it","today","?"],         answer:"What day is it today ?" },
+      { en:"What subject", kanji:"何の科目",     kana:"なんのかもく",    hint:"_____ do you like? — I like P.E.",           tiles:["What","subject","do","you","like","?"],     answer:"What subject do you like ?" },
+      { en:"What sport",   kanji:"何のスポーツ", kana:"なんのスポーツ",  hint:"_____ do you play? — I play soccer.",        tiles:["What","sport","do","you","play","?"],       answer:"What sport do you play ?" },
+      { en:"What season",  kanji:"何の季節",     kana:"なんのきせつ",    hint:"_____ do you like? — I like summer.",        tiles:["What","season","do","you","like","?"],      answer:"What season do you like ?" },
+      { en:"What food",    kanji:"何の食べ物",   kana:"なんのたべもの",  hint:"_____ do you like? — I like sushi.",         tiles:["What","food","do","you","like","?"],        answer:"What food do you like ?" },
+    ],
+  },
+  {
+    id: "how_questions", title: "How ___? Questions / どんな〜？", emoji: "🟢",
+    color: "#10b981", shadow: "#065f46",
+    words: [
+      { en:"How many",  kanji:"いくつ",              kana:"いくつ",              hint:"_____ rooms are there? — Four.",                tiles:["How","many","rooms","are","there","?"],    answer:"How many rooms are there ?" },
+      { en:"How much",  kanji:"いくら",              kana:"いくら",              hint:"_____ is this ruler? — 150 yen.",               tiles:["How","much","is","this","ruler","?"],      answer:"How much is this ruler ?" },
+      { en:"How long",  kanji:"どのくらい",          kana:"どのくらい",          hint:"_____ does it take? — Thirty minutes.",         tiles:["How","long","does","it","take","?"],       answer:"How long does it take ?" },
+      { en:"How about", kanji:"〜はどうですか",      kana:"〜はどうですか",      hint:"_____ sandwiches? — Sure!",                     tiles:["How","about","sandwiches","?"],            answer:"How about sandwiches ?" },
+      { en:"How old",   kanji:"何歳",               kana:"なんさい",            hint:"_____ is your father? — He is forty.",          tiles:["How","old","is","your","father","?"],      answer:"How old is your father ?" },
+      { en:"How tall",  kanji:"身長はどのくらい",    kana:"しんちょうはどのくらい",hint:"_____ are you? — I am 130 cm tall.",          tiles:["How","tall","are","you","?"],              answer:"How tall are you ?" },
+    ],
+  },
 ];
 
 /* ── Helper: get categories by Eiken level ── */
@@ -1149,7 +1174,7 @@ function VocabGameScreen({ category, onComplete }) {
   const scramble    = useMemo(() => shuffle([...words]), [category.id]);
   const isOrdinalCat  = words[0]?.isOrdinal;
   // Categories where typing the full phrase is impractical — treat like dialogue
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions"].includes(category.id);
   // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Others: all 3.
   const scoreParts    = isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
   // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
@@ -1758,7 +1783,7 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
   const cleared   = pct >= 70;
   const goodWords = words.filter(w => !missed.find(m => m.word.en === w.en));
   const isOrdinalCat  = words[0]?.isOrdinal;
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions"].includes(category.id);
 
   return (
     <div className="quiz-wrap fade">
