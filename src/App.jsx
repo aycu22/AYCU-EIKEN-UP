@@ -136,7 +136,7 @@ function makeMonth(i) {
 /* ── Grade 4 categories ── */
 const VOCAB_CATEGORIES_4 = [
   {
-    id: "g4_places", title: "Places Around Town", emoji: "🏙️",
+    id: "g4_places", title: "Places Around Town / まちの場所", emoji: "🏙️",
     color: "#6366f1", shadow: "#4338ca",
     words: [
       { en:"airport",     kanji:"空港",            kana:"くうこう",         trans:"ゆうたは飛行機が大好きで、飛行機を見るためによく%%空港%%に行きます。",                           hint:"Yuta loves flying — he often goes to the _____ to watch planes.",  tiles:["Yuta","loves","flying","—","he","often","goes","to","the","airport","to","watch","planes","."],  answer:"Yuta loves flying — he often goes to the airport to watch planes ." },
@@ -152,7 +152,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_irregular_past", title: "Irregular Past Tense", emoji: "⏪",
+    id: "g4_irregular_past", title: "Irregular Past Tense / 不規則過去形", emoji: "⏪",
     color: "#ef4444", shadow: "#b91c1c",
     words: [
       { en:"caught",  kanji:"かかった（病気）",   kana:"かかった",       trans:"先週、ブライアンは風邪に%%かかった%%ので2日間ベッドで過ごしました。",                         hint:"Last week, Brian _____ a cold and stayed in bed for two days.",      tiles:["Last","week","Brian","caught","a","cold","and","stayed","in","bed","for","two","days","."],      answer:"Last week Brian caught a cold and stayed in bed for two days ." },
@@ -168,7 +168,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_feelings", title: "Feelings & Descriptions", emoji: "😊",
+    id: "g4_feelings", title: "Feelings & Descriptions / きもち", emoji: "😊",
     color: "#f59e0b", shadow: "#d97706",
     words: [
       { en:"excited",      kanji:"わくわくした",  kana:"わくわくした",   trans:"ダニエルは絵のレッスンを始めることに%%わくわくした%%。",                                   hint:"Daniel was _____ to begin taking art lessons after he won.",       tiles:["Daniel","was","excited","to","begin","taking","art","lessons","after","he","won","."],         answer:"Daniel was excited to begin taking art lessons after he won ." },
@@ -184,7 +184,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_action_verbs", title: "Action Verbs", emoji: "🎯",
+    id: "g4_action_verbs", title: "Action Verbs / どうし", emoji: "🎯",
     color: "#10b981", shadow: "#065f46",
     words: [
       { en:"understand", kanji:"理解する",    kana:"りかいする",     trans:"彼女は宿題が%%理解できなかった%%ので、ポールが助けてくれた。",                             hint:"She couldn't _____ her homework, so Paul helped her.",             tiles:["She","couldn't","understand","her","homework","so","Paul","helped","her","."],                 answer:"She couldn't understand her homework so Paul helped her ." },
@@ -200,7 +200,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_time_expressions", title: "Time Expressions", emoji: "🕐",
+    id: "g4_time_expressions", title: "Time Expressions / 時間表現", emoji: "🕐",
     color: "#0ea5e9", shadow: "#0369a1",
     words: [
       { en:"last weekend",      kanji:"先週末",      kana:"せんしゅうまつ",    trans:"%%先週末%%、Mt.ベーカーでスノーボードをしました — 楽しかった！",                          hint:"I went snowboarding at Mt. Baker _____ — it was exciting.",   tiles:["I","went","snowboarding","at","Mt.","Baker","last","weekend","—","it","was","exciting","."],   answer:"I went snowboarding at Mt. Baker last weekend — it was exciting ." },
@@ -216,7 +216,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_wh_questions", title: "WH Questions (Extended)", emoji: "❓",
+    id: "g4_wh_questions", title: "WH Questions (Extended) / 疑問詞", emoji: "❓",
     color: "#8b5cf6", shadow: "#6d28d9",
     words: [
       { en:"How many",           kanji:"いくつ・何人",       kana:"いくつ",           hint:"_____ apples did Jack give to Sally?",                    tiles:["How","many","apples","did","Jack","give","to","Sally","?"],                    answer:"How many apples did Jack give to Sally ?" },
@@ -234,7 +234,7 @@ const VOCAB_CATEGORIES_4 = [
     ],
   },
   {
-    id: "g4_dialogue", title: "Dialogue Expressions", emoji: "💬",
+    id: "g4_dialogue", title: "Dialogue Expressions / かいわ", emoji: "💬",
     color: "#f43f5e", shadow: "#be123c",
     words: [
       { en:"Sure, no problem.", kanji:"もちろん、いいよ。",   kana:"もちろん、いいよ。",  hint:"Can I read your magazine after you finish? ___________",              tiles:["Sure","no","problem","."],        answer:"Sure no problem ." },
@@ -256,27 +256,27 @@ const VOCAB_CATEGORIES_4 = [
 /* ── Grade 5 categories ── */
 const VOCAB_CATEGORIES_5 = [
   {
-    id: "ordinals_1", title: "Ordinal Numbers 1st–10th", emoji: "🔢",
+    id: "ordinals_1", title: "Ordinal Numbers 1st–10th / じゅんじょ", emoji: "🔢",
     color: "#58cc02", shadow: "#3a9200",
     words: Array.from({ length: 10 }, (_, i) => makeOrdinal(i)),
   },
   {
-    id: "ordinals_2", title: "Ordinal Numbers 11th–20th", emoji: "🔢",
+    id: "ordinals_2", title: "Ordinal Numbers 11th–20th / じゅんじょ", emoji: "🔢",
     color: "#1cb0f6", shadow: "#0090cc",
     words: Array.from({ length: 10 }, (_, i) => makeOrdinal(i + 10)),
   },
   {
-    id: "ordinals_3", title: "Ordinal Numbers 21st–31st", emoji: "🔢",
+    id: "ordinals_3", title: "Ordinal Numbers 21st–31st / じゅんじょ", emoji: "🔢",
     color: "#a855f7", shadow: "#7c3aed",
     words: Array.from({ length: 11 }, (_, i) => makeOrdinal(i + 20)),
   },
   {
-    id: "months", title: "Months of the Year", emoji: "📅",
+    id: "months", title: "Months of the Year / 月", emoji: "📅",
     color: "#ff6b9d", shadow: "#cc4477",
     words: Array.from({ length: 12 }, (_, i) => makeMonth(i)),
   },
   {
-    id: "days", title: "Days of the Week", emoji: "📆",
+    id: "days", title: "Days of the Week / 曜日", emoji: "📆",
     color: "#ff9500", shadow: "#cc7700",
     words: [
       { en:"Monday",    kanji:"月曜日",kana:"げつようび",trans:"%%月曜日%%は学校の週の最初の日です。",            hint:"_____ is the first day of the school week.",tiles:["Monday","is","the","first","day","of","the","school","week","."],answer:"Monday is the first day of the school week ." },
@@ -289,7 +289,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "wh_questions", title: "WH Questions", emoji: "❓",
+    id: "wh_questions", title: "WH Questions / 疑問詞", emoji: "❓",
     color: "#ef4444", shadow: "#b91c1c",
     words: [
       { en:"What",  kanji:"何",       kana:"なに",       hint:"_____ is your name?",        tiles:["What","is","your","name","?"],          answer:"What is your name ?" },
@@ -303,7 +303,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "family", title: "Family", emoji: "👨‍👩‍👧",
+    id: "family", title: "Family / かぞく", emoji: "👨‍👩‍👧",
     color: "#f59e0b", shadow: "#d97706",
     words: [
       { en:"mother",      kanji:"お母さん",  kana:"おかあさん",  trans:"私の%%お母さん%%は毎晩夕食を作ります。",            hint:"My _____ cooks dinner every night.",     tiles:["My","mother","cooks","dinner","every","night","."],     answer:"My mother cooks dinner every night ." },
@@ -323,7 +323,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "weather", title: "Weather & Seasons", emoji: "☀️",
+    id: "weather", title: "Weather & Seasons / てんき・きせつ", emoji: "☀️",
     color: "#06b6d4", shadow: "#0891b2",
     words: [
       { en:"sunny",  kanji:"晴れ",  kana:"はれ",  trans:"今日は%%晴れ%%です — 公園に行きましょう！",              hint:"It is _____ today — let's go to the park!",  tiles:["It","is","sunny","today","—","let's","go","to","the","park","!"],answer:"It is sunny today — let's go to the park !" },
@@ -337,7 +337,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "colors", title: "Colors", emoji: "🎨",
+    id: "colors", title: "Colors / いろ", emoji: "🎨",
     color: "#ec4899", shadow: "#be185d",
     words: [
       { en:"red",    kanji:"赤",       kana:"あか",       trans:"私の筆箱に%%赤%%いペンがあります。",                    hint:"I have a _____ pen in my pencil case.",     tiles:["I","have","a","red","pen","in","my","pencil","case","."],    answer:"I have a red pen in my pencil case ." },
@@ -353,7 +353,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "adjectives", title: "Adjectives", emoji: "✨",
+    id: "adjectives", title: "Adjectives / けいようし", emoji: "✨",
     color: "#8b5cf6", shadow: "#6d28d9",
     words: [
       { en:"hot",        kanji:"暑い・熱い", kana:"あつい",       trans:"今日はとても%%暑い%%です — 冷たい水を飲みましょう！",    hint:"It is very _____ today — let's drink cold water.",  tiles:["It","is","very","hot","today","—","let's","drink","cold","water","."], answer:"It is very hot today — let's drink cold water ." },
@@ -369,7 +369,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "action_verbs", title: "Action Verbs", emoji: "🏃",
+    id: "action_verbs", title: "Action Verbs / どうし", emoji: "🏃",
     color: "#f97316", shadow: "#c2410c",
     words: [
       { en:"draw",   kanji:"かく（絵を）",kana:"えをかく",   trans:"彼は自由な時間に花の絵を%%かきます%%。",                hint:"He _____ pictures of flowers in his free time.",    tiles:["He","draws","pictures","of","flowers","in","his","free","time","."], answer:"He draws pictures of flowers in his free time ." },
@@ -385,7 +385,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "sports_hobbies", title: "Sports & Hobbies", emoji: "⚽",
+    id: "sports_hobbies", title: "Sports & Hobbies / スポーツ", emoji: "⚽",
     color: "#10b981", shadow: "#065f46",
     words: [
       { en:"soccer",     kanji:"サッカー",   kana:"サッカー",   trans:"私は毎日午後、公園で%%サッカー%%をします。",           hint:"I play _____ at the park every afternoon.",        tiles:["I","play","soccer","at","the","park","every","afternoon","."],     answer:"I play soccer at the park every afternoon ." },
@@ -405,7 +405,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "home_rooms", title: "Home & Rooms", emoji: "🏠",
+    id: "home_rooms", title: "Home & Rooms / いえ・へや", emoji: "🏠",
     color: "#0ea5e9", shadow: "#0369a1",
     words: [
       { en:"kitchen",     kanji:"台所",      kana:"だいどころ", trans:"母は%%台所%%で夕食を作っています。",                    hint:"My mom is cooking dinner in the _____.",           tiles:["My","mom","is","cooking","dinner","in","the","kitchen","."],       answer:"My mom is cooking dinner in the kitchen ." },
@@ -421,7 +421,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "animals", title: "Animals", emoji: "🐾",
+    id: "animals", title: "Animals / どうぶつ", emoji: "🐾",
     color: "#84cc16", shadow: "#4d7c0f",
     words: [
       { en:"dog",      kanji:"犬",     kana:"いぬ",       trans:"マイクは庭で%%犬%%を洗っています。",                    hint:"Mike is washing his _____ in the garden.",         tiles:["Mike","is","washing","his","dog","in","the","garden","."],         answer:"Mike is washing his dog in the garden ." },
@@ -437,7 +437,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "prepositions", title: "Prepositions", emoji: "📍",
+    id: "prepositions", title: "Prepositions / 前置詞", emoji: "📍",
     color: "#6366f1", shadow: "#4338ca",
     words: [
       { en:"in",    kanji:"〜の中に・〜に", kana:"なかに",      trans:"猫は台所の%%中に%%います。",                                hint:"The cat is _____ the kitchen.",                    tiles:["The","cat","is","in","the","kitchen","."],                         answer:"The cat is in the kitchen ." },
@@ -453,7 +453,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "dialogue_expressions", title: "Dialogue Expressions", emoji: "💬",
+    id: "dialogue_expressions", title: "Dialogue Expressions / かいわ", emoji: "💬",
     color: "#f43f5e", shadow: "#be123c",
     words: [
       { en:"Nice to meet you.",     kanji:"はじめまして。",     kana:"はじめまして。",     hint:"Hello, I'm your new English teacher. ___________",         tiles:["Nice","to","meet","you","."],                       answer:"Nice to meet you ." },
