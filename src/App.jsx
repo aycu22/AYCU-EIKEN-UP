@@ -1470,38 +1470,35 @@ function GrammarLesson({ answer, onClose }) {
 
   const slots = getSlots(tokens);
   const slotInfo = {
-    subject: { label:"Who / What", color:"#3b82f6", bg:"#dbeafe" },
-    action:  { label:"Action / Verb", color:"#16a34a", bg:"#dcfce7" },
-    detail:  { label:"Details", color:"#d97706", bg:"#fef3c7" },
-    starter: { label:"Starter", color:"#7c3aed", bg:"#ede9fe" },
+    subject: { label:"だれが・なにが", color:"#3b82f6", bg:"#dbeafe" },
+    action:  { label:"どうする・どんな", color:"#16a34a", bg:"#dcfce7" },
+    detail:  { label:"くわしく", color:"#d97706", bg:"#fef3c7" },
+    starter: { label:"はじめの言葉", color:"#7c3aed", bg:"#ede9fe" },
   };
-
-  // Unique slot types present, in order
-  const presentSlots = [...new Set(slots)];
 
   return (
     <div style={{background:"#fffbf0",border:"2px solid #e6aa68",borderRadius:16,padding:"14px 16px",marginTop:10}}>
       <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#02020b",marginBottom:8,textAlign:"center"}}>
-        💡 Grammar Hint — English Word Order
+        💡 文のじゅんばんのヒント
       </div>
 
       {/* Rule */}
       <div style={{background:"#fff",borderRadius:11,padding:"10px 12px",marginBottom:10,border:"1px solid #f0e0c0"}}>
-        <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:6,textAlign:"center"}}>In English, sentences follow this order:</div>
-        <div style={{display:"flex",gap:5,justifyContent:"center",flexWrap:"wrap"}}>
-          {[{s:"subject",l:"① Who/What"},{s:"action",l:"② Action"},{s:"detail",l:"③ Details"}].map(({s,l})=>(
+        <div style={{fontSize:12,fontWeight:700,color:"#4a5568",marginBottom:6,textAlign:"center"}}>英語の文はこのじゅんばんです：</div>
+        <div style={{display:"flex",gap:5,justifyContent:"center",flexWrap:"wrap",marginBottom:8}}>
+          {[{s:"subject",l:"① だれが・なにが"},{s:"action",l:"② どうする"},{s:"detail",l:"③ くわしく"}].map(({s,l})=>(
             <div key={s} style={{background:slotInfo[s].bg,color:slotInfo[s].color,borderRadius:8,padding:"4px 10px",fontSize:12,fontWeight:800,fontFamily:"'Nunito',sans-serif"}}>
               {l}
             </div>
           ))}
         </div>
-        <div style={{fontSize:11,color:"#718096",textAlign:"center",marginTop:6,fontFamily:"'Nunito',sans-serif"}}>
-          ⚠️ Japanese puts details first — English puts <b>Who/What first!</b>
+        <div style={{fontSize:12,color:"#c53030",textAlign:"center",fontFamily:"'Nunito',sans-serif",fontWeight:700}}>
+          ⚠️ 日本語とちがいます！<br/>英語は <b>「だれが」を一番さいしょ</b> に言います。
         </div>
       </div>
 
       {/* This sentence broken down */}
-      <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:5,textAlign:"center",fontFamily:"'Nunito',sans-serif"}}>This sentence:</div>
+      <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:5,textAlign:"center",fontFamily:"'Nunito',sans-serif"}}>この文をみてみよう：</div>
       <div style={{display:"flex",flexWrap:"wrap",gap:4,justifyContent:"center",marginBottom:8}}>
         {tokens.map((t,i) => {
           const s = slotInfo[slots[i]];
@@ -1516,7 +1513,7 @@ function GrammarLesson({ answer, onClose }) {
 
       <button type="button" onClick={onClose}
         style={{width:"100%",padding:"9px",borderRadius:11,border:"none",background:"#7fb069",color:"#fff",fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,cursor:"pointer"}}>
-        Got it! Let me try again 💪
+        わかった！もう一度やってみる 💪
       </button>
     </div>
   );
@@ -1561,7 +1558,7 @@ function PartC({ word, color, shadow, onNext }) {
     setPeekCount(next);
     setPeekVisible(true);
     setTimeout(() => setPeekVisible(false), 3000);
-    if (next >= 5) setShowLesson(true);
+    if (next >= 3) setShowLesson(true);
   };
 
   useEffect(() => {
@@ -1585,7 +1582,7 @@ function PartC({ word, color, shadow, onNext }) {
         {!peekVisible ? (
           <button type="button" onClick={handlePeek}
             style={{width:"100%",marginBottom:8,padding:"6px",borderRadius:10,border:"2px dashed #e6aa68",background:"#fffbf0",fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:12,color:"#d97706",cursor:"pointer"}}>
-            👀 Peek at the English sentence {peekCount > 0 ? `(${peekCount}×)` : ""}
+            👀 ヒントを見る（3びょうかん）{peekCount > 0 ? ` ${peekCount}回め` : ""}
           </button>
         ) : (
           <div style={{background:"#fef9c3",border:"2px solid #fde68a",borderRadius:10,padding:"8px 12px",marginBottom:8,textAlign:"center",fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:14,color:"#92400e"}}>
