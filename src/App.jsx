@@ -277,7 +277,7 @@ const VOCAB_CATEGORIES_3 = [
     ],
   },
   {
-    id: "g3_feelings", title: "Feelings & Adjectives / きもち・形容詞", emoji: "😊",
+    id: "g3_feelings_1", title: "Feelings & Adjectives 1 / きもち・形容詞①", emoji: "😊",
     color: "#f59e0b", shadow: "#d97706",
     words: [
       { en:"nervous",    kanji:"緊張して",   kana:"きんちょうして",trans:"スピーチの前に%%緊張して%%います。",                   hint:"I am _____ before the speech.",                 tiles:["I","am","nervous","before","the","speech","."],               answer:"I am nervous before the speech ." },
@@ -287,6 +287,12 @@ const VOCAB_CATEGORIES_3 = [
       { en:"glad",       kanji:"うれしい",   kana:"うれしい",     trans:"あなたに会えて%%うれしいです%%。",                      hint:"I am _____ to see you.",                        tiles:["I","am","glad","to","see","you","."],                          answer:"I am glad to see you ." },
       { en:"sorry",      kanji:"申し訳ない", kana:"もうしわけない",trans:"遅れて%%申し訳ありません%%。",                         hint:"I am _____ for being late.",                    tiles:["I","am","sorry","for","being","late","."],                     answer:"I am sorry for being late ." },
       { en:"surprised",  kanji:"驚いて",     kana:"おどろいて",   trans:"その知らせを聞いて%%驚きました%%。",                    hint:"I was _____ to hear the news.",                 tiles:["I","was","surprised","to","hear","the","news","."],            answer:"I was surprised to hear the news ." },
+    ],
+  },
+  {
+    id: "g3_feelings_2", title: "Feelings & Adjectives 2 / きもち・形容詞②", emoji: "😋",
+    color: "#f59e0b", shadow: "#d97706",
+    words: [
       { en:"exciting",   kanji:"わくわくさせる",kana:"わくわくさせる",trans:"このゲームは本当に%%わくわくします%%。",             hint:"This game is really _____.",                    tiles:["This","game","is","really","exciting","."],                    answer:"This game is really exciting ." },
       { en:"delicious",  kanji:"とてもおいしい",kana:"とてもおいしい",trans:"このラーメンは%%とてもおいしいです%%。",            hint:"This ramen is _____.",                          tiles:["This","ramen","is","delicious","."],                           answer:"This ramen is delicious ." },
       { en:"fresh",      kanji:"新鮮な",     kana:"しんせんな",   trans:"この野菜は%%新鮮です%%。",                              hint:"These vegetables are _____.",                   tiles:["These","vegetables","are","fresh","."],                        answer:"These vegetables are fresh ." },
@@ -352,21 +358,27 @@ const VOCAB_CATEGORIES_3 = [
     ],
   },
   {
-    id: "g3_conversational", title: "Conversational Expressions / 会話表現", emoji: "💬",
+    id: "g3_conversational_1", title: "Conversational Expressions 1 / 会話表現①", emoji: "💬",
     color: "#8b5cf6", shadow: "#6d28d9",
     words: [
-      { en:"Certainly.",              kanji:"かしこまりました。",           kana:"かしこまりました。",           hint:"Can you help me? ___________",                                tiles:["Certainly","."],                                            answer:"Certainly ." },
-      { en:"That sounds great.",      kanji:"それはいいですね。",           kana:"それはいいですね。",           hint:"Let's go to the new restaurant! ___________",                tiles:["That","sounds","great","."],                                answer:"That sounds great ." },
-      { en:"Have a safe trip.",       kanji:"気をつけて行ってらっしゃい。", kana:"きをつけていってらっしゃい。", hint:"I'm going to Osaka for the weekend! ___________",            tiles:["Have","a","safe","trip","."],                               answer:"Have a safe trip ." },
-      { en:"I'm ready.",              kanji:"準備ができています。",         kana:"じゅんびができています。",     hint:"Are you ready to go? ___________",                           tiles:["I'm","ready","."],                                          answer:"I'm ready ." },
-      { en:"What's the matter?",      kanji:"どうしたの？",                kana:"どうしたの？",                 hint:"You look sad today. ___________",                             tiles:["What's","the","matter","?"],                                answer:"What's the matter ?" },
-      { en:"You're home early.",      kanji:"帰りが早いね。",               kana:"かえりがはやいね。",           hint:"Hi Mom! School finished early today. ___________",           tiles:["You're","home","early","."],                                answer:"You're home early ." },
-      { en:"I'm a little worried.",   kanji:"少し心配です。",               kana:"すこししんぱいです。",         hint:"How do you feel about the test? ___________",                tiles:["I'm","a","little","worried","."],                           answer:"I'm a little worried ." },
-      { en:"I'd like to go again.",   kanji:"また行きたいです。",           kana:"またいきたいです。",           hint:"Did you enjoy the trip? ___________",                         tiles:["I'd","like","to","go","again","."],                         answer:"I'd like to go again ." },
-      { en:"It's too far to walk.",   kanji:"歩くには遠すぎます。",         kana:"あるくにはとおすぎます。",     hint:"Should we walk to the station? ___________",                 tiles:["It's","too","far","to","walk","."],                         answer:"It's too far to walk ." },
-      { en:"Have you been there before?",kanji:"そこに行ったことがありますか。",kana:"そこにいったことがありますか。",hint:"Let's go to the new museum! ___________",              tiles:["Have","you","been","there","before","?"],                   answer:"Have you been there before ?" },
-      { en:"I've never done that before.",kanji:"それをやったことがありません。",kana:"それをやったことがありません。",hint:"Let's try rock climbing! ___________",              tiles:["I've","never","done","that","before","."],                  answer:"I've never done that before ." },
-      { en:"I was writing a report.", kanji:"レポートを書いていました。",   kana:"レポートをかいていました。",   hint:"What were you doing last night? ___________",                tiles:["I","was","writing","a","report","."],                       answer:"I was writing a report ." },
+      { en:"Certainly.",              kanji:"かしこまりました。",           kana:"かしこまりました。",           speakerA:"Can you open the window, please?",       hint:"Can you open the window, please? ___________",       tiles:["Certainly","."],                                            answer:"Certainly ." },
+      { en:"That sounds great.",      kanji:"それはいいですね。",           kana:"それはいいですね。",           speakerA:"Let's go to the park this Sunday!",      hint:"Let's go to the park this Sunday! ___________",      tiles:["That","sounds","great","."],                                answer:"That sounds great ." },
+      { en:"Have a safe trip.",       kanji:"気をつけて行ってらっしゃい。", kana:"きをつけていってらっしゃい。", speakerA:"I'm leaving for Tokyo tomorrow.",         hint:"I'm leaving for Tokyo tomorrow. ___________",        tiles:["Have","a","safe","trip","."],                               answer:"Have a safe trip ." },
+      { en:"I'm ready.",              kanji:"準備ができています。",         kana:"じゅんびができています。",     speakerA:"Are you ready to go?",                   hint:"Are you ready to go? ___________",                   tiles:["I'm","ready","."],                                          answer:"I'm ready ." },
+      { en:"What's the matter?",      kanji:"どうしたの？",                kana:"どうしたの？",                 speakerA:"I can't find my homework...",            hint:"I can't find my homework... ___________",            tiles:["What's","the","matter","?"],                                answer:"What's the matter ?" },
+      { en:"You're home early.",      kanji:"帰りが早いね。",               kana:"かえりがはやいね。",           speakerA:"Hi! I'm home!",                          hint:"Hi! I'm home! ___________",                          tiles:["You're","home","early","."],                                answer:"You're home early ." },
+    ],
+  },
+  {
+    id: "g3_conversational_2", title: "Conversational Expressions 2 / 会話表現②", emoji: "💬",
+    color: "#8b5cf6", shadow: "#6d28d9",
+    words: [
+      { en:"I'm a little worried.",   kanji:"少し心配です。",               kana:"すこししんぱいです。",         speakerA:"How do you feel about tomorrow's test?", hint:"How do you feel about tomorrow's test? ___________", tiles:["I'm","a","little","worried","."],                           answer:"I'm a little worried ." },
+      { en:"I'd like to go again.",   kanji:"また行きたいです。",           kana:"またいきたいです。",           speakerA:"Did you enjoy the trip to Kyoto?",       hint:"Did you enjoy the trip to Kyoto? ___________",       tiles:["I'd","like","to","go","again","."],                         answer:"I'd like to go again ." },
+      { en:"It's too far to walk.",   kanji:"歩くには遠すぎます。",         kana:"あるくにはとおすぎます。",     speakerA:"Should we walk to the museum?",          hint:"Should we walk to the museum? ___________",          tiles:["It's","too","far","to","walk","."],                         answer:"It's too far to walk ." },
+      { en:"Have you been there before?",kanji:"そこに行ったことがありますか。",kana:"そこにいったことがありますか。",speakerA:"Let's try the new ramen shop!",      hint:"Let's try the new ramen shop! ___________",          tiles:["Have","you","been","there","before","?"],                   answer:"Have you been there before ?" },
+      { en:"I've never done that before.",kanji:"それをやったことがありません。",kana:"それをやったことがありません。",speakerA:"Let's try rock climbing!",          hint:"Let's try rock climbing! ___________",               tiles:["I've","never","done","that","before","."],                  answer:"I've never done that before ." },
+      { en:"I was writing a report.", kanji:"レポートを書いていました。",   kana:"レポートをかいていました。",   speakerA:"What were you doing last night?",        hint:"What were you doing last night? ___________",        tiles:["I","was","writing","a","report","."],                       answer:"I was writing a report ." },
     ],
   },
 ];
@@ -541,7 +553,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "family", title: "Family / かぞく", emoji: "👨‍👩‍👧",
+    id: "family_1", title: "Family 1 / かぞく①", emoji: "👨‍👩‍👧",
     color: "#f59e0b", shadow: "#d97706",
     words: [
       { en:"mother",      kanji:"お母さん",  kana:"おかあさん",  trans:"私の%%お母さん%%は毎晩夕食を作ります。",            hint:"My _____ cooks dinner every night.",     tiles:["My","mother","cooks","dinner","every","night","."],     answer:"My mother cooks dinner every night ." },
@@ -551,6 +563,12 @@ const VOCAB_CATEGORIES_5 = [
       { en:"grandfather", kanji:"おじいさん",kana:"おじいさん",  trans:"私の%%おじいさん%%は田舎に住んでいます。",          hint:"My _____ lives in the countryside.",     tiles:["My","grandfather","lives","in","the","countryside","."],answer:"My grandfather lives in the countryside ." },
       { en:"grandmother", kanji:"おばあさん",kana:"おばあさん",  trans:"私の%%おばあさん%%はおいしいおにぎりを作ります。",   hint:"My _____ makes delicious rice balls.",   tiles:["My","grandmother","makes","delicious","rice","balls","."],answer:"My grandmother makes delicious rice balls ." },
       { en:"cousin",      kanji:"いとこ",   kana:"いとこ",     trans:"私の%%いとこ%%は大阪に住んでいます。",              hint:"My _____ lives in Osaka.",               tiles:["My","cousin","lives","in","Osaka","."],                answer:"My cousin lives in Osaka ." },
+    ],
+  },
+  {
+    id: "family_2", title: "Family 2 / かぞく②", emoji: "👨‍👩‍👧",
+    color: "#f59e0b", shadow: "#d97706",
+    words: [
       { en:"uncle",       kanji:"おじさん", kana:"おじさん",   trans:"%%おじさん%%は私にプレゼントをくれました。",        hint:"My _____ gave me a present.",            tiles:["My","uncle","gave","me","a","present","."],             answer:"My uncle gave me a present ." },
       { en:"aunt",        kanji:"おばさん", kana:"おばさん",   trans:"%%おばさん%%はケーキを焼くのが上手です。",          hint:"My _____ is good at baking cakes.",      tiles:["My","aunt","is","good","at","baking","cakes","."],      answer:"My aunt is good at baking cakes ." },
       { en:"nephew",      kanji:"おい",     kana:"おい",       trans:"私の%%おい%%は三歳です。",                        hint:"My _____ is three years old.",           tiles:["My","nephew","is","three","years","old","."],           answer:"My nephew is three years old ." },
@@ -564,9 +582,9 @@ const VOCAB_CATEGORIES_5 = [
     id: "weather", title: "Weather & Seasons / てんき・きせつ", emoji: "☀️",
     color: "#06b6d4", shadow: "#0891b2",
     words: [
-      { en:"sunny",  kanji:"晴れ",  kana:"はれ",  trans:"今日は%%晴れ%%です — 公園に行きましょう！",              hint:"It is _____ today — let's go to the park!",  tiles:["It","is","sunny","today","—","let's","go","to","the","park","!"],answer:"It is sunny today — let's go to the park !" },
+      { en:"sunny",  kanji:"晴れ",  kana:"はれ",  trans:"今日は%%晴れ%%です。公園に行きましょう！",              hint:"It is _____ today. Let's go to the park!",  tiles:["It","is","sunny","today",".","Let's","go","to","the","park","!"],answer:"It is sunny today . Let's go to the park !" },
       { en:"cloudy", kanji:"くもり",kana:"くもり",trans:"今朝は%%くもり%%で寒いです。",                          hint:"It is _____ and cold this morning.",          tiles:["It","is","cloudy","and","cold","this","morning","."],              answer:"It is cloudy and cold this morning ." },
-      { en:"rainy",  kanji:"雨",   kana:"あめ",  trans:"%%雨%%が降っています — 傘が必要です。",                  hint:"It is _____ — I need my umbrella.",           tiles:["It","is","rainy","—","I","need","my","umbrella","."],              answer:"It is rainy — I need my umbrella ." },
+      { en:"rainy",  kanji:"雨",   kana:"あめ",  trans:"%%雨%%が降っています。傘が必要です。",                  hint:"It is _____. I need my umbrella.",           tiles:["It","is","rainy",".","I","need","my","umbrella","."],              answer:"It is rainy . I need my umbrella ." },
       { en:"snowy",  kanji:"雪",   kana:"ゆき",  trans:"1月は%%雪%%が降ります。",                            hint:"It is _____ in January.",                     tiles:["It","is","snowy","in","January","."],                              answer:"It is snowy in January ." },
       { en:"spring", kanji:"春",   kana:"はる",  trans:"桜の花は%%春%%に咲きます。",                          hint:"Cherry blossoms bloom in _____.",             tiles:["Cherry","blossoms","bloom","in","spring","."],                    answer:"Cherry blossoms bloom in spring ." },
       { en:"summer", kanji:"夏",   kana:"なつ",  trans:"%%夏%%が大好きです。",                                hint:"I love _____.",                               tiles:["I","love","summer","."],                                          answer:"I love summer ." },
@@ -594,12 +612,12 @@ const VOCAB_CATEGORIES_5 = [
     id: "adjectives", title: "Adjectives / けいようし", emoji: "✨",
     color: "#8b5cf6", shadow: "#6d28d9",
     words: [
-      { en:"hot",        kanji:"暑い・熱い", kana:"あつい",       trans:"今日はとても%%暑い%%です — 冷たい水を飲みましょう！",    hint:"It is very _____ today — let's drink cold water.",  tiles:["It","is","very","hot","today","—","let's","drink","cold","water","."], answer:"It is very hot today — let's drink cold water ." },
+      { en:"hot",        kanji:"暑い・熱い", kana:"あつい",       trans:"今日はとても%%暑い%%です。冷たい水を飲みましょう！",    hint:"It is very _____ today. Let's drink cold water.",  tiles:["It","is","very","hot","today",".","Let's","drink","cold","water","."], answer:"It is very hot today . Let's drink cold water ." },
       { en:"cold",       kanji:"寒い・冷たい",kana:"さむい",      trans:"今日は%%寒い%%のでコートを着ます。",                    hint:"It is _____ today, so I wear a coat.",              tiles:["It","is","cold","today","so","I","wear","a","coat","."],            answer:"It is cold today so I wear a coat ." },
       { en:"cool",       kanji:"涼しい",    kana:"すずしい",      trans:"今日は曇っていて%%涼しい%%です。",                      hint:"It is cloudy and _____ today.",                    tiles:["It","is","cloudy","and","cool","today","."],                       answer:"It is cloudy and cool today ." },
       { en:"nice",       kanji:"すてきな",  kana:"すてきな",      trans:"あなたの新しい靴は%%すてき%%ですね！",                  hint:"Your new shoes are _____!",                        tiles:["Your","new","shoes","are","nice","!"],                             answer:"Your new shoes are nice !" },
       { en:"cute",       kanji:"かわいい",  kana:"かわいい",      trans:"私の猫はとても%%かわいい%%です。",                      hint:"My cat is very _____.",                            tiles:["My","cat","is","very","cute","."],                                 answer:"My cat is very cute ." },
-      { en:"great",      kanji:"すばらしい",kana:"すばらしい",    trans:"これは私の新しいパソコンです — %%すばらしい%%！",        hint:"This is my new computer — it's _____!",            tiles:["This","is","my","new","computer","—","it's","great","!"],         answer:"This is my new computer — it's great !" },
+      { en:"great",      kanji:"すばらしい",kana:"すばらしい",    trans:"これは私の新しいパソコンです。%%すばらしい%%！",        hint:"This is my new computer. It is _____!",            tiles:["This","is","my","new","computer",".","It","is","great","!"],      answer:"This is my new computer . It is great !" },
       { en:"delicious",  kanji:"おいしい",  kana:"おいしい",      trans:"このレストランのデザートは%%おいしい%%です。",           hint:"The desserts at this restaurant are _____.",       tiles:["The","desserts","at","this","restaurant","are","delicious","."],  answer:"The desserts at this restaurant are delicious ." },
       { en:"tall",       kanji:"高い・背が高い",kana:"せがたかい", trans:"あの塔はとても%%高い%%です。",                         hint:"That tower is very _____.",                        tiles:["That","tower","is","very","tall","."],                             answer:"That tower is very tall ." },
       { en:"short",      kanji:"短い・背が低い",kana:"みじかい",   trans:"私の定規は%%短い%%です。",                            hint:"My ruler is _____.",                               tiles:["My","ruler","is","short","."],                                     answer:"My ruler is short ." },
@@ -612,30 +630,36 @@ const VOCAB_CATEGORIES_5 = [
     words: [
       { en:"draw",   kanji:"かく（絵を）",kana:"えをかく",   trans:"彼は自由な時間に花の絵を%%かきます%%。",                hint:"He _____ pictures of flowers in his free time.",    tiles:["He","draws","pictures","of","flowers","in","his","free","time","."], answer:"He draws pictures of flowers in his free time ." },
       { en:"wash",   kanji:"洗う",       kana:"あらう",     trans:"マイクは庭で自分の犬を%%洗って%%います。",              hint:"Mike is _____ his dog in the garden.",              tiles:["Mike","is","washing","his","dog","in","the","garden","."],          answer:"Mike is washing his dog in the garden ." },
-      { en:"wear",   kanji:"着る",       kana:"きる",       trans:"今日はとても寒いのでコートを%%着て%%ください。",         hint:"Please _____ a coat today — it is very cold.",      tiles:["Please","wear","a","coat","today","—","it","is","very","cold","."], answer:"Please wear a coat today — it is very cold ." },
+      { en:"wear",   kanji:"着る",       kana:"きる",       trans:"今日はとても寒いのでコートを%%着て%%ください。",         hint:"Please _____ a coat. It is very cold.",      tiles:["Please","wear","a","coat",".","It","is","very","cold","."], answer:"Please wear a coat . It is very cold ." },
       { en:"catch",  kanji:"つかまえる", kana:"つかまえる", trans:"私の犬はボールを%%つかまえる%%ことができます。",           hint:"My dog can _____ a ball.",                    tiles:["My","dog","can","catch","a","ball","."],                            answer:"My dog can catch a ball ." },
       { en:"paint",  kanji:"ぬる・かく", kana:"えをかく",   trans:"この壁を%%ぬって%%ください。",                          hint:"Please _____ this wall.",                           tiles:["Please","paint","this","wall","."],                                 answer:"Please paint this wall ." },
       { en:"open",   kanji:"開ける",     kana:"あける",     trans:"教科書を%%開けて%%ください。",                          hint:"Please _____ your book.",                           tiles:["Please","open","your","book","."],                                  answer:"Please open your book ." },
-      { en:"close",  kanji:"閉める",     kana:"しめる",     trans:"寒いので窓を%%閉めて%%ください。",                      hint:"Please _____ the windows — it is cold.",           tiles:["Please","close","the","windows","—","it","is","cold","."],         answer:"Please close the windows — it is cold ." },
+      { en:"close",  kanji:"閉める",     kana:"しめる",     trans:"寒いので窓を%%閉めて%%ください。",                      hint:"Please _____ the windows. It is cold.",           tiles:["Please","close","the","windows",".","It","is","cold","."],         answer:"Please close the windows . It is cold ." },
       { en:"teach",  kanji:"教える",     kana:"おしえる",   trans:"トムのお父さんは大学で何を%%教えて%%いますか？",         hint:"What does Tom's father _____ at college?",          tiles:["What","does","Tom's","father","teach","at","college","?"],          answer:"What does Tom's father teach at college ?" },
       { en:"take",   kanji:"とる（写真）",kana:"しゃしんをとる",trans:"ジュリアはカメラでよく写真を%%とります%%。",         hint:"Julia often _____ pictures with her camera.", tiles:["Julia","often","takes","pictures","with","her","camera","."],       answer:"Julia often takes pictures with her camera ." },
       { en:"use",    kanji:"使う",       kana:"つかう",     trans:"わたしは新しい言葉を調べるために辞書を%%使います%%。",   hint:"I _____ a dictionary to find new words.",           tiles:["I","use","a","dictionary","to","find","new","words","."],           answer:"I use a dictionary to find new words ." },
     ],
   },
   {
-    id: "sports_hobbies", title: "Sports & Hobbies / スポーツ", emoji: "⚽",
+    id: "sports_1", title: "Sports & Hobbies 1 / スポーツ①", emoji: "⚽",
     color: "#10b981", shadow: "#065f46",
     words: [
       { en:"soccer",     kanji:"サッカー",   kana:"サッカー",   trans:"私は毎日午後、公園で%%サッカー%%をします。",           hint:"I play _____ at the park every afternoon.",        tiles:["I","play","soccer","at","the","park","every","afternoon","."],     answer:"I play soccer at the park every afternoon ." },
-      { en:"tennis",     kanji:"テニス",     kana:"テニス",     trans:"わたしは%%テニス%%が好きです — あなたはどうですか？",   hint:"I like _____ — what about you?",                   tiles:["I","like","tennis","—","what","about","you","?"],                  answer:"I like tennis — what about you ?" },
+      { en:"tennis",     kanji:"テニス",     kana:"テニス",     trans:"わたしは%%テニス%%が好きです。あなたはどうですか？",   hint:"I like _____. Do you like it?",                   tiles:["I","like","tennis",".","Do","you","like","it","?"],                  answer:"I like tennis . Do you like it ?" },
       { en:"volleyball", kanji:"バレーボール",kana:"バレーボール",trans:"楽しいので%%バレーボール%%が好きです。",             hint:"I like _____ because it is fun.",                 tiles:["I","like","volleyball","because","it","is","fun","."],             answer:"I like volleyball because it is fun ." },
       { en:"basketball", kanji:"バスケットボール",kana:"バスケットボール",trans:"わたしは%%バスケットボール%%が大好きで、テレビで試合を見ます。", hint:"I love _____ and I watch games on TV.", tiles:["I","love","basketball","and","I","watch","games","on","TV","."],   answer:"I love basketball and I watch games on TV ." },
       { en:"badminton",  kanji:"バドミントン",kana:"バドミントン",trans:"公園で%%バドミントン%%をしましょう。",               hint:"Let's play _____ at the park.",                  tiles:["Let's","play","badminton","at","the","park","."],                  answer:"Let's play badminton at the park ." },
       { en:"swimming",   kanji:"水泳",       kana:"すいえい",   trans:"ジャネットは毎週日曜日、妹と一緒に%%水泳%%をします。", hint:"Janet goes _____ every Sunday with her sister.",   tiles:["Janet","goes","swimming","every","Sunday","with","her","sister","."], answer:"Janet goes swimming every Sunday with her sister ." },
       { en:"skiing",     kanji:"スキー",     kana:"スキー",     trans:"お姉さんは毎年%%スキー%%に行きますか？",              hint:"Does your sister go _____ every year?",            tiles:["Does","your","sister","go","skiing","every","year","?"],           answer:"Does your sister go skiing every year ?" },
+    ],
+  },
+  {
+    id: "sports_2", title: "Sports & Hobbies 2 / スポーツ②", emoji: "🎵",
+    color: "#10b981", shadow: "#065f46",
+    words: [
       { en:"jogging",    kanji:"ジョギング", kana:"ジョギング", trans:"ゆきのお父さんは朝よく%%ジョギング%%をします。",       hint:"Yuki's father often goes _____ in the morning.",   tiles:["Yuki's","father","often","goes","jogging","in","the","morning","."], answer:"Yuki's father often goes jogging in the morning ." },
-      { en:"music",      kanji:"音楽",       kana:"おんがく",   trans:"ヘンリーは音楽家なので%%音楽%%が大好きです。",         hint:"Henry is a musician — he loves _____.",            tiles:["Henry","is","a","musician","—","he","loves","music","."],          answer:"Henry is a musician — he loves music ." },
-      { en:"camera",       kanji:"カメラ",       kana:"カメラ",       trans:"ジュリアは%%カメラ%%が好きで、よく写真を撮ります。",       hint:"Julia likes her _____ — she often takes pictures.", tiles:["Julia","likes","her","camera","—","she","often","takes","pictures","."], answer:"Julia likes her camera — she often takes pictures ." },
+      { en:"music",      kanji:"音楽",       kana:"おんがく",   trans:"ヘンリーは%%音楽%%が好きです。彼は音楽家です。",         hint:"Henry likes _____. He is a musician.",            tiles:["Henry","likes","music",".","He","is","a","musician","."],          answer:"Henry likes music . He is a musician ." },
+      { en:"camera",       kanji:"カメラ",       kana:"カメラ",       trans:"ジュリアは%%カメラ%%を持っています。彼女はよく写真を撮ります。",       hint:"Julia has a _____. She takes pictures.", tiles:["Julia","has","a","camera",".","She","takes","pictures","."], answer:"Julia has a camera . She takes pictures ." },
       { en:"baseball",     kanji:"野球",         kana:"やきゅう",     trans:"私の兄は%%野球%%が得意です。",                           hint:"My brother is good at _____.",             tiles:["My","brother","is","good","at","baseball","."],            answer:"My brother is good at baseball ." },
       { en:"table tennis", kanji:"卓球",         kana:"たっきゅう",   trans:"私は学校の体育館で%%卓球%%をします。",                   hint:"I play _____ in the school gym.",           tiles:["I","play","table","tennis","in","the","school","gym","."], answer:"I play table tennis in the school gym ." },
       { en:"golf",         kanji:"ゴルフ",       kana:"ゴルフ",       trans:"私のお父さんは週末に%%ゴルフ%%をします。",               hint:"My father plays _____ on weekends.",        tiles:["My","father","plays","golf","on","weekends","."],          answer:"My father plays golf on weekends ." },
@@ -655,7 +679,7 @@ const VOCAB_CATEGORIES_5 = [
       { en:"table",       kanji:"テーブル",  kana:"テーブル",   trans:"%%テーブル%%の上に歴史の本があります。",              hint:"There is a history book on the _____.",            tiles:["There","is","a","history","book","on","the","table","."],          answer:"There is a history book on the table ." },
       { en:"chair",       kanji:"いす",      kana:"いす",       trans:"赤いペンが%%いす%%の下にあります。",                  hint:"My red pen is under my _____.",                    tiles:["My","red","pen","is","under","my","chair","."],                    answer:"My red pen is under my chair ." },
       { en:"bed",         kanji:"ベッド",    kana:"ベッド",     trans:"パジャマは%%ベッド%%の上にあります。",                hint:"Your pajamas are on your _____.",                  tiles:["Your","pajamas","are","on","your","bed","."],                      answer:"Your pajamas are on your bed ." },
-      { en:"window",      kanji:"窓",        kana:"まど",       trans:"寒いので%%窓%%を閉めてください。",                    hint:"Please close the _____ — it is cold.",             tiles:["Please","close","the","window","—","it","is","cold","."],          answer:"Please close the window — it is cold ." },
+      { en:"window",      kanji:"窓",        kana:"まど",       trans:"寒いので%%窓%%を閉めてください。",                    hint:"Please close the _____. It is cold.",             tiles:["Please","close","the","window",".","It","is","cold","."],          answer:"Please close the window . It is cold ." },
     ],
   },
   {
@@ -663,7 +687,7 @@ const VOCAB_CATEGORIES_5 = [
     color: "#84cc16", shadow: "#4d7c0f",
     words: [
       { en:"dog",      kanji:"犬",     kana:"いぬ",       trans:"マイクは庭で%%犬%%を洗っています。",                    hint:"Mike is washing his _____ in the garden.",         tiles:["Mike","is","washing","his","dog","in","the","garden","."],         answer:"Mike is washing his dog in the garden ." },
-      { en:"cat",      kanji:"猫",     kana:"ねこ",       trans:"私には%%猫%%がいます — とてもかわいいです。",            hint:"I have a _____  — she is very cute.",               tiles:["I","have","a","cat","—","she","is","very","cute","."],             answer:"I have a cat — she is very cute ." },
+      { en:"cat",      kanji:"猫",     kana:"ねこ",       trans:"私には%%猫%%がいます。とてもかわいいです。",            hint:"I have a _____. She is very cute.",               tiles:["I","have","a","cat",".","She","is","very","cute","."],             answer:"I have a cat . She is very cute ." },
       { en:"rabbit",   kanji:"うさぎ", kana:"うさぎ",     trans:"妹はペットの%%うさぎ%%を飼っています。",                 hint:"My sister has a pet _____.",                       tiles:["My","sister","has","a","pet","rabbit","."],                        answer:"My sister has a pet rabbit ." },
       { en:"bird",     kanji:"鳥",     kana:"とり",       trans:"タロウの頭の上に%%鳥%%がいます。",                     hint:"A _____ is on Taro's head.",                        tiles:["A","bird","is","on","Taro's","head","."],                          answer:"A bird is on Taro's head ." },
       { en:"fish",     kanji:"魚",     kana:"さかな",     trans:"この川で%%魚%%を釣ることができます。",                  hint:"We can catch _____ in this river.",                 tiles:["We","can","catch","fish","in","this","river","."],                 answer:"We can catch fish in this river ." },
@@ -734,7 +758,7 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "buildings_places", title: "Buildings & Places / たてもの", emoji: "🏢",
+    id: "buildings_1", title: "Buildings & Places 1 / たてもの①", emoji: "🏢",
     color: "#0891b2", shadow: "#155e75",
     words: [
       { en:"school",         kanji:"学校",         kana:"がっこう",     trans:"私は毎日%%学校%%に行きます。",                         hint:"I go to _____ every day.",                   tiles:["I","go","to","school","every","day","."],                  answer:"I go to school every day ." },
@@ -743,6 +767,12 @@ const VOCAB_CATEGORIES_5 = [
       { en:"museum",         kanji:"博物館",       kana:"はくぶつかん", trans:"先週、%%博物館%%に行きました。",                       hint:"I went to the _____ last week.",             tiles:["I","went","to","the","museum","last","week","."],          answer:"I went to the museum last week ." },
       { en:"station",        kanji:"駅",           kana:"えき",         trans:"%%駅%%はここからどのくらいですか？",                   hint:"How far is the _____ from here?",            tiles:["How","far","is","the","station","from","here","?"],        answer:"How far is the station from here ?" },
       { en:"hospital",       kanji:"病院",         kana:"びょういん",   trans:"母は%%病院%%で働いています。",                         hint:"My mother works at the _____.",              tiles:["My","mother","works","at","the","hospital","."],           answer:"My mother works at the hospital ." },
+    ],
+  },
+  {
+    id: "buildings_2", title: "Buildings & Places 2 / たてもの②", emoji: "🏦",
+    color: "#0891b2", shadow: "#155e75",
+    words: [
       { en:"bank",           kanji:"銀行",         kana:"ぎんこう",     trans:"%%銀行%%はあの角を曲がったところにあります。",         hint:"The _____ is around that corner.",           tiles:["The","bank","is","around","that","corner","."],            answer:"The bank is around that corner ." },
       { en:"police station", kanji:"交番",         kana:"こうばん",     trans:"%%交番%%はどこですか？",                               hint:"Where is the _____?",                        tiles:["Where","is","the","police","station","?"],                 answer:"Where is the police station ?" },
       { en:"department store",kanji:"デパート",    kana:"デパート",     trans:"母は%%デパート%%で服を買います。",                     hint:"My mother buys clothes at the _____.",       tiles:["My","mother","buys","clothes","at","the","department","store","."], answer:"My mother buys clothes at the department store ." },
@@ -998,6 +1028,15 @@ body { font-family:'Inter',sans-serif; background:#ece4b7; }
 
 .trans-disp { background:#fdf5e8; border-radius:11px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#718096; text-align:center; line-height:1.6; border:1px solid #e6aa68; }
 .trans-hl   { color:#D36135; font-weight:800; }
+
+.dia-box    { background:#f0ebff; border-radius:12px; padding:12px 14px; margin-bottom:10px; border:1px solid #c4b5fd; }
+.dia-row    { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.dia-row:last-child { margin-bottom:0; }
+.dia-speaker{ font-weight:900; font-size:15px; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.dia-a      { background:#8b5cf6; color:#fff; }
+.dia-b      { background:#e9d5ff; color:#6d28d9; }
+.dia-text   { font-size:14px; color:#374151; line-height:1.5; }
+.dia-blank  { color:#9ca3af; font-style:italic; letter-spacing:2px; }
 
 .chip     { display:inline-block; background:#e6ffed; color:#276749; border-radius:20px; padding:4px 13px; font-size:13px; font-weight:700; margin:3px; font-family:'Nunito',sans-serif; }
 .chip.bad { background:#fff5f5; color:#c53030; }
@@ -1587,7 +1626,7 @@ function VocabGameScreen({ category, onComplete }) {
   const isOrdinalCat    = words[0]?.isOrdinal;
   const isIrregularCat  = !!category.isIrregularVerb;
   // Categories where typing the full phrase is impractical — treat like dialogue
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
   // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Irregular verbs: match + spell + fill. Others: all 3.
   const scoreParts    = isIrregularCat ? ["match","spell","fill"] : isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
   // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
@@ -1837,12 +1876,24 @@ function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
     <div>
       <div className="card">
         {isDialogue ? (
-          // Dialogue mode: show the situation, choose the right response
           <div>
-            <div style={{fontSize:12,color:"#a0aec0",textAlign:"center",marginBottom:4}}>Situation 💬</div>
-            <div className="sen-disp" style={{fontSize:14}}>
-              {word.hint.replace("___________", "___________")}
-            </div>
+            {word.speakerA ? (
+              <div className="dia-box">
+                <div className="dia-row">
+                  <span className="dia-speaker dia-a">A</span>
+                  <span className="dia-text">{word.speakerA}</span>
+                </div>
+                <div className="dia-row">
+                  <span className="dia-speaker dia-b">B</span>
+                  <span className="dia-text dia-blank">_________</span>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div style={{fontSize:12,color:"#a0aec0",textAlign:"center",marginBottom:4}}>Situation 💬</div>
+                <div className="sen-disp" style={{fontSize:14}}>{word.hint}</div>
+              </>
+            )}
             <div style={{fontSize:12,color:"#718096",textAlign:"center",marginBottom:12}}>
               <Furigana kanji={word.kanji} kana={word.kana} size={15} />
             </div>
@@ -2198,7 +2249,7 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
   const cleared   = pct >= 70;
   const goodWords = words.filter(w => !missed.find(m => m.word.en === w.en));
   const isOrdinalCat  = words[0]?.isOrdinal;
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
 
   return (
     <div className="quiz-wrap fade">
