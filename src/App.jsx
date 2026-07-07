@@ -190,66 +190,90 @@ const VOCAB_CATEGORIES_3 = [
     ],
   },
   {
-    id: "g3_irregular_past", title: "Irregular Past Tense / 不規則過去形", emoji: "⏪",
-    color: "#ef4444", shadow: "#b91c1c",
+    id: "g3_irregular_1", title: "Irregular Past Tense 1 / 不規則過去形①", emoji: "⏪",
+    color: "#ef4444", shadow: "#b91c1c", isIrregularVerb: true,
     words: [
-      { en:"went",     kanji:"go → went",     kana:"行った",      hint:"Yesterday I _____ to the park.",            tiles:["Yesterday","I","went","to","the","park","."],           answer:"Yesterday I went to the park ." },
-      { en:"saw",      kanji:"see → saw",      kana:"見た",        hint:"I _____ a rainbow this morning.",           tiles:["I","saw","a","rainbow","this","morning","."],           answer:"I saw a rainbow this morning ." },
-      { en:"took",     kanji:"take → took",    kana:"撮った・持って行った", hint:"She _____ a photo of the sunset.",  tiles:["She","took","a","photo","of","the","sunset","."],       answer:"She took a photo of the sunset ." },
-      { en:"bought",   kanji:"buy → bought",   kana:"買った",      hint:"I _____ a new bag last week.",             tiles:["I","bought","a","new","bag","last","week","."],         answer:"I bought a new bag last week ." },
-      { en:"caught",   kanji:"catch → caught", kana:"捕まえた",    hint:"He _____ a big fish in the river.",        tiles:["He","caught","a","big","fish","in","the","river","."],  answer:"He caught a big fish in the river ." },
-      { en:"thought",  kanji:"think → thought",kana:"思った",      hint:"I _____ the movie was great.",             tiles:["I","thought","the","movie","was","great","."],          answer:"I thought the movie was great ." },
-      { en:"wrote",    kanji:"write → wrote",  kana:"書いた",      hint:"She _____ a letter to her friend.",        tiles:["She","wrote","a","letter","to","her","friend","."],     answer:"She wrote a letter to her friend ." },
-      { en:"spoke",    kanji:"speak → spoke",  kana:"話した",      hint:"He _____ to the class about his trip.",   tiles:["He","spoke","to","the","class","about","his","trip","."],answer:"He spoke to the class about his trip ." },
-      { en:"broke",    kanji:"break → broke",  kana:"壊した・割った",hint:"I _____ my phone by accident.",          tiles:["I","broke","my","phone","by","accident","."],           answer:"I broke my phone by accident ." },
-      { en:"found",    kanji:"find → found",   kana:"見つけた",    hint:"She _____ her keys under the sofa.",       tiles:["She","found","her","keys","under","the","sofa","."],    answer:"She found her keys under the sofa ." },
-      { en:"left",     kanji:"leave → left",   kana:"出発した・置いてきた",hint:"We _____ home at eight o'clock.",  tiles:["We","left","home","at","eight","o'clock","."],          answer:"We left home at eight o'clock ." },
-      { en:"gave",     kanji:"give → gave",    kana:"あげた",      hint:"He _____ me a birthday present.",         tiles:["He","gave","me","a","birthday","present","."],          answer:"He gave me a birthday present ." },
-      { en:"got",      kanji:"get → got",      kana:"手に入れた",  hint:"I _____ a letter from my pen pal.",       tiles:["I","got","a","letter","from","my","pen","pal","."],     answer:"I got a letter from my pen pal ." },
-      { en:"came",     kanji:"come → came",    kana:"来た",        hint:"My cousin _____ to visit last summer.",   tiles:["My","cousin","came","to","visit","last","summer","."],  answer:"My cousin came to visit last summer ." },
-      { en:"began",    kanji:"begin → began",  kana:"始まった",    hint:"The festival _____ at six o'clock.",      tiles:["The","festival","began","at","six","o'clock","."],      answer:"The festival began at six o'clock ." },
-      { en:"sent",     kanji:"send → sent",    kana:"送った",      hint:"She _____ an email to her teacher.",      tiles:["She","sent","an","email","to","her","teacher","."],     answer:"She sent an email to her teacher ." },
-      { en:"knew",     kanji:"know → knew",    kana:"知っていた",  hint:"I _____ the answer to the question.",     tiles:["I","knew","the","answer","to","the","question","."],    answer:"I knew the answer to the question ." },
-      { en:"told",     kanji:"tell → told",    kana:"伝えた",      hint:"My mother _____ me to clean my room.",    tiles:["My","mother","told","me","to","clean","my","room","."], answer:"My mother told me to clean my room ." },
-      { en:"heard",    kanji:"hear → heard",   kana:"聞いた",      hint:"I _____ a strange sound last night.",     tiles:["I","heard","a","strange","sound","last","night","."],   answer:"I heard a strange sound last night ." },
-      { en:"felt",     kanji:"feel → felt",    kana:"感じた",      hint:"She _____ happy after the concert.",      tiles:["She","felt","happy","after","the","concert","."],       answer:"She felt happy after the concert ." },
-      { en:"met",      kanji:"meet → met",     kana:"会った",      hint:"I _____ my old teacher at the station.",  tiles:["I","met","my","old","teacher","at","the","station","."],answer:"I met my old teacher at the station ." },
-      { en:"received", kanji:"receive → received",kana:"受け取った", hint:"She _____ a package from her aunt.",    tiles:["She","received","a","package","from","her","aunt","."], answer:"She received a package from her aunt ." },
+      { en:"went",    present:"go",    kana:"行った",           alts:["goed","wnet","gone"],           hint:"Yesterday I _____ to the park.",          tiles:["Yesterday","I","went","to","the","park","."],          answer:"Yesterday I went to the park ." },
+      { en:"saw",     present:"see",   kana:"見た",             alts:["sew","seen","seed"],            hint:"I _____ a rainbow this morning.",          tiles:["I","saw","a","rainbow","this","morning","."],          answer:"I saw a rainbow this morning ." },
+      { en:"took",    present:"take",  kana:"撮った・持って行った",alts:["toock","taked","toke"],       hint:"She _____ a photo of the sunset.",         tiles:["She","took","a","photo","of","the","sunset","."],      answer:"She took a photo of the sunset ." },
+      { en:"bought",  present:"buy",   kana:"買った",           alts:["buyed","boughtt","bort"],       hint:"I _____ a new bag last week.",             tiles:["I","bought","a","new","bag","last","week","."],        answer:"I bought a new bag last week ." },
+      { en:"caught",  present:"catch", kana:"捕まえた",         alts:["catched","caugh","cought"],     hint:"He _____ a big fish in the river.",        tiles:["He","caught","a","big","fish","in","the","river","."], answer:"He caught a big fish in the river ." },
+      { en:"thought", present:"think", kana:"思った",           alts:["thinked","thougth","thunk"],   hint:"I _____ the movie was great.",             tiles:["I","thought","the","movie","was","great","."],         answer:"I thought the movie was great ." },
+      { en:"wrote",   present:"write", kana:"書いた",           alts:["writed","wroat","written"],    hint:"She _____ a letter to her friend.",        tiles:["She","wrote","a","letter","to","her","friend","."],    answer:"She wrote a letter to her friend ." },
     ],
   },
   {
-    id: "g3_phrasal_verbs", title: "Phrasal Verbs / 句動詞", emoji: "🔗",
+    id: "g3_irregular_2", title: "Irregular Past Tense 2 / 不規則過去形②", emoji: "⏪",
+    color: "#f97316", shadow: "#c2410c", isIrregularVerb: true,
+    words: [
+      { en:"spoke",  present:"speak", kana:"話した",           alts:["speaked","spoked","spoken"],   hint:"He _____ to the class about his trip.",    tiles:["He","spoke","to","the","class","about","his","trip","."], answer:"He spoke to the class about his trip ." },
+      { en:"broke",  present:"break", kana:"壊した・割った",   alts:["breaked","brok","broken"],     hint:"I _____ my phone by accident.",             tiles:["I","broke","my","phone","by","accident","."],           answer:"I broke my phone by accident ." },
+      { en:"found",  present:"find",  kana:"見つけた",         alts:["finded","foud","finned"],      hint:"She _____ her keys under the sofa.",        tiles:["She","found","her","keys","under","the","sofa","."],    answer:"She found her keys under the sofa ." },
+      { en:"left",   present:"leave", kana:"出発した・置いてきた",alts:["leaved","lefft","leved"],   hint:"We _____ home at eight o'clock.",           tiles:["We","left","home","at","eight","o'clock","."],          answer:"We left home at eight o'clock ." },
+      { en:"gave",   present:"give",  kana:"あげた",           alts:["gived","given","gaave"],       hint:"He _____ me a birthday present.",           tiles:["He","gave","me","a","birthday","present","."],          answer:"He gave me a birthday present ." },
+      { en:"got",    present:"get",   kana:"手に入れた",       alts:["getted","gott","gat"],         hint:"I _____ a letter from my pen pal.",         tiles:["I","got","a","letter","from","my","pen","pal","."],     answer:"I got a letter from my pen pal ." },
+      { en:"came",   present:"come",  kana:"来た",             alts:["comed","coame","cumm"],        hint:"My cousin _____ to visit last summer.",     tiles:["My","cousin","came","to","visit","last","summer","."],  answer:"My cousin came to visit last summer ." },
+    ],
+  },
+  {
+    id: "g3_irregular_3", title: "Irregular Past Tense 3 / 不規則過去形③", emoji: "⏪",
+    color: "#8b5cf6", shadow: "#6d28d9", isIrregularVerb: true,
+    words: [
+      { en:"began",    present:"begin",   kana:"始まった",     alts:["begined","begon","begun"],     hint:"The festival _____ at six o'clock.",        tiles:["The","festival","began","at","six","o'clock","."],      answer:"The festival began at six o'clock ." },
+      { en:"sent",     present:"send",    kana:"送った",       alts:["sended","sennt","sint"],       hint:"She _____ an email to her teacher.",         tiles:["She","sent","an","email","to","her","teacher","."],     answer:"She sent an email to her teacher ." },
+      { en:"knew",     present:"know",    kana:"知っていた",   alts:["knowed","kneww","noo"],        hint:"I _____ the answer to the question.",        tiles:["I","knew","the","answer","to","the","question","."],    answer:"I knew the answer to the question ." },
+      { en:"told",     present:"tell",    kana:"伝えた",       alts:["telled","tolld","toled"],      hint:"My mother _____ me to clean my room.",       tiles:["My","mother","told","me","to","clean","my","room","."], answer:"My mother told me to clean my room ." },
+      { en:"heard",    present:"hear",    kana:"聞いた",       alts:["heared","herd","heered"],      hint:"I _____ a strange sound last night.",        tiles:["I","heard","a","strange","sound","last","night","."],   answer:"I heard a strange sound last night ." },
+      { en:"felt",     present:"feel",    kana:"感じた",       alts:["feeled","feltt","feled"],      hint:"She _____ happy after the concert.",         tiles:["She","felt","happy","after","the","concert","."],       answer:"She felt happy after the concert ." },
+      { en:"met",      present:"meet",    kana:"会った",       alts:["meeted","mett","meat"],        hint:"I _____ my old teacher at the station.",     tiles:["I","met","my","old","teacher","at","the","station","."],answer:"I met my old teacher at the station ." },
+      { en:"received", present:"receive", kana:"受け取った",   alts:["recieved","recived","receeved"],hint:"She _____ a package from her aunt.",       tiles:["She","received","a","package","from","her","aunt","."], answer:"She received a package from her aunt ." },
+    ],
+  },
+  {
+    id: "g3_phrasal_verbs_1", title: "Phrasal Verbs 1 / 句動詞①", emoji: "🔗",
     color: "#10b981", shadow: "#065f46",
     words: [
-      { en:"clean up",    kanji:"片付ける",         kana:"かたづける",   hint:"Please _____ your room before dinner.",        tiles:["Please","clean","up","your","room","before","dinner","."],   answer:"Please clean up your room before dinner ." },
-      { en:"look for",    kanji:"〜を探す",         kana:"〜をさがす",   hint:"I am _____ my glasses.",                       tiles:["I","am","looking","for","my","glasses","."],                  answer:"I am looking for my glasses ." },
-      { en:"get off",     kanji:"（乗り物を）降りる",kana:"おりる",       hint:"_____ the bus at the next stop.",              tiles:["Get","off","the","bus","at","the","next","stop","."],         answer:"Get off the bus at the next stop ." },
-      { en:"get on",      kanji:"（乗り物に）乗る", kana:"のる",         hint:"_____ the train at platform two.",             tiles:["Get","on","the","train","at","platform","two","."],           answer:"Get on the train at platform two ." },
-      { en:"throw away",  kanji:"捨てる",           kana:"すてる",       hint:"Please _____ the old magazines.",              tiles:["Please","throw","away","the","old","magazines","."],          answer:"Please throw away the old magazines ." },
-      { en:"come back",   kanji:"戻ってくる",       kana:"もどってくる", hint:"She will _____ by six o'clock.",               tiles:["She","will","come","back","by","six","o'clock","."],          answer:"She will come back by six o'clock ." },
-      { en:"give back",   kanji:"返す",             kana:"かえす",       hint:"Please _____ the book by Friday.",             tiles:["Please","give","back","the","book","by","Friday","."],        answer:"Please give back the book by Friday ." },
-      { en:"call back",   kanji:"電話をかけ直す",   kana:"でんわをかけなおす",hint:"Can you _____ in ten minutes?",            tiles:["Can","you","call","back","in","ten","minutes","?"],           answer:"Can you call back in ten minutes ?" },
-      { en:"get back",    kanji:"戻る・取り戻す",   kana:"もどる",       hint:"When did you _____ from your trip?",           tiles:["When","did","you","get","back","from","your","trip","?"],     answer:"When did you get back from your trip ?" },
-      { en:"feel like",   kanji:"〜したい気分だ",   kana:"〜したいきぶんだ",hint:"I _____ eating pizza tonight.",             tiles:["I","feel","like","eating","pizza","tonight","."],             answer:"I feel like eating pizza tonight ." },
-      { en:"look for",    kanji:"〜について聞く",   kana:"〜についてきく",hint:"Did you _____ the news about the festival?",  tiles:["Did","you","hear","about","the","news","about","the","festival","?"],answer:"Did you hear about the news about the festival ?" },
-      { en:"talk to",     kanji:"〜と話す",         kana:"〜とはなす",   hint:"I need to _____ my teacher about this.",       tiles:["I","need","to","talk","to","my","teacher","about","this","."],answer:"I need to talk to my teacher about this ." },
+      { en:"clean up",   kanji:"片付ける",         kana:"かたづける",      hint:"Please _____ your room before dinner.",      tiles:["Please","clean","up","your","room","before","dinner","."],  answer:"Please clean up your room before dinner ." },
+      { en:"look for",   kanji:"〜を探す",         kana:"〜をさがす",      hint:"I am _____ my glasses.",                     tiles:["I","am","looking","for","my","glasses","."],                answer:"I am looking for my glasses ." },
+      { en:"get off",    kanji:"（乗り物を）降りる",kana:"おりる",          hint:"_____ the bus at the next stop.",            tiles:["Get","off","the","bus","at","the","next","stop","."],       answer:"Get off the bus at the next stop ." },
+      { en:"get on",     kanji:"（乗り物に）乗る", kana:"のる",            hint:"_____ the train at platform two.",           tiles:["Get","on","the","train","at","platform","two","."],         answer:"Get on the train at platform two ." },
+      { en:"throw away", kanji:"捨てる",           kana:"すてる",          hint:"Please _____ the old magazines.",            tiles:["Please","throw","away","the","old","magazines","."],        answer:"Please throw away the old magazines ." },
+      { en:"come back",  kanji:"戻ってくる",       kana:"もどってくる",    hint:"She will _____ by six o'clock.",             tiles:["She","will","come","back","by","six","o'clock","."],        answer:"She will come back by six o'clock ." },
     ],
   },
   {
-    id: "g3_prepositions", title: "Preposition Phrases / 前置詞句", emoji: "📍",
+    id: "g3_phrasal_verbs_2", title: "Phrasal Verbs 2 / 句動詞②", emoji: "🔗",
+    color: "#0891b2", shadow: "#155e75",
+    words: [
+      { en:"give back",  kanji:"返す",             kana:"かえす",          hint:"Please _____ the book by Friday.",           tiles:["Please","give","back","the","book","by","Friday","."],      answer:"Please give back the book by Friday ." },
+      { en:"call back",  kanji:"電話をかけ直す",   kana:"でんわをかけなおす",hint:"Can you _____ in ten minutes?",            tiles:["Can","you","call","back","in","ten","minutes","?"],         answer:"Can you call back in ten minutes ?" },
+      { en:"get back",   kanji:"戻る・取り戻す",   kana:"もどる",          hint:"When did you _____ from your trip?",         tiles:["When","did","you","get","back","from","your","trip","?"],   answer:"When did you get back from your trip ?" },
+      { en:"feel like",  kanji:"〜したい気分だ",   kana:"〜したいきぶんだ", hint:"I _____ eating pizza tonight.",             tiles:["I","feel","like","eating","pizza","tonight","."],           answer:"I feel like eating pizza tonight ." },
+      { en:"hear about", kanji:"〜について聞く",   kana:"〜についてきく",   hint:"Did you _____ the festival?",               tiles:["Did","you","hear","about","the","festival","?"],            answer:"Did you hear about the festival ?" },
+      { en:"talk to",    kanji:"〜と話す",         kana:"〜とはなす",       hint:"I need to _____ my teacher.",               tiles:["I","need","to","talk","to","my","teacher","."],             answer:"I need to talk to my teacher ." },
+    ],
+  },
+  {
+    id: "g3_prepositions_1", title: "Preposition Phrases 1 / 前置詞句①", emoji: "📍",
     color: "#6366f1", shadow: "#4338ca",
     words: [
-      { en:"next to",          kanji:"〜の隣に",     kana:"〜のとなりに",   hint:"The bank is _____ the post office.",          tiles:["The","bank","is","next","to","the","post","office","."],      answer:"The bank is next to the post office ." },
-      { en:"in front of",      kanji:"〜の前に",     kana:"〜のまえに",     hint:"Let's meet _____ the station.",               tiles:["Let's","meet","in","front","of","the","station","."],         answer:"Let's meet in front of the station ." },
-      { en:"beside",           kanji:"〜のそばに",   kana:"〜のそばに",     hint:"Please sit _____ me.",                        tiles:["Please","sit","beside","me","."],                             answer:"Please sit beside me ." },
-      { en:"on my way home",   kanji:"家に帰る途中で",kana:"いえにかえるとちゅうで",hint:"I stopped at the shop _____.",          tiles:["I","stopped","at","the","shop","on","my","way","home","."],  answer:"I stopped at the shop on my way home ." },
-      { en:"for a while",      kanji:"しばらくの間", kana:"しばらくのあいだ",hint:"Please wait _____.",                         tiles:["Please","wait","for","a","while","."],                        answer:"Please wait for a while ." },
-      { en:"once a month",     kanji:"月に一度",     kana:"つきにいちど",   hint:"We clean the classroom _____.",               tiles:["We","clean","the","classroom","once","a","month","."],        answer:"We clean the classroom once a month ." },
-      { en:"since then",       kanji:"それ以来",     kana:"それいらい",     hint:"I have studied English every day _____.",      tiles:["I","have","studied","English","every","day","since","then","."],answer:"I have studied English every day since then ." },
-      { en:"three weeks ago",  kanji:"3週間前に",    kana:"さんしゅうかんまえに",hint:"I started this club _____.",             tiles:["I","started","this","club","three","weeks","ago","."],        answer:"I started this club three weeks ago ." },
-      { en:"until late",       kanji:"遅くまで",     kana:"おそくまで",     hint:"She studied _____ last night.",               tiles:["She","studied","until","late","last","night","."],            answer:"She studied until late last night ." },
-      { en:"down the street",  kanji:"通りの先に",   kana:"とおりのさきに", hint:"The park is just _____.",                     tiles:["The","park","is","just","down","the","street","."],           answer:"The park is just down the street ." },
-      { en:"in the afternoon", kanji:"午後に",       kana:"ごごに",         hint:"I have soccer practice _____.",               tiles:["I","have","soccer","practice","in","the","afternoon","."],    answer:"I have soccer practice in the afternoon ." },
+      { en:"next to",         kanji:"〜の隣に",     kana:"〜のとなりに",        hint:"The bank is _____ the post office.",       tiles:["The","bank","is","next","to","the","post","office","."],     answer:"The bank is next to the post office ." },
+      { en:"in front of",     kanji:"〜の前に",     kana:"〜のまえに",          hint:"Let's meet _____ the station.",            tiles:["Let's","meet","in","front","of","the","station","."],        answer:"Let's meet in front of the station ." },
+      { en:"beside",          kanji:"〜のそばに",   kana:"〜のそばに",          hint:"Please sit _____ me.",                     tiles:["Please","sit","beside","me","."],                            answer:"Please sit beside me ." },
+      { en:"on my way home",  kanji:"家に帰る途中で",kana:"いえにかえるとちゅうで",hint:"I stopped at the shop _____.",          tiles:["I","stopped","at","the","shop","on","my","way","home","."], answer:"I stopped at the shop on my way home ." },
+      { en:"for a while",     kanji:"しばらくの間", kana:"しばらくのあいだ",    hint:"Please wait _____.",                       tiles:["Please","wait","for","a","while","."],                       answer:"Please wait for a while ." },
+      { en:"once a month",    kanji:"月に一度",     kana:"つきにいちど",        hint:"We clean the classroom _____.",            tiles:["We","clean","the","classroom","once","a","month","."],       answer:"We clean the classroom once a month ." },
+    ],
+  },
+  {
+    id: "g3_prepositions_2", title: "Preposition Phrases 2 / 前置詞句②", emoji: "📍",
+    color: "#7c3aed", shadow: "#5b21b6",
+    words: [
+      { en:"since then",      kanji:"それ以来",     kana:"それいらい",          hint:"I have studied English every day _____.",  tiles:["I","have","studied","English","every","day","since","then","."], answer:"I have studied English every day since then ." },
+      { en:"three weeks ago", kanji:"3週間前に",    kana:"さんしゅうかんまえに", hint:"I started this club _____.",              tiles:["I","started","this","club","three","weeks","ago","."],        answer:"I started this club three weeks ago ." },
+      { en:"until late",      kanji:"遅くまで",     kana:"おそくまで",          hint:"She studied _____ last night.",            tiles:["She","studied","until","late","last","night","."],           answer:"She studied until late last night ." },
+      { en:"down the street", kanji:"通りの先に",   kana:"とおりのさきに",      hint:"The park is just _____.",                  tiles:["The","park","is","just","down","the","street","."],          answer:"The park is just down the street ." },
+      { en:"in the afternoon",kanji:"午後に",       kana:"ごごに",              hint:"I have soccer practice _____.",            tiles:["I","have","soccer","practice","in","the","afternoon","."],   answer:"I have soccer practice in the afternoon ." },
     ],
   },
   {
@@ -1365,10 +1389,20 @@ function StudyScreen({ category, onStart }) {
           ) : (
             <div style={{flex:1}}>
               <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:3}}>
-                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#02020b"}}>{w.en}</div>
+                {w.present
+                  ? <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#02020b"}}>
+                      <span style={{color:"#a0aec0"}}>{w.present}</span>
+                      <span style={{color:"#a0aec0",margin:"0 5px"}}>→</span>
+                      <span style={{color:category.color}}>{w.en}</span>
+                    </div>
+                  : <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#02020b"}}>{w.en}</div>
+                }
                 <SpeakBtn text={w.en} size={30} />
               </div>
-              <div><Furigana kanji={w.kanji} kana={w.kana} size={14} /></div>
+              {w.present
+                ? <div style={{fontSize:13,color:"#718096"}}>{w.kana}</div>
+                : <div><Furigana kanji={w.kanji} kana={w.kana} size={14} /></div>
+              }
               {w.hint && (
                 <div style={{fontSize:12,color:"#a0aec0",marginTop:4,fontStyle:"italic"}}>
                   {w.hint.replace("_____",`[${w.en}]`)}
@@ -1386,18 +1420,178 @@ function StudyScreen({ category, onStart }) {
   );
 }
 
+/* ── Irregular Verb 3-Step Quiz (one word at a time) ── */
+function IrregularVerbGame({ word, allWords, color, shadow, onScore, onNext }) {
+  const [step, setStep] = useState(1);
+
+  // Step 1: Show Japanese kana → pick correct past tense
+  const [s1Chosen, setS1Chosen] = useState(null);
+  const s1Choices = useMemo(() => {
+    const others = allWords.filter(w => w.en !== word.en);
+    return shuffle([word, ...shuffle(others).slice(0, 3)]);
+  }, [word.en]);
+
+  // Step 2: Show present tense → pick correct past tense (correct + 3 alts)
+  const [s2Chosen, setS2Chosen] = useState(null);
+  const s2Choices = useMemo(() => shuffle([word.en, ...word.alts]), [word.en]);
+
+  // Step 3: Fill in the blank (type it)
+  const [s3Val, setS3Val]     = useState("");
+  const [s3State, setS3State] = useState(null);
+  const [s3Done, setS3Done]   = useState(false);
+  const s3Ref = useRef(null);
+
+  const handleS1 = (w) => {
+    if (s1Chosen) return;
+    const ok = w.en === word.en;
+    setS1Chosen(w.en);
+    onScore("match", ok);
+    setTimeout(() => speak(word.en, 0.85), 250);
+    if (ok) setTimeout(() => setStep(2), 1200);
+  };
+
+  const handleS2 = (choice) => {
+    if (s2Chosen) return;
+    const ok = choice === word.en;
+    setS2Chosen(choice);
+    onScore("spell", ok);
+    if (ok) setTimeout(() => { setStep(3); setTimeout(() => s3Ref.current?.focus(), 100); }, 1200);
+  };
+
+  const handleS3 = () => {
+    if (s3Done) return;
+    const ok = s3Val.trim().toLowerCase() === word.en.toLowerCase();
+    setS3State(ok ? "correct" : "wrong");
+    setS3Done(true);
+    onScore("fill", ok);
+    if (ok) setTimeout(onNext, 1500);
+  };
+
+  const btnBase = { width:"100%", padding:"11px 14px", borderRadius:11, border:"2px solid #e2e8f0",
+    background:"#fff", fontFamily:"'Nunito',sans-serif", fontWeight:800, fontSize:16,
+    cursor:"pointer", textAlign:"left", marginBottom:7, transition:"all .12s" };
+
+  const stepColor = (chosen, option, correct) => {
+    if (!chosen) return {};
+    if (option === correct) return { background:"#f0fff4", borderColor:"#48bb78", color:"#276749" };
+    if (option === chosen)  return { background:"#fff5f5", borderColor:"#fc8181", color:"#c53030" };
+    return { opacity:.38 };
+  };
+
+  return (
+    <div className="fade">
+      {/* Step indicator */}
+      <div style={{display:"flex",gap:6,justifyContent:"center",marginBottom:12}}>
+        {[1,2,3].map(n => (
+          <div key={n} style={{width:28,height:28,borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",
+            fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:13,
+            background:n<step?color:n===step?color+"22":"#e2e8f0",
+            color:n<step?"#fff":n===step?color:"#a0aec0",
+            border:`2px solid ${n<=step?color:"#e2e8f0"}`}}>
+            {n<step?"✓":n}
+          </div>
+        ))}
+        <div style={{fontFamily:"'Nunito',sans-serif",fontSize:12,color:"#718096",alignSelf:"center",marginLeft:4}}>
+          {step===1?"日本語 → 英語":step===2?"現在形 → 過去形":"文に入れよう"}
+        </div>
+      </div>
+
+      {/* STEP 1 */}
+      {step === 1 && (
+        <div className="card">
+          <div style={{textAlign:"center",marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:4}}>日本語の意味はどれ？</div>
+            <div style={{fontSize:28,fontWeight:900,color:"#02020b",fontFamily:"'Nunito',sans-serif"}}>{word.kana}</div>
+          </div>
+          {s1Choices.map(c => (
+            <button key={c.en} type="button" style={{...btnBase, ...stepColor(s1Chosen, c.en, word.en)}}
+              onClick={() => handleS1(c)} disabled={!!s1Chosen}>
+              {c.en}
+              {s1Chosen && c.en === word.en && <span style={{float:"right"}}>✅</span>}
+              {s1Chosen && c.en === s1Chosen && c.en !== word.en && <span style={{float:"right"}}>❌</span>}
+            </button>
+          ))}
+          {s1Chosen && s1Chosen !== word.en && (
+            <>
+              <div className="fb bad">❌ It's <b>{word.en}</b> ({word.present} → {word.en})</div>
+              <button type="button" className="btn" style={{background:color,boxShadow:`0 4px 0 ${shadow}`}}
+                onClick={() => setStep(2)}>Next →</button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* STEP 2 */}
+      {step === 2 && (
+        <div className="card">
+          <div style={{textAlign:"center",marginBottom:12}}>
+            <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:4}}>過去形はどれ？ (past tense of)</div>
+            <div style={{fontSize:30,fontWeight:900,color:color,fontFamily:"'Nunito',sans-serif"}}>{word.present}</div>
+            <div style={{fontSize:13,color:"#718096",marginTop:2}}>{word.kana}</div>
+          </div>
+          {s2Choices.map(c => (
+            <button key={c} type="button" style={{...btnBase, ...stepColor(s2Chosen, c, word.en)}}
+              onClick={() => handleS2(c)} disabled={!!s2Chosen}>
+              {c}
+              {s2Chosen && c === word.en && <span style={{float:"right"}}>✅</span>}
+              {s2Chosen && c === s2Chosen && c !== word.en && <span style={{float:"right"}}>❌</span>}
+            </button>
+          ))}
+          {s2Chosen && s2Chosen !== word.en && (
+            <>
+              <div className="fb bad">❌ The correct past tense is <b>{word.en}</b></div>
+              <button type="button" className="btn" style={{background:color,boxShadow:`0 4px 0 ${shadow}`}}
+                onClick={() => { setStep(3); setTimeout(() => s3Ref.current?.focus(), 100); }}>Next →</button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* STEP 3 */}
+      {step === 3 && (
+        <div className="card">
+          <div style={{fontSize:12,color:"#718096",textAlign:"center",marginBottom:10}}>
+            {word.hint.replace("_____","___")}
+          </div>
+          <div style={{fontSize:11,fontWeight:700,color:"#a0aec0",marginBottom:6}}>
+            Type the past tense of <span style={{color,fontWeight:900}}>{word.present}</span>:
+          </div>
+          <input ref={s3Ref} className={`sinput ${s3State||""}`} type="text" value={s3Val}
+            onChange={e => setS3Val(e.target.value)}
+            onKeyDown={e => e.key==="Enter" && !s3Done && s3Val.trim() && handleS3()}
+            disabled={s3Done} placeholder={`past tense of "${word.present}"… ↵`}
+            autoComplete="off" autoCorrect="off" autoCapitalize="off" spellCheck={false} />
+          {s3Done
+            ? <div className={`fb ${s3State}`}>
+                {s3State==="correct" ? `✅ Perfect! "${word.en}" — Moving on…` : `❌ It's "${word.en}" (${word.present} → ${word.en})`}
+              </div>
+            : <button type="button" className="btn btn-pink"
+                style={{background:color,boxShadow:`0 4px 0 ${shadow}`,marginTop:9}}
+                onClick={handleS3} disabled={!s3Val.trim()}>Check ✓</button>
+          }
+          {s3Done && s3State === "wrong" && (
+            <button type="button" className="btn" style={{background:color,boxShadow:`0 4px 0 ${shadow}`}}
+              onClick={onNext}>Next →</button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Vocab Game ── */
 function VocabGameScreen({ category, onComplete }) {
   const BATCH       = Math.min(6, category.words.length);
   const words       = useMemo(() => shuffle(category.words).slice(0, BATCH), [category.id]);
   const scramble    = useMemo(() => shuffle([...words]), [category.id]);
-  const isOrdinalCat  = words[0]?.isOrdinal;
+  const isOrdinalCat    = words[0]?.isOrdinal;
+  const isIrregularCat  = !!category.isIrregularVerb;
   // Categories where typing the full phrase is impractical — treat like dialogue
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs","g3_prepositions","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
-  // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Others: all 3.
-  const scoreParts    = isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
+  // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Irregular verbs: match + spell + fill. Others: all 3.
+  const scoreParts    = isIrregularCat ? ["match","spell","fill"] : isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
   // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
-  const skipPartC     = isOrdinalCat || isDialogueCat;
+  const skipPartC     = isOrdinalCat || isDialogueCat || isIrregularCat;
 
   const [part,   setPart]   = useState("A");
   const [idx,    setIdx]    = useState(0);
@@ -1449,11 +1643,13 @@ function VocabGameScreen({ category, onComplete }) {
       <div className="phdr">
         <div className="plabel">PART {part} · {idx+1}/{list.length}</div>
         <div className="ptitle" style={{color:c}}>
-          {part==="A" ? (isDialogueCat ? "🔤 Match" : "🔤 Match & Spell") : part==="B"?"🔍 Fill in the Blank":"🧩 Unscramble"}
+          {part==="A" ? (isIrregularCat ? "⏪ Irregular Verb Quiz" : isDialogueCat ? "🔤 Match" : "🔤 Match & Spell") : part==="B"?"🔍 Fill in the Blank":"🧩 Unscramble"}
         </div>
       </div>
 
-      {part==="A" && <PartA key={`A-${idx}`} word={w} allWords={words} color={c} shadow={sh}
+      {part==="A" && isIrregularCat && <IrregularVerbGame key={`IRR-${idx}`} word={w} allWords={words} color={c} shadow={sh}
+        onScore={(t,ok)=>record(w.en,t,ok)} onNext={goNext} />}
+      {part==="A" && !isIrregularCat && <PartA key={`A-${idx}`} word={w} allWords={words} color={c} shadow={sh}
         isDialogue={isDialogueCat} categoryId={category.id}
         onScore={(t,ok)=>record(w.en,t,ok)} onNext={goNext} />}
       {part==="B" && <PartB key={`B-${idx}-${w.en}`} word={w} allWords={words} color={c} shadow={sh}
@@ -2002,7 +2198,7 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
   const cleared   = pct >= 70;
   const goodWords = words.filter(w => !missed.find(m => m.word.en === w.en));
   const isOrdinalCat  = words[0]?.isOrdinal;
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs","g3_prepositions","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational"].includes(category.id);
 
   return (
     <div className="quiz-wrap fade">
