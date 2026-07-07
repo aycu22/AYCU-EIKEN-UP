@@ -715,21 +715,27 @@ const VOCAB_CATEGORIES_5 = [
     ],
   },
   {
-    id: "dialogue_expressions", title: "Dialogue Expressions / かいわ", emoji: "💬",
+    id: "dialogue_expressions", title: "Dialogue Expressions 1 / かいわ①", emoji: "💬",
     color: "#f43f5e", shadow: "#be123c",
     words: [
-      { en:"Nice to meet you.",     kanji:"はじめまして。",     kana:"はじめまして。",     hint:"Hello, I'm your new English teacher. ___________",         tiles:["Nice","to","meet","you","."],                       answer:"Nice to meet you ." },
-      { en:"Yes, let's.",           kanji:"そうしましょう。",   kana:"そうしましょう。",   hint:"Let's play badminton at the park! ___________",            tiles:["Yes","let's","."],                                  answer:"Yes let's ." },
-      { en:"That's right.",         kanji:"そうです。",         kana:"そうです。",         hint:"Do you live in London? ___________ I live here.",          tiles:["That's","right","."],                               answer:"That's right ." },
-      { en:"Good idea.",            kanji:"いい考えですね。",   kana:"いいかんがえですね。",hint:"Let's eat lunch at home. ___________",                     tiles:["Good","idea","."],                                  answer:"Good idea ." },
-      { en:"Here you are.",         kanji:"はい、どうぞ。",     kana:"はい、どうぞ。",     hint:"Can I have some sugar? ___________",                        tiles:["Here","you","are","."],                             answer:"Here you are ." },
-      { en:"Of course.",            kanji:"もちろん。",         kana:"もちろん。",         hint:"Mom, can I write a letter to Uncle Rob? ___________",     tiles:["Of","course","."],                                  answer:"Of course ." },
-      { en:"All right.",            kanji:"わかりました。",     kana:"わかりました。",     hint:"Bob, come here and help me with dinner. ___________ Mom!", tiles:["All","right","."],                                  answer:"All right ." },
-      { en:"Excuse me.",            kanji:"すみません。",       kana:"すみません。",       hint:"___________  What time does the next train come?",         tiles:["Excuse","me","."],                                  answer:"Excuse me ." },
-      { en:"I see.",                kanji:"なるほど。",         kana:"なるほど。",         hint:"I have a cold, so I can't play soccer today. ___________", tiles:["I","see","."],                                      answer:"I see ." },
-      { en:"You're welcome.",       kanji:"どういたしまして。", kana:"どういたしまして。", hint:"Thank you so much! ___________",                           tiles:["You're","welcome","."],                             answer:"You're welcome ." },
-      { en:"Me, too.",              kanji:"わたしもです。",     kana:"わたしもです。",     hint:"I like cats. How about you? ___________",                  tiles:["Me","too","."],                                     answer:"Me too ." },
-      { en:"No, I can't.",          kanji:"いいえ、できません。",kana:"いいえ、できません。",hint:"Can you come to my house today? ___________",            tiles:["No","I","can't","."],                               answer:"No I can't ." },
+      { en:"Nice to meet you.",  kanji:"はじめまして。",      kana:"はじめまして。",      speakerA:"Hello! I'm your new English teacher.",        hint:"Hello! I'm your new English teacher. ___________",        tiles:["Nice","to","meet","you","."],   answer:"Nice to meet you ." },
+      { en:"Yes, let's.",        kanji:"そうしましょう。",    kana:"そうしましょう。",    speakerA:"Let's play badminton at the park!",           hint:"Let's play badminton at the park! ___________",           tiles:["Yes","let's","."],             answer:"Yes let's ." },
+      { en:"That's right.",      kanji:"そうです。",          kana:"そうです。",          speakerA:"Do you live in London?",                      hint:"Do you live in London? ___________",                      tiles:["That's","right","."],          answer:"That's right ." },
+      { en:"Good idea.",         kanji:"いい考えですね。",    kana:"いいかんがえですね。",speakerA:"Let's eat lunch at home.",                    hint:"Let's eat lunch at home. ___________",                    tiles:["Good","idea","."],             answer:"Good idea ." },
+      { en:"Here you are.",      kanji:"はい、どうぞ。",      kana:"はい、どうぞ。",      speakerA:"Can I have some sugar, please?",              hint:"Can I have some sugar, please? ___________",              tiles:["Here","you","are","."],        answer:"Here you are ." },
+      { en:"Of course.",         kanji:"もちろん。",          kana:"もちろん。",          speakerA:"Mom, can I write a letter to Uncle Rob?",    hint:"Mom, can I write a letter to Uncle Rob? ___________",    tiles:["Of","course","."],             answer:"Of course ." },
+    ],
+  },
+  {
+    id: "dialogue_expressions_2", title: "Dialogue Expressions 2 / かいわ②", emoji: "💬",
+    color: "#f43f5e", shadow: "#be123c",
+    words: [
+      { en:"All right.",         kanji:"わかりました。",      kana:"わかりました。",      speakerA:"Bob, come here and help me with dinner.",    hint:"Bob, come here and help me with dinner. ___________",    tiles:["All","right","."],             answer:"All right ." },
+      { en:"Excuse me.",         kanji:"すみません。",        kana:"すみません。",        speakerA:"What time does the next train come?",         hint:"___________. What time does the next train come?",        tiles:["Excuse","me","."],             answer:"Excuse me ." },
+      { en:"I see.",             kanji:"なるほど。",          kana:"なるほど。",          speakerA:"I have a cold, so I can't play soccer today.",hint:"I have a cold, so I can't play soccer today. ___________",tiles:["I","see","."],                 answer:"I see ." },
+      { en:"You're welcome.",    kanji:"どういたしまして。",  kana:"どういたしまして。",  speakerA:"Thank you so much!",                          hint:"Thank you so much! ___________",                          tiles:["You're","welcome","."],        answer:"You're welcome ." },
+      { en:"Me, too.",           kanji:"わたしもです。",      kana:"わたしもです。",      speakerA:"I like cats. How about you?",                 hint:"I like cats. How about you? ___________",                 tiles:["Me","too","."],                answer:"Me too ." },
+      { en:"No, I can't.",       kanji:"いいえ、できません。",kana:"いいえ、できません。",speakerA:"Can you come to my house today?",             hint:"Can you come to my house today? ___________",            tiles:["No","I","can't","."],          answer:"No I can't ." },
     ],
   },
   {
@@ -1626,7 +1632,7 @@ function VocabGameScreen({ category, onComplete }) {
   const isOrdinalCat    = words[0]?.isOrdinal;
   const isIrregularCat  = !!category.isIrregularVerb;
   // Categories where typing the full phrase is impractical — treat like dialogue
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
   // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Irregular verbs: match + spell + fill. Others: all 3.
   const scoreParts    = isIrregularCat ? ["match","spell","fill"] : isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
   // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
@@ -2249,7 +2255,7 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
   const cleared   = pct >= 70;
   const goodWords = words.filter(w => !missed.find(m => m.word.en === w.en));
   const isOrdinalCat  = words[0]?.isOrdinal;
-  const isDialogueCat = ["dialogue_expressions","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
 
   return (
     <div className="quiz-wrap fade">
