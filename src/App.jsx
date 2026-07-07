@@ -637,6 +637,10 @@ body { font-family:'Inter',sans-serif; background:#ece4b7; }
   background:#fff; border-right:1.5px solid #e8edf3;
   overflow-y:auto; padding:20px 16px; flex-shrink:0;
 }
+@media (max-width:600px) {
+  .sidebar { display:none; }
+  .main { padding:16px 14px; }
+}
 .sidebar-title {
   font-family:'Nunito',sans-serif; font-weight:900; font-size:15px;
   color:#718096; letter-spacing:.4px; text-transform:uppercase;
