@@ -501,6 +501,279 @@ const VOCAB_CATEGORIES_4 = [
       { en:"That's great!",     kanji:"すごいね！",          kana:"すごいね！",          hint:"I got a great grade on my math test. ___________",                   tiles:["That's","great","!"],             answer:"That's great !" },
     ],
   },
+  {
+    id: "g4_places_2", title: "Places in Town 2 / まちの場所②", emoji: "🏥",
+    color: "#6366f1", shadow: "#4338ca",
+    words: [
+      { en:"library",       kanji:"図書館",     kana:"としょかん",     trans:"私は毎週%%図書館%%で本を借ります。",                        hint:"I borrow books from the _____ every week.",          tiles:["I","borrow","books","from","the","library","every","week","."],      answer:"I borrow books from the library every week ." },
+      { en:"park",          kanji:"公園",       kana:"こうえん",       trans:"放課後、%%公園%%でサッカーをしましょう。",                   hint:"Let's play soccer at the _____ after school.",       tiles:["Let's","play","soccer","at","the","park","after","school","."],      answer:"Let's play soccer at the park after school ." },
+      { en:"zoo",           kanji:"動物園",     kana:"どうぶつえん",   trans:"土曜日に家族と%%動物園%%に行きました。",                     hint:"I went to the _____ with my family on Saturday.",    tiles:["I","went","to","the","zoo","with","my","family","on","Saturday","."], answer:"I went to the zoo with my family on Saturday ." },
+      { en:"hospital",      kanji:"病院",       kana:"びょういん",     trans:"母は%%病院%%で看護師として働いています。",                    hint:"My mother works at the _____ as a nurse.",           tiles:["My","mother","works","at","the","hospital","as","a","nurse","."],     answer:"My mother works at the hospital as a nurse ." },
+      { en:"swimming pool", kanji:"プール",     kana:"プール",         trans:"夏は地域の%%プール%%で泳ぎます。",                           hint:"I swim at the community _____ in summer.",           tiles:["I","swim","at","the","community","swimming","pool","in","summer","."], answer:"I swim at the community swimming pool in summer ." },
+      { en:"school office", kanji:"職員室",     kana:"しょくいんしつ", trans:"先生は%%職員室%%にいます。",                                hint:"The teacher is in the _____.",                       tiles:["The","teacher","is","in","the","school","office","."],               answer:"The teacher is in the school office ." },
+      { en:"city",          kanji:"都市・街",   kana:"とし",           trans:"私の叔父は大きな%%都市%%に住んでいます。",                    hint:"My uncle lives in a big _____.",                     tiles:["My","uncle","lives","in","a","big","city","."],                       answer:"My uncle lives in a big city ." },
+    ],
+  },
+  {
+    id: "g4_home", title: "Home & Objects / いえ・もの", emoji: "🏠",
+    color: "#f97316", shadow: "#c2410c",
+    words: [
+      { en:"room",    kanji:"部屋",     kana:"へや",        trans:"私の%%部屋%%にはポスターがたくさんあります。",        hint:"I have many posters in my _____.",              tiles:["I","have","many","posters","in","my","room","."],                     answer:"I have many posters in my room ." },
+      { en:"kitchen", kanji:"台所",     kana:"だいどころ",   trans:"母は%%台所%%で夕食を作っています。",                hint:"My mother is making dinner in the _____.",      tiles:["My","mother","is","making","dinner","in","the","kitchen","."],        answer:"My mother is making dinner in the kitchen ." },
+      { en:"window",  kanji:"窓",       kana:"まど",        trans:"%%窓%%を開けてください。外は涼しいです。",          hint:"Please open the _____. It is cool outside.",    tiles:["Please","open","the","window",".","It","is","cool","outside","."],    answer:"Please open the window . It is cool outside ." },
+      { en:"garden",  kanji:"庭",       kana:"にわ",        trans:"父は毎朝%%庭%%の花に水をやります。",                hint:"My father waters the flowers in the _____ every morning.", tiles:["My","father","waters","the","flowers","in","the","garden","every","morning","."], answer:"My father waters the flowers in the garden every morning ." },
+      { en:"locker",  kanji:"ロッカー", kana:"ロッカー",     trans:"私の%%ロッカー%%はとても混んでいます。",            hint:"My _____ is very crowded.",                      tiles:["My","locker","is","very","crowded","."],                              answer:"My locker is very crowded ." },
+      { en:"desk",    kanji:"机",       kana:"つくえ",      trans:"宿題は%%机%%の上にあります。",                      hint:"My homework is on the _____.",                   tiles:["My","homework","is","on","the","desk","."],                           answer:"My homework is on the desk ." },
+      { en:"bench",   kanji:"ベンチ",   kana:"ベンチ",      trans:"公園の%%ベンチ%%に座りましょう。",                  hint:"Let's sit on the _____ in the park.",            tiles:["Let's","sit","on","the","bench","in","the","park","."],               answer:"Let's sit on the bench in the park ." },
+    ],
+  },
+  {
+    id: "g4_food_1", title: "Food 1 / たべもの①", emoji: "🍕",
+    color: "#ef4444", shadow: "#b91c1c",
+    words: [
+      { en:"cake",      kanji:"ケーキ",       kana:"ケーキ",       trans:"誕生日においしい%%ケーキ%%を食べました。",              hint:"I ate a delicious _____ on my birthday.",        tiles:["I","ate","a","delicious","cake","on","my","birthday","."],          answer:"I ate a delicious cake on my birthday ." },
+      { en:"sandwich",  kanji:"サンドイッチ", kana:"サンドイッチ", trans:"母は私にランチ用の%%サンドイッチ%%を作ってくれました。", hint:"My mother made a _____ for my lunch.",           tiles:["My","mother","made","a","sandwich","for","my","lunch","."],         answer:"My mother made a sandwich for my lunch ." },
+      { en:"pizza",     kanji:"ピザ",         kana:"ピザ",         trans:"金曜日の夜は家族で%%ピザ%%を食べます。",               hint:"We eat _____ together on Friday nights.",        tiles:["We","eat","pizza","together","on","Friday","nights","."],           answer:"We eat pizza together on Friday nights ." },
+      { en:"curry",     kanji:"カレー",       kana:"カレー",       trans:"この%%カレー%%はとてもおいしいです。",                  hint:"This _____ is very delicious.",                  tiles:["This","curry","is","very","delicious","."],                         answer:"This curry is very delicious ." },
+      { en:"steak",     kanji:"ステーキ",     kana:"ステーキ",     trans:"父の誕生日に%%ステーキ%%を食べに行きました。",           hint:"We went to eat _____ for my father's birthday.", tiles:["We","went","to","eat","steak","for","my","father's","birthday","."], answer:"We went to eat steak for my father's birthday ." },
+      { en:"soup",      kanji:"スープ",       kana:"スープ",       trans:"寒い日に温かい%%スープ%%が飲みたいです。",              hint:"I want to drink hot _____ on a cold day.",       tiles:["I","want","to","drink","hot","soup","on","a","cold","day","."],     answer:"I want to drink hot soup on a cold day ." },
+      { en:"rice ball", kanji:"おにぎり",     kana:"おにぎり",     trans:"私はお弁当に%%おにぎり%%を持っていきます。",             hint:"I bring a _____ in my lunch box.",               tiles:["I","bring","a","rice","ball","in","my","lunch","box","."],          answer:"I bring a rice ball in my lunch box ." },
+    ],
+  },
+  {
+    id: "g4_food_2", title: "Food 2 / たべもの②", emoji: "🍫",
+    color: "#ef4444", shadow: "#b91c1c",
+    words: [
+      { en:"chocolate", kanji:"チョコレート", kana:"チョコレート", trans:"バレンタインデーに%%チョコレート%%をもらいました。",      hint:"I got _____ on Valentine's Day.",                tiles:["I","got","chocolate","on","Valentine's","Day","."],                 answer:"I got chocolate on Valentine's Day ." },
+      { en:"hot dog",   kanji:"ホットドッグ", kana:"ホットドッグ", trans:"野球場で%%ホットドッグ%%を食べました。",                  hint:"I ate a _____ at the baseball stadium.",         tiles:["I","ate","a","hot","dog","at","the","baseball","stadium","."],      answer:"I ate a hot dog at the baseball stadium ." },
+      { en:"pancake",   kanji:"パンケーキ",   kana:"パンケーキ",   trans:"日曜日の朝は%%パンケーキ%%を作ります。",                  hint:"I make _____ on Sunday morning.",                tiles:["I","make","pancakes","on","Sunday","morning","."],                  answer:"I make pancakes on Sunday morning ." },
+      { en:"sausage",   kanji:"ソーセージ",   kana:"ソーセージ",   trans:"朝食に%%ソーセージ%%と卵を食べます。",                    hint:"I eat _____ and eggs for breakfast.",            tiles:["I","eat","sausage","and","eggs","for","breakfast","."],             answer:"I eat sausage and eggs for breakfast ." },
+      { en:"stew",      kanji:"シチュー",     kana:"シチュー",     trans:"冬になると母が%%シチュー%%を作ってくれます。",             hint:"My mother makes _____ in winter.",               tiles:["My","mother","makes","stew","in","winter","."],                     answer:"My mother makes stew in winter ." },
+      { en:"cookie",    kanji:"クッキー",     kana:"クッキー",     trans:"祖母が焼いた%%クッキー%%はとてもおいしいです。",           hint:"The _____ my grandmother baked is very delicious.", tiles:["The","cookie","my","grandmother","baked","is","very","delicious","."], answer:"The cookie my grandmother baked is very delicious ." },
+      { en:"spaghetti", kanji:"スパゲッティ", kana:"スパゲッティ", trans:"イタリアンレストランで%%スパゲッティ%%を食べました。",    hint:"I ate _____ at the Italian restaurant.",         tiles:["I","ate","spaghetti","at","the","Italian","restaurant","."],        answer:"I ate spaghetti at the Italian restaurant ." },
+    ],
+  },
+  {
+    id: "g4_clothing", title: "Clothing / ふく", emoji: "👗",
+    color: "#8b5cf6", shadow: "#6d28d9",
+    words: [
+      { en:"umbrella", kanji:"傘",       kana:"かさ",       trans:"雨が降っているので%%傘%%を持ってきました。",          hint:"I brought my _____ because it is raining.",          tiles:["I","brought","my","umbrella","because","it","is","raining","."],      answer:"I brought my umbrella because it is raining ." },
+      { en:"gloves",   kanji:"手袋",     kana:"てぶくろ",   trans:"外は寒いので%%手袋%%をはめてください。",             hint:"Please wear _____ because it is cold outside.",      tiles:["Please","wear","gloves","because","it","is","cold","outside","."],    answer:"Please wear gloves because it is cold outside ." },
+      { en:"hat",      kanji:"帽子",     kana:"ぼうし",     trans:"夏は太陽が強いので%%帽子%%をかぶります。",           hint:"I wear a _____ because the sun is strong in summer.", tiles:["I","wear","a","hat","because","the","sun","is","strong","in","summer","."], answer:"I wear a hat because the sun is strong in summer ." },
+      { en:"coat",     kanji:"コート",   kana:"コート",     trans:"今日は寒いので%%コート%%を着てください。",           hint:"Please wear your _____ because it is cold today.",   tiles:["Please","wear","your","coat","because","it","is","cold","today","."],  answer:"Please wear your coat because it is cold today ." },
+      { en:"sweater",  kanji:"セーター", kana:"セーター",   trans:"秋になると%%セーター%%を着ます。",                   hint:"I wear a _____ in fall.",                            tiles:["I","wear","a","sweater","in","fall","."],                              answer:"I wear a sweater in fall ." },
+      { en:"socks",    kanji:"靴下",     kana:"くつした",   trans:"新しい%%靴下%%を二足買いました。",                   hint:"I bought two pairs of new _____.",                   tiles:["I","bought","two","pairs","of","new","socks","."],                    answer:"I bought two pairs of new socks ." },
+      { en:"shoes",    kanji:"靴",       kana:"くつ",       trans:"新しい%%靴%%はとても履き心地がいいです。",           hint:"My new _____ are very comfortable.",                 tiles:["My","new","shoes","are","very","comfortable","."],                    answer:"My new shoes are very comfortable ." },
+    ],
+  },
+  {
+    id: "g4_items", title: "Personal Items / もちもの", emoji: "🎒",
+    color: "#0ea5e9", shadow: "#0369a1",
+    words: [
+      { en:"bag",          kanji:"カバン",   kana:"カバン",     trans:"私の%%カバン%%はとても重いです。",                    hint:"My _____ is very heavy.",                       tiles:["My","bag","is","very","heavy","."],                                   answer:"My bag is very heavy ." },
+      { en:"watch",        kanji:"時計",     kana:"とけい",     trans:"父に新しい%%時計%%をもらいました。",                  hint:"I got a new _____ from my father.",              tiles:["I","got","a","new","watch","from","my","father","."],                 answer:"I got a new watch from my father ." },
+      { en:"ticket",       kanji:"チケット", kana:"チケット",   trans:"コンサートの%%チケット%%を2枚買いました。",            hint:"I bought two _____ for the concert.",           tiles:["I","bought","two","tickets","for","the","concert","."],               answer:"I bought two tickets for the concert ." },
+      { en:"notebook",     kanji:"ノート",   kana:"ノート",     trans:"新しい%%ノート%%を4冊買いました。",                   hint:"I bought four new _____.",                      tiles:["I","bought","four","new","notebooks","."],                            answer:"I bought four new notebooks ." },
+      { en:"eraser",       kanji:"消しゴム", kana:"けしごむ",   trans:"%%消しゴム%%を貸してもらえますか？",                   hint:"Can I borrow your _____?",                      tiles:["Can","I","borrow","your","eraser","?"],                               answer:"Can I borrow your eraser ?" },
+      { en:"water bottle", kanji:"水筒",     kana:"すいとう",   trans:"学校に%%水筒%%を持ってくることを忘れないで。",          hint:"Don't forget to bring your _____ to school.",   tiles:["Don't","forget","to","bring","your","water","bottle","to","school","."], answer:"Don't forget to bring your water bottle to school ." },
+      { en:"boots",        kanji:"ブーツ",   kana:"ブーツ",     trans:"雨の日には%%ブーツ%%を履きます。",                    hint:"I wear _____ on rainy days.",                   tiles:["I","wear","boots","on","rainy","days","."],                           answer:"I wear boots on rainy days ." },
+    ],
+  },
+  {
+    id: "g4_hobbies", title: "Hobbies & Entertainment / しゅみ", emoji: "🎮",
+    color: "#ec4899", shadow: "#be185d",
+    words: [
+      { en:"magazine",   kanji:"雑誌",       kana:"ざっし",     trans:"私は美容院で%%雑誌%%を読みます。",               hint:"I read a _____ at the beauty salon.",             tiles:["I","read","a","magazine","at","the","beauty","salon","."],        answer:"I read a magazine at the beauty salon ." },
+      { en:"concert",    kanji:"コンサート", kana:"コンサート", trans:"今週末、音楽%%コンサート%%に行きます。",          hint:"I am going to a music _____ this weekend.",       tiles:["I","am","going","to","a","music","concert","this","weekend","."], answer:"I am going to a music concert this weekend ." },
+      { en:"movie",      kanji:"映画",       kana:"えいが",     trans:"昨夜、友達と%%映画%%を見に行きました。",          hint:"I went to see a _____ with my friend last night.", tiles:["I","went","to","see","a","movie","with","my","friend","last","night","."], answer:"I went to see a movie with my friend last night ." },
+      { en:"video games",kanji:"テレビゲーム",kana:"テレビゲーム",trans:"弟は毎日%%テレビゲーム%%をします。",           hint:"My brother plays _____ every day.",               tiles:["My","brother","plays","video","games","every","day","."],         answer:"My brother plays video games every day ." },
+      { en:"comic book", kanji:"マンガ",     kana:"マンガ",     trans:"私は日本語の%%マンガ%%を読むのが好きです。",      hint:"I like reading Japanese _____.",                  tiles:["I","like","reading","Japanese","comic","books","."],              answer:"I like reading Japanese comic books ." },
+      { en:"present",    kanji:"プレゼント", kana:"プレゼント", trans:"誕生日に友達から%%プレゼント%%をもらいました。",  hint:"I got a _____ from my friend on my birthday.",    tiles:["I","got","a","present","from","my","friend","on","my","birthday","."], answer:"I got a present from my friend on my birthday ." },
+      { en:"photo",      kanji:"写真",       kana:"しゃしん",   trans:"旅行中にたくさん%%写真%%を撮りました。",          hint:"I took many _____ during my trip.",               tiles:["I","took","many","photos","during","my","trip","."],              answer:"I took many photos during my trip ." },
+    ],
+  },
+  {
+    id: "g4_travel", title: "Travel & Transport / りょこう・のりもの", emoji: "✈️",
+    color: "#06b6d4", shadow: "#0891b2",
+    words: [
+      { en:"plane",    kanji:"飛行機",       kana:"ひこうき",    trans:"私は初めて%%飛行機%%に乗りました。",             hint:"I rode on a _____ for the first time.",               tiles:["I","rode","on","a","plane","for","the","first","time","."],           answer:"I rode on a plane for the first time ." },
+      { en:"bus",      kanji:"バス",         kana:"バス",        trans:"私は毎朝学校へ%%バス%%で行きます。",             hint:"I go to school by _____ every morning.",              tiles:["I","go","to","school","by","bus","every","morning","."],              answer:"I go to school by bus every morning ." },
+      { en:"train",    kanji:"電車",         kana:"でんしゃ",    trans:"東京に行くために%%電車%%に乗りました。",         hint:"I took the _____ to go to Tokyo.",                    tiles:["I","took","the","train","to","go","to","Tokyo","."],                  answer:"I took the train to go to Tokyo ." },
+      { en:"bicycle",  kanji:"自転車",       kana:"じてんしゃ",  trans:"私は毎日%%自転車%%で学校に通っています。",       hint:"I ride my _____ to school every day.",                tiles:["I","ride","my","bicycle","to","school","every","day","."],            answer:"I ride my bicycle to school every day ." },
+      { en:"boat",     kanji:"ボート",       kana:"ボート",      trans:"湖で%%ボート%%に乗りました。",                   hint:"I rode a _____ on the lake.",                         tiles:["I","rode","a","boat","on","the","lake","."],                          answer:"I rode a boat on the lake ." },
+      { en:"trip",     kanji:"旅行",         kana:"りょこう",    trans:"夏休みに家族と海外%%旅行%%をしました。",         hint:"I went on an overseas _____ with my family in summer.", tiles:["I","went","on","an","overseas","trip","with","my","family","in","summer","."], answer:"I went on an overseas trip with my family in summer ." },
+      { en:"homestay", kanji:"ホームステイ", kana:"ホームステイ", trans:"オーストラリアで一週間%%ホームステイ%%をしました。", hint:"I did a _____ in Australia for one week.",           tiles:["I","did","a","homestay","in","Australia","for","one","week","."],     answer:"I did a homestay in Australia for one week ." },
+    ],
+  },
+  {
+    id: "g4_nature", title: "Nature / しぜん", emoji: "🌊",
+    color: "#10b981", shadow: "#065f46",
+    words: [
+      { en:"river",    kanji:"川",   kana:"かわ",     trans:"私の町の近くに大きな%%川%%があります。",           hint:"There is a big _____ near my town.",           tiles:["There","is","a","big","river","near","my","town","."],           answer:"There is a big river near my town ." },
+      { en:"sea",      kanji:"海",   kana:"うみ",     trans:"夏は家族と%%海%%に行きます。",                   hint:"I go to the _____ with my family in summer.",  tiles:["I","go","to","the","sea","with","my","family","in","summer","."],  answer:"I go to the sea with my family in summer ." },
+      { en:"mountain", kanji:"山",   kana:"やま",     trans:"父は週末によく%%山%%に登ります。",               hint:"My father often climbs _____ on weekends.",    tiles:["My","father","often","climbs","mountains","on","weekends","."],   answer:"My father often climbs mountains on weekends ." },
+      { en:"beach",    kanji:"ビーチ",kana:"ビーチ",   trans:"今年の夏は%%ビーチ%%でサーフィンをしました。",   hint:"I went surfing at the _____ this summer.",     tiles:["I","went","surfing","at","the","beach","this","summer","."],      answer:"I went surfing at the beach this summer ." },
+      { en:"lake",     kanji:"湖",   kana:"みずうみ", trans:"その%%湖%%はとても美しかったです。",             hint:"The _____ was very beautiful.",                tiles:["The","lake","was","very","beautiful","."],                        answer:"The lake was very beautiful ." },
+      { en:"sky",      kanji:"空",   kana:"そら",     trans:"今日は%%空%%がとても青いです。",                 hint:"The _____ is very blue today.",                tiles:["The","sky","is","very","blue","today","."],                       answer:"The sky is very blue today ." },
+      { en:"star",     kanji:"星",   kana:"ほし",     trans:"夜、たくさんの%%星%%が見えました。",             hint:"I could see many _____ at night.",             tiles:["I","could","see","many","stars","at","night","."],               answer:"I could see many stars at night ." },
+    ],
+  },
+  {
+    id: "g4_jobs", title: "Jobs & Careers / しごと", emoji: "💼",
+    color: "#f59e0b", shadow: "#d97706",
+    words: [
+      { en:"pilot",      kanji:"パイロット", kana:"パイロット",   trans:"私の夢は%%パイロット%%になることです。",                          hint:"My dream is to become a _____.",                          tiles:["My","dream","is","to","become","a","pilot","."],                        answer:"My dream is to become a pilot ." },
+      { en:"singer",     kanji:"歌手",       kana:"かしゅ",       trans:"山田さんの娘は有名な%%歌手%%です。",                              hint:"Mr. Yamada's daughter is a famous _____.",                tiles:["Mr.","Yamada's","daughter","is","a","famous","singer","."],             answer:"Mr. Yamada's daughter is a famous singer ." },
+      { en:"artist",     kanji:"芸術家",     kana:"げいじゅつか", trans:"ダニエルはアートコンテストで優勝して%%芸術家%%を目指しました。",  hint:"Daniel wanted to become an _____ after winning the art contest.", tiles:["Daniel","wanted","to","become","an","artist","after","winning","the","art","contest","."], answer:"Daniel wanted to become an artist after winning the art contest ." },
+      { en:"coach",      kanji:"コーチ",     kana:"コーチ",       trans:"私たちのサッカー%%コーチ%%はとても厳しいです。",                  hint:"Our soccer _____ is very strict.",                        tiles:["Our","soccer","coach","is","very","strict","."],                        answer:"Our soccer coach is very strict ." },
+      { en:"doctor",     kanji:"医者",       kana:"いしゃ",       trans:"山田さんの息子は大きな病院の%%医者%%です。",                       hint:"Mr. Yamada's son is a _____ at a big hospital.",          tiles:["Mr.","Yamada's","son","is","a","doctor","at","a","big","hospital","."], answer:"Mr. Yamada's son is a doctor at a big hospital ." },
+      { en:"teacher",    kanji:"先生",       kana:"せんせい",     trans:"私の英語の%%先生%%はカナダ出身です。",                            hint:"My English _____ is from Canada.",                        tiles:["My","English","teacher","is","from","Canada","."],                      answer:"My English teacher is from Canada ." },
+      { en:"salesclerk", kanji:"店員",       kana:"てんいん",     trans:"%%店員%%が笑顔で「いらっしゃいませ」と言いました。",              hint:"The _____ smiled and said 'Welcome!'",                    tiles:["The","salesclerk","smiled","and","said","'Welcome!'","."],              answer:"The salesclerk smiled and said 'Welcome!' ." },
+    ],
+  },
+  {
+    id: "g4_people", title: "People / ひとびと", emoji: "👥",
+    color: "#6366f1", shadow: "#4338ca",
+    words: [
+      { en:"classmate",   kanji:"クラスメート",  kana:"クラスメート",  trans:"私の%%クラスメート%%はとても親切です。",             hint:"My _____ is very kind.",                           tiles:["My","classmate","is","very","kind","."],                     answer:"My classmate is very kind ." },
+      { en:"teammate",    kanji:"チームメート",  kana:"チームメート",  trans:"私の%%チームメート%%はとても上手なサッカー選手です。", hint:"My _____ is a very good soccer player.",           tiles:["My","teammate","is","a","very","good","soccer","player","."],  answer:"My teammate is a very good soccer player ." },
+      { en:"host family", kanji:"ホストファミリー",kana:"ホストファミリー",trans:"私の%%ホストファミリー%%はとても親切でした。",      hint:"My _____ was very kind.",                          tiles:["My","host","family","was","very","kind","."],                answer:"My host family was very kind ." },
+      { en:"winner",      kanji:"優勝者",       kana:"ゆうしょうしゃ",trans:"%%優勝者%%はトロフィーをもらいました。",              hint:"The _____ got a trophy.",                          tiles:["The","winner","got","a","trophy","."],                       answer:"The winner got a trophy ." },
+      { en:"volunteer",   kanji:"ボランティア",  kana:"ボランティア",  trans:"私は学校の清掃活動で%%ボランティア%%をしました。",    hint:"I was a _____ for the school cleaning event.",    tiles:["I","was","a","volunteer","for","the","school","cleaning","event","."], answer:"I was a volunteer for the school cleaning event ." },
+      { en:"customer",    kanji:"お客さん",     kana:"おきゃくさん",  trans:"その%%お客さん%%は笑顔で答えました。",               hint:"The _____ answered with a kind smile.",            tiles:["The","customer","answered","with","a","kind","smile","."],   answer:"The customer answered with a kind smile ." },
+    ],
+  },
+  {
+    id: "g4_sports", title: "Sports & Activities / スポーツ", emoji: "🏄",
+    color: "#10b981", shadow: "#065f46",
+    words: [
+      { en:"snowboarding", kanji:"スノーボード", kana:"スノーボード", trans:"先週末、Mt.ベーカーでスノーボードをしました。",      hint:"I went _____ at Mt. Baker last weekend.",              tiles:["I","went","snowboarding","at","Mt.","Baker","last","weekend","."], answer:"I went snowboarding at Mt. Baker last weekend ." },
+      { en:"camping",      kanji:"キャンプ",     kana:"キャンプ",     trans:"夏休みに山で%%キャンプ%%をしました。",              hint:"I went _____ in the mountains during summer vacation.", tiles:["I","went","camping","in","the","mountains","during","summer","vacation","."], answer:"I went camping in the mountains during summer vacation ." },
+      { en:"hiking",       kanji:"ハイキング",   kana:"ハイキング",   trans:"日曜日に家族と%%ハイキング%%に行きました。",          hint:"I went _____ with my family on Sunday.",               tiles:["I","went","hiking","with","my","family","on","Sunday","."],       answer:"I went hiking with my family on Sunday ." },
+      { en:"fishing",      kanji:"釣り",         kana:"つり",         trans:"祖父は毎週末川で%%釣り%%をします。",                hint:"My grandfather goes _____ at the river every weekend.", tiles:["My","grandfather","goes","fishing","at","the","river","every","weekend","."], answer:"My grandfather goes fishing at the river every weekend ." },
+      { en:"surfing",      kanji:"サーフィン",   kana:"サーフィン",   trans:"今年の夏、ビーチで%%サーフィン%%を習いました。",     hint:"I learned _____ at the beach this summer.",           tiles:["I","learned","surfing","at","the","beach","this","summer","."],   answer:"I learned surfing at the beach this summer ." },
+      { en:"rugby",        kanji:"ラグビー",     kana:"ラグビー",     trans:"私の学校では%%ラグビー%%が人気です。",               hint:"_____ is popular at my school.",                       tiles:["Rugby","is","popular","at","my","school","."],                    answer:"Rugby is popular at my school ." },
+      { en:"swimming",     kanji:"水泳",         kana:"すいえい",     trans:"私は毎週プールで%%水泳%%の練習をします。",           hint:"I practice _____ at the pool every week.",            tiles:["I","practice","swimming","at","the","pool","every","week","."],   answer:"I practice swimming at the pool every week ." },
+    ],
+  },
+  {
+    id: "g4_communication", title: "Communication / れんらく", emoji: "📬",
+    color: "#f97316", shadow: "#c2410c",
+    words: [
+      { en:"letter",  kanji:"手紙",     kana:"てがみ",    trans:"ペンパルに英語で%%手紙%%を書きました。",       hint:"I wrote a _____ to my pen pal in English.",    tiles:["I","wrote","a","letter","to","my","pen","pal","in","English","."], answer:"I wrote a letter to my pen pal in English ." },
+      { en:"email",   kanji:"メール",   kana:"メール",    trans:"ホストファミリーに%%メール%%を送りました。",    hint:"I sent an _____ to my host family.",            tiles:["I","sent","an","email","to","my","host","family","."],            answer:"I sent an email to my host family ." },
+      { en:"report",  kanji:"レポート", kana:"レポート",  trans:"昨夜、学校の%%レポート%%を書いていました。",    hint:"I was writing a school _____ last night.",     tiles:["I","was","writing","a","school","report","last","night","."],     answer:"I was writing a school report last night ." },
+      { en:"phone",   kanji:"電話",     kana:"でんわ",    trans:"母から%%電話%%がありました。",                hint:"I got a _____ call from my mother.",            tiles:["I","got","a","phone","call","from","my","mother","."],            answer:"I got a phone call from my mother ." },
+      { en:"message", kanji:"メッセージ",kana:"メッセージ",trans:"友達から%%メッセージ%%が届きました。",         hint:"I got a _____ from my friend.",                 tiles:["I","got","a","message","from","my","friend","."],                 answer:"I got a message from my friend ." },
+    ],
+  },
+  {
+    id: "g4_adjectives_2", title: "Adjectives 2 / けいようし②", emoji: "✨",
+    color: "#8b5cf6", shadow: "#6d28d9",
+    words: [
+      { en:"kind",        kanji:"親切な",     kana:"しんせつな",    trans:"私のホストファミリーはとても%%親切%%でした。",          hint:"My host family was very _____.",                  tiles:["My","host","family","was","very","kind","."],                    answer:"My host family was very kind ." },
+      { en:"interesting", kanji:"面白い",     kana:"おもしろい",    trans:"その映画はとても%%面白かった%%です。",                 hint:"The movie was very _____.",                       tiles:["The","movie","was","very","interesting","."],                    answer:"The movie was very interesting ." },
+      { en:"important",   kanji:"大切な",     kana:"たいせつな",    trans:"毎日練習することがとても%%大切%%です。",                hint:"It is very _____ to practice every day.",         tiles:["It","is","very","important","to","practice","every","day","."],  answer:"It is very important to practice every day ." },
+      { en:"famous",      kanji:"有名な",     kana:"ゆうめいな",    trans:"あの選手はとても%%有名%%です。",                       hint:"That player is very _____.",                      tiles:["That","player","is","very","famous","."],                        answer:"That player is very famous ." },
+      { en:"wet",         kanji:"濡れた",     kana:"ぬれた",        trans:"雨で傘がびしょびしょに%%濡れました%%。",               hint:"My umbrella got _____ in the rain.",              tiles:["My","umbrella","got","wet","in","the","rain","."],               answer:"My umbrella got wet in the rain ." },
+      { en:"ready",       kanji:"準備ができた",kana:"じゅんびができた",trans:"私は試合の%%準備ができて%%います。",               hint:"I am _____ for the game.",                        tiles:["I","am","ready","for","the","game","."],                         answer:"I am ready for the game ." },
+      { en:"sleepy",      kanji:"眠い",       kana:"ねむい",        trans:"昨夜遅くまで起きていたので%%眠い%%です。",              hint:"I am _____ because I stayed up late last night.", tiles:["I","am","sleepy","because","I","stayed","up","late","last","night","."], answer:"I am sleepy because I stayed up late last night ." },
+    ],
+  },
+  {
+    id: "g4_verbs_2", title: "Action Verbs 2 / どうし②", emoji: "🎯",
+    color: "#10b981", shadow: "#065f46",
+    words: [
+      { en:"enjoy",  kanji:"楽しむ",    kana:"たのしむ",    trans:"私はスペインで毎日%%楽しみました%%。",            hint:"I _____ every day in Spain.",                       tiles:["I","enjoyed","every","day","in","Spain","."],                   answer:"I enjoyed every day in Spain ." },
+      { en:"need",   kanji:"必要とする",kana:"ひつようとする",trans:"新しいノートが%%必要です%%。",                   hint:"I _____ a new notebook.",                           tiles:["I","need","a","new","notebook","."],                            answer:"I need a new notebook ." },
+      { en:"help",   kanji:"手伝う",    kana:"てつだう",    trans:"弟が宿題を%%手伝って%%くれました。",              hint:"My brother _____ me with my homework.",             tiles:["My","brother","helped","me","with","my","homework","."],        answer:"My brother helped me with my homework ." },
+      { en:"climb",  kanji:"登る",      kana:"のぼる",      trans:"父は週末よく山を%%登ります%%。",                  hint:"My father often _____ mountains on weekends.",      tiles:["My","father","often","climbs","mountains","on","weekends","."],  answer:"My father often climbs mountains on weekends ." },
+      { en:"carry",  kanji:"運ぶ",      kana:"はこぶ",      trans:"重い荷物を%%運んで%%ください。",                  hint:"Please _____ the heavy bags.",                      tiles:["Please","carry","the","heavy","bags","."],                      answer:"Please carry the heavy bags ." },
+      { en:"show",   kanji:"見せる",    kana:"みせる",      trans:"私の写真をあなたに%%見せます%%。",                hint:"I will _____ you my photos.",                       tiles:["I","will","show","you","my","photos","."],                      answer:"I will show you my photos ." },
+      { en:"travel", kanji:"旅行する",  kana:"りょこうする", trans:"家族と一緒に日本中を%%旅行したい%%です。",         hint:"I want to _____ around Japan with my family.",      tiles:["I","want","to","travel","around","Japan","with","my","family","."], answer:"I want to travel around Japan with my family ." },
+    ],
+  },
+  {
+    id: "g4_verbs_3", title: "Action Verbs 3 / どうし③", emoji: "🎯",
+    color: "#10b981", shadow: "#065f46",
+    words: [
+      { en:"send",    kanji:"送る",   kana:"おくる",    trans:"ホストファミリーにメールを%%送りました%%。",          hint:"I _____ an email to my host family.",           tiles:["I","sent","an","email","to","my","host","family","."],     answer:"I sent an email to my host family ." },
+      { en:"learn",   kanji:"習う",   kana:"ならう",    trans:"今年、オーストラリアで英語を%%習いました%%。",       hint:"I _____ English in Australia this year.",       tiles:["I","learned","English","in","Australia","this","year","."], answer:"I learned English in Australia this year ." },
+      { en:"return",  kanji:"戻る",   kana:"もどる",    trans:"旅行から%%戻って%%きました。",                      hint:"I _____ from my trip.",                         tiles:["I","returned","from","my","trip","."],                     answer:"I returned from my trip ." },
+      { en:"grow",    kanji:"育てる", kana:"そだてる",  trans:"理科の授業でトマトを%%育てました%%。",               hint:"I _____ tomatoes in science class.",            tiles:["I","grew","tomatoes","in","science","class","."],          answer:"I grew tomatoes in science class ." },
+      { en:"answer",  kanji:"答える", kana:"こたえる",  trans:"先生の質問に%%答えました%%。",                       hint:"I _____ the teacher's question.",               tiles:["I","answered","the","teacher's","question","."],           answer:"I answered the teacher's question ." },
+      { en:"meet",    kanji:"会う",   kana:"あう",      trans:"明日駅で友達に%%会う%%予定です。",                  hint:"I am going to _____ my friend at the station tomorrow.", tiles:["I","am","going","to","meet","my","friend","at","the","station","tomorrow","."], answer:"I am going to meet my friend at the station tomorrow ." },
+      { en:"try",     kanji:"試す",   kana:"ためす",    trans:"新しい食べ物を%%試して%%みましょう。",              hint:"Let's _____ the new food.",                     tiles:["Let's","try","the","new","food","."],                      answer:"Let's try the new food ." },
+    ],
+  },
+  {
+    id: "g4_irregular_2", title: "Irregular Past Tense 2 / 不規則過去形②", emoji: "⏪",
+    isIrregularVerb: true,
+    color: "#ef4444", shadow: "#b91c1c",
+    words: [
+      { en:"went",  present:"go",   kanji:"行く",     kana:"いった",   alts:["goed","goned","gone"],       hint:"Yesterday I _____ to the park with my friends.",       tiles:["Yesterday","I","went","to","the","park","with","my","friends","."],  answer:"Yesterday I went to the park with my friends ." },
+      { en:"came",  present:"come", kanji:"来る",     kana:"きた",     alts:["comed","come","camed"],      hint:"My friend _____ to my house yesterday.",               tiles:["My","friend","came","to","my","house","yesterday","."],              answer:"My friend came to my house yesterday ." },
+      { en:"got",   present:"get",  kanji:"手に入れる",kana:"えた",    alts:["getted","gat","gotten"],     hint:"I _____ a present for my birthday.",                   tiles:["I","got","a","present","for","my","birthday","."],                  answer:"I got a present for my birthday ." },
+      { en:"gave",  present:"give", kanji:"あげる",   kana:"あげた",   alts:["gaved","gived","given"],     hint:"She _____ me a chocolate cookie.",                     tiles:["She","gave","me","a","chocolate","cookie","."],                     answer:"She gave me a chocolate cookie ." },
+      { en:"said",  present:"say",  kanji:"言う",     kana:"いった",   alts:["sayed","saied","siad"],      hint:"He _____ hello to his new teammates.",                 tiles:["He","said","hello","to","his","new","teammates","."],               answer:"He said hello to his new teammates ." },
+      { en:"ate",   present:"eat",  kanji:"食べる",   kana:"たべた",   alts:["eated","eaten","ated"],      hint:"We _____ spaghetti for dinner last night.",            tiles:["We","ate","spaghetti","for","dinner","last","night","."],           answer:"We ate spaghetti for dinner last night ." },
+      { en:"saw",   present:"see",  kanji:"見る",     kana:"みた",     alts:["seed","seen","sawed"],       hint:"I _____ a great movie with my friend yesterday.",      tiles:["I","saw","a","great","movie","with","my","friend","yesterday","."], answer:"I saw a great movie with my friend yesterday ." },
+    ],
+  },
+  {
+    id: "g4_irregular_3", title: "Irregular Past Tense 3 / 不規則過去形③", emoji: "⏪",
+    isIrregularVerb: true,
+    color: "#ef4444", shadow: "#b91c1c",
+    words: [
+      { en:"found",   present:"find",  kanji:"見つける", kana:"みつけた",  alts:["finded","finned","founds"],   hint:"I _____ my lost umbrella in the classroom.",        tiles:["I","found","my","lost","umbrella","in","the","classroom","."],   answer:"I found my lost umbrella in the classroom ." },
+      { en:"felt",    present:"feel",  kanji:"感じる",   kana:"かんじた",  alts:["feeled","feled","feelt"],     hint:"She _____ nervous before the speech contest.",      tiles:["She","felt","nervous","before","the","speech","contest","."],    answer:"She felt nervous before the speech contest ." },
+      { en:"made",    present:"make",  kanji:"作る",     kana:"つくった",  alts:["maked","maded","maden"],      hint:"My mother _____ a delicious curry for dinner.",     tiles:["My","mother","made","a","delicious","curry","for","dinner","."],  answer:"My mother made a delicious curry for dinner ." },
+      { en:"knew",    present:"know",  kanji:"知る",     kana:"しっていた", alts:["knowed","known","knewed"],   hint:"She already _____ how to swim very well.",          tiles:["She","already","knew","how","to","swim","very","well","."],      answer:"She already knew how to swim very well ." },
+      { en:"thought", present:"think", kanji:"思う",     kana:"おもった",  alts:["thinked","thinkt","thougth"], hint:"I _____ the test was very difficult.",              tiles:["I","thought","the","test","was","very","difficult","."],          answer:"I thought the test was very difficult ." },
+      { en:"wrote",   present:"write", kanji:"書く",     kana:"かいた",    alts:["writed","written","wrothe"],  hint:"I _____ a letter to my host family.",               tiles:["I","wrote","a","letter","to","my","host","family","."],          answer:"I wrote a letter to my host family ." },
+      { en:"ran",     present:"run",   kanji:"走る",     kana:"はしった",  alts:["runned","raned","runed"],     hint:"He _____ very fast and won the race.",              tiles:["He","ran","very","fast","and","won","the","race","."],           answer:"He ran very fast and won the race ." },
+    ],
+  },
+  {
+    id: "g4_irregular_4", title: "Irregular Past Tense 4 / 不規則過去形④", emoji: "⏪",
+    isIrregularVerb: true,
+    color: "#ef4444", shadow: "#b91c1c",
+    words: [
+      { en:"swam",  present:"swim",  kanji:"泳ぐ",   kana:"およいだ",  alts:["swimmed","swum","swammed"],   hint:"She _____ in the pool for an hour.",                 tiles:["She","swam","in","the","pool","for","an","hour","."],              answer:"She swam in the pool for an hour ." },
+      { en:"stood", present:"stand", kanji:"立つ",   kana:"たった",    alts:["standed","stod","stodded"],   hint:"We _____ at the boarding gate for a long time.",     tiles:["We","stood","at","the","boarding","gate","for","a","long","time","."], answer:"We stood at the boarding gate for a long time ." },
+      { en:"sat",   present:"sit",   kanji:"座る",   kana:"すわった",  alts:["sitted","sated","sited"],     hint:"She _____ on the bench and read a magazine.",        tiles:["She","sat","on","the","bench","and","read","a","magazine","."],   answer:"She sat on the bench and read a magazine ." },
+      { en:"rode",  present:"ride",  kanji:"乗る",   kana:"のった",    alts:["rided","ridded","reded"],     hint:"I _____ my bicycle to school this morning.",         tiles:["I","rode","my","bicycle","to","school","this","morning","."],      answer:"I rode my bicycle to school this morning ." },
+      { en:"fell",  present:"fall",  kanji:"落ちる・眠る",kana:"おちた", alts:["falled","felled","falt"],   hint:"I _____ asleep on the train last night.",            tiles:["I","fell","asleep","on","the","train","last","night","."],         answer:"I fell asleep on the train last night ." },
+      { en:"began", present:"begin", kanji:"始める", kana:"はじめた",  alts:["beginned","beganned","begun"], hint:"The concert _____ at seven o'clock.",               tiles:["The","concert","began","at","seven","o'clock","."],               answer:"The concert began at seven o'clock ." },
+      { en:"met",   present:"meet",  kanji:"会う",   kana:"あった",    alts:["meeted","meted","mett"],      hint:"I _____ my host family at the airport.",             tiles:["I","met","my","host","family","at","the","airport","."],          answer:"I met my host family at the airport ." },
+    ],
+  },
+  {
+    id: "g4_phrasal_1", title: "Phrasal Verbs 1 / フレーズ動詞①", emoji: "🔗",
+    color: "#7c3aed", shadow: "#5b21b6",
+    words: [
+      { en:"get off",           kanji:"降りる",           kana:"おりる",           hint:"Please _____ the bus at the next stop. ___________",        tiles:["Please","get","off","the","bus","at","the","next","stop","."],               answer:"Please get off the bus at the next stop ." },
+      { en:"get on",            kanji:"乗る",             kana:"のる",             hint:"Let's _____ the train at platform 3. ___________",          tiles:["Let's","get","on","the","train","at","platform","3","."],                    answer:"Let's get on the train at platform 3 ." },
+      { en:"get lost",          kanji:"迷う",             kana:"まよう",           hint:"We _____ in the big city. ___________",                      tiles:["We","got","lost","in","the","big","city","."],                               answer:"We got lost in the big city ." },
+      { en:"fall asleep",       kanji:"眠りにつく",       kana:"ねむりにつく",     hint:"I _____ on the train last night. ___________",               tiles:["I","fell","asleep","on","the","train","last","night","."],                   answer:"I fell asleep on the train last night ." },
+      { en:"take off",          kanji:"脱ぐ・離陸する",   kana:"ぬぐ",             hint:"Please _____ your shoes before entering. ___________",      tiles:["Please","take","off","your","shoes","before","entering","."],               answer:"Please take off your shoes before entering ." },
+      { en:"wait for",          kanji:"〜を待つ",         kana:"まつ",             hint:"Please _____ me at the station. ___________",               tiles:["Please","wait","for","me","at","the","station","."],                        answer:"Please wait for me at the station ." },
+      { en:"have a good time",  kanji:"楽しむ",           kana:"たのしむ",         hint:"I hope you _____ at the camp. ___________",                  tiles:["I","hope","you","have","a","good","time","at","the","camp","."],             answer:"I hope you have a good time at the camp ." },
+    ],
+  },
+  {
+    id: "g4_phrasal_2", title: "Phrasal Verbs 2 / フレーズ動詞②", emoji: "🔗",
+    color: "#7c3aed", shadow: "#5b21b6",
+    words: [
+      { en:"take a trip",       kanji:"旅行する",         kana:"りょこうする",      hint:"We will _____ to Okinawa this summer. ___________",         tiles:["We","will","take","a","trip","to","Okinawa","this","summer","."],            answer:"We will take a trip to Okinawa this summer ." },
+      { en:"play catch",        kanji:"キャッチボールをする",kana:"キャッチボールをする",hint:"Let's _____ in the park after school. ___________",      tiles:["Let's","play","catch","in","the","park","after","school","."],               answer:"Let's play catch in the park after school ." },
+      { en:"talk to",           kanji:"〜に話しかける",   kana:"はなしかける",      hint:"Please _____ your teacher about the problem. ___________",  tiles:["Please","talk","to","your","teacher","about","the","problem","."],           answer:"Please talk to your teacher about the problem ." },
+      { en:"look out",          kanji:"気をつける",       kana:"きをつける",         hint:"_____ ! There is a car coming. ___________",                tiles:["Look","out","!","There","is","a","car","coming","."],                        answer:"Look out ! There is a car coming ." },
+      { en:"come to the phone", kanji:"電話に出る",       kana:"でんわにでる",      hint:"Is Tom there? Can he _____ ? ___________",                   tiles:["Is","Tom","there","?","Can","he","come","to","the","phone","?"],             answer:"Is Tom there ? Can he come to the phone ?" },
+      { en:"good job",          kanji:"よくできました",   kana:"よくできました",    hint:"You won the contest. ___________ !",                          tiles:["Good","job","!"],                                                            answer:"Good job !" },
+      { en:"thanks for helping",kanji:"手伝ってくれてありがとう",kana:"てつだってくれてありがとう",hint:"You cleaned the room. ___________",          tiles:["Thanks","for","helping","."],                                                answer:"Thanks for helping ." },
+    ],
+  },
 ];
 
 /* ── Grade 5 categories ── */
@@ -1632,7 +1905,7 @@ function VocabGameScreen({ category, onComplete }) {
   const isOrdinalCat    = words[0]?.isOrdinal;
   const isIrregularCat  = !!category.isIrregularVerb;
   // Categories where typing the full phrase is impractical — treat like dialogue
-  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_phrasal_1","g4_phrasal_2","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
   // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Irregular verbs: match + spell + fill. Others: all 3.
   const scoreParts    = isIrregularCat ? ["match","spell","fill"] : isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
   // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
@@ -2255,7 +2528,7 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
   const cleared   = pct >= 70;
   const goodWords = words.filter(w => !missed.find(m => m.word.en === w.en));
   const isOrdinalCat  = words[0]?.isOrdinal;
-  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
+  const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_phrasal_1","g4_phrasal_2","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
 
   return (
     <div className="quiz-wrap fade">
