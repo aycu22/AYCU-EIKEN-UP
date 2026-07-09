@@ -78,6 +78,133 @@ const PROFILES_KEY = "eiken_profiles_v1";
 const CURRENT_KEY  = "eiken_current_v1";
 const PROGRESS_KEY = "eiken_progress_v1";
 
+/* ── Dialogue Test Data ── */
+const DIALOGUE_TOPICS = [
+  { id:"at_home", title:"AT HOME", emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95" },
+];
+
+const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint) =>
+  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint });
+
+const DIALOGUE_TESTS = {
+  at_home: {
+    practice1: [
+      mkQ("Mom, where are my shoes?","👦","( )","👩",
+        ["It's Tuesday.","They're by the door.","I like shoes.","Yes, I do."],
+        1,
+        "「Where」はばしょをきく言葉だよ！\n「They're by the door.」→ ばしょを答えているから正解！\n「It's Tuesday.」→ これは「いつ？」への答えだよ。\n「I like shoes.」→ これは「すきなもの」を答えているよ。"),
+      mkQ("What do you want for breakfast?","👩","( )","👧",
+        ["It's delicious.","Toast and milk, please.","After school.","Yes, I am."],
+        1,
+        "「What do you want?」→ ほしいものを答えよう！\n「Toast and milk, please.」→ たべものを答えているから正解！\n「After school.」→ これは「いつ？」への答えだよ。\n「It's delicious.」→ これは食べものの感想だよ。"),
+      mkQ("When is Dad coming home?","👧","( )","👩",
+        ["He's in the kitchen.","He likes cooking.","At six o'clock.","It's cold today."],
+        2,
+        "「When」はじかんをきく言葉だよ！\n「At six o'clock.」→ じかんを答えているから正解！\n「He's in the kitchen.」→ これは「どこ？」への答えだよ。\n「He likes cooking.」→ これは「すきなこと」を答えているよ。"),
+      mkQ("Please clean your room, Tom.","👩","( )","👦",
+        ["All right, Mom.","It's Tuesday.","I like cleaning.","She's at home."],
+        0,
+        "お母さんが「〜してください」と言っているよ。なんて答える？\n「All right, Mom.」→ 「わかった！」という意味だから正解！\n「I like cleaning.」→ すきかどうかは聞かれていないよ。"),
+      mkQ("Mom, can I watch TV now?","👦","( )","👩",
+        ["It's a good show.","Of course.","I watch TV too.","It's in the living room."],
+        1,
+        "「Can I~?」はゆるしをもとめる言い方だよ。お母さんはなんて言う？\n「Of course.」→ 「もちろん！」という意味だから正解！\n「It's in the living room.」→ これは「どこ？」への答えだよ。"),
+      mkQ("What are you doing, Lisa?","👩","( )","👧",
+        ["I'm doing my homework.","It's my homework.","I do homework every day.","Homework is difficult."],
+        0,
+        "「What are you doing?」→「I'm ＋ 〜ing」で答えよう！\n「I'm doing my homework.」→ 「I'm +〜ing」の形だから正解！\n「I do homework every day.」→ これはまいにちのことを言っているよ。今やっていることじゃないね。"),
+      mkQ("Where's Dad, Mom?","👦","( )","👩",
+        ["He likes the garden.","He's in the garden.","He's tall.","He comes home at six."],
+        1,
+        "「Where's Dad?」→ ばしょを答えよう！\n「He's in the garden.」→ ばしょを答えているから正解！\n「He likes the garden.」→ これは「すきなばしょ」を言っているよ。\n「He comes home at six.」→ これは「いつ？」への答えだよ。"),
+    ],
+    practice2: [
+      mkQ("Mom, I can't find my umbrella.","👧","( ) I put it there this morning.","👩",
+        ["It's raining outside.","Check by the front door.","You need an umbrella.","It's a nice umbrella."],
+        1,
+        "「I put it there」→「そこに置いたよ」という意味。「there（そこ）」はどこのこと？\n「Check by the front door.」→ ばしょを教えているから正解！「there」= 玄関のそばだね。\n「It's raining outside.」→ てんきのことを言っているよ。かさのばしょじゃないね。"),
+      mkQ("Are you hungry, Ben?","👩","Yes! ( )","👦",
+        ["Can I have some pasta, please?","I like pasta.","Pasta is Italian food.","It's in the kitchen."],
+        0,
+        "Benは「Yes!」と言っているよ。おなかがすいている人は次に何を言う？\n「Can I have some pasta, please?」→ たべものをたのんでいるから正解！\n「I like pasta.」→ すきだと言っているけど、たのんでいないよ。"),
+      mkQ("When is Grandma's birthday?","👦","( ) We're going to have a party!","👧",
+        ["She's very kind.","It's next Sunday.","She lives far away.","I like birthday cake."],
+        1,
+        "「We're going to have a party!」→ パーティーをするよ！いつ？\n「It's next Sunday.」→ 日にちを答えているから正解！\n「I like birthday cake.」→ ケーキのことを言っているけど、「いつ？」に答えていないよ。"),
+      mkQ("Beth, please don't run in the house.","👩","( ) I'll be careful.","👧",
+        ["I can run fast.","I'm sorry, Mom.","The house is big.","I like running."],
+        1,
+        "お母さんにちゅういされたよ。「I'll be careful.（気をつけます）」の前に何を言う？\n「I'm sorry, Mom.」→ あやまっているから正解！あやまってから「気をつけます」と言うのが自然だね。\n「I can run fast.」→ 速く走れるかどうかは関係ないよ。"),
+      mkQ("Dad, can we go to the park today?","👧","( ) Put on your shoes!","👨",
+        ["This year.","Of course.","The park is nice.","I go to the park."],
+        1,
+        "「Put on your shoes!（くつをはきなさい！）」→ 公園に行くってこと！お父さんはなんと言った？\n「Of course.」→ 「もちろん！」という意味だから正解！くつをはくように言っているから、OKしたんだね。\n「The park is nice.」→ 公園のことを言っているけど、ゆるしを答えていないよ。"),
+      mkQ("Jack, what are you doing in the kitchen?","👩","( ) It's for Dad's birthday!","👦",
+        ["I like the kitchen.","The kitchen is big.","I'm making a cake.","I made a cake yesterday."],
+        2,
+        "「It's for Dad's birthday!（お父さんのたんじょう日のため！）」→ たんじょう日に何を作る？「I'm ＋〜ing」で答えよう！\n「I'm making a cake.」→ 「I'm +〜ing」の形で、たんじょう日ケーキを作っているから正解！\n「I made a cake yesterday.」→ 「made」はきのうのこと。今やっていることじゃないよ。"),
+      mkQ("Where's my sister, Mom?","👦","( ) She'll be home for dinner.","👩",
+        ["She's at her friend's house.","She's very funny.","She likes her friends.","She comes home every day."],
+        0,
+        "「She'll be home for dinner.（ゆうしょくには帰ってくるよ）」→ 今はどこにいる？\n「She's at her friend's house.」→ ばしょを答えているから正解！今は友達の家にいるんだね。\n「She's very funny.」→ どんな人かを言っているけど、ばしょじゃないよ。"),
+    ],
+    practice3: [
+      mkQ("Ken, your jacket is not in the closet.","👩","( ) I wore it yesterday.","👦",
+        ["It's in my room.","I like my jacket.","It's a nice jacket.","The closet is big."],
+        0,
+        "「I wore it yesterday.（きのう着たよ）」→ 着たあと、ジャケットはどこに行く？\n「It's in my room.」→ ばしょを答えているから正解！きのう着たから、部屋にあるんだね。\n「The closet is big.」→ 「closet（クローゼット）」という言葉をくり返しているよ。だまされないで！"),
+      mkQ("Dinner is almost ready. What do you want to drink?","👩","( )","👦",
+        ["I'm not hungry.","Dinner smells good.","Water, please.","I ate already."],
+        2,
+        "「What do you want to DRINK?」→ のみものを答えよう！\n「Water, please.」→ のみものを答えているから正解！\n「Dinner smells good.」→ ゆうしょくのことを言っているけど、のみものじゃないよ。\n「I'm not hungry.」→ 「おなかがすいていない」は、のみものとちがうよ。"),
+      mkQ("When is Mom's birthday, Dad?","👧","( ) Let's buy her a present tomorrow!","👨",
+        ["She likes flowers.","It's next Saturday.","She's at work.","Mom is happy."],
+        1,
+        "「Let's buy her a present tomorrow!（あした、プレゼントを買おう！）」→ たんじょう日はもうすぐ！いつ？\n「It's next Saturday.」→ 日にちを答えているから正解！あしたプレゼントを買うなら、来週の土曜日が近いね。\n「She's at work.」→ これは「どこ？」への答えだよ。"),
+      mkQ("Please turn off the TV, Anna. It's time for bed.","👨","( )","👧",
+        ["I like this show.","The TV is loud.","OK, Dad. Good night!","It's a good show."],
+        2,
+        "お父さんがテレビを消してねと言っているよ。もう寝る時間！なんて答える？\n「OK, Dad. Good night!」→ 「わかった！おやすみ！」は、寝る時間への自然な答えだから正解！\n「I like this show.」と「It's a good show.」→ 両方ともテレビ番組のことを言っているよ。だまされないで！"),
+      mkQ("Mom, can I have some ice cream after dinner?","👦","( ) But finish your vegetables first.","👩",
+        ["Ice cream is cold.","Of course.","I like ice cream.","It's in the freezer."],
+        1,
+        "「But finish your vegetables first.（でも、まず野菜を食べてね）」→ 条件をつけてOKしているよ。どの答えがOKの意味？\n「Of course.」→ 「もちろん！」という意味だから正解！条件をつけてOKしているんだね。\n「It's in the freezer.」→ 「freezer（冷とう庫）」はアイスクリームのばしょだよ。「どこ？」への答えになっているね。"),
+      mkQ("You're so quiet, Tom. What are you doing in there?","👩","( ) It's for school tomorrow.","👦",
+        ["I was reading a book.","I read every night.","I'm reading a book.","Books are interesting."],
+        2,
+        "「What are you doing?」→「I'm ＋〜ing」で答えよう！「It's for school tomorrow.（あしたのがっこうのため）」→ 今やっていることだよ。\n「I'm reading a book.」→ 「I'm +〜ing」の形だから正解！\n「I was reading a book.」→「was」を使うとまえのことになるよ。今じゃないね！"),
+      mkQ("Dad, where's my brother?","👧","( ) He'll be home for lunch.","👨",
+        ["He's playing outside.","He likes playing outside.","He plays outside every day.","He's a good boy."],
+        0,
+        "「He'll be home for lunch.（お昼には帰ってくるよ）」→ 今はまだ外にいるんだね。今どこ？\n「He's playing outside.」→ 今いるばしょとしていることを答えているから正解！\n「He likes playing outside.」→ すきなことを言っているけど、今どこにいるかじゃないよ。\n「He plays outside every day.」→ まいにちのことを言っているよ。今のことじゃないね。"),
+    ],
+    quiz: [
+      mkQ("Mom, where's my math book?","👦","( )","👩",
+        ["It's Tuesday.","Math is difficult.","It's on the table.","I like math."],
+        2, null),
+      mkQ("What do you want for lunch, Ken?","👩","( )","👦",
+        ["Lunch is good.","After school.","Rice and soup, please.","I ate lunch."],
+        2, null),
+      mkQ("When is the school trip, Mom?","👦","( ) We need to pack your bag!","👩",
+        ["School is fun.","It's next Wednesday.","She's at school.","I like trips."],
+        1, null),
+      mkQ("Please wash your hands before dinner, Yuki.","👩","( )","👧",
+        ["Dinner smells good.","I like dinner.","All right, Mom!","My hands are cold."],
+        2, null),
+      mkQ("Mom, can I have a cookie?","👧","( ) Just one, OK?","👩",
+        ["Cookies are sweet.","Of course.","It's in the kitchen.","I like cookies."],
+        1, null),
+      mkQ("Sora, what are you doing?","👨","( ) It's due tomorrow!","👦",
+        ["I did my homework.","I do homework every day.","I'm doing my homework.","Homework is hard."],
+        2, null),
+      mkQ("Where's your sister, Kenji?","👩","( ) She said she'll be home by five.","👦",
+        ["She's very kind.","She likes the library.","She went to the library.","She goes there every day."],
+        2,
+        "むずかしい！\n「She likes the library.」→ としょかんがすきだと言っているけど、今どこにいるかじゃないよ。\n「She went to the library.」→ 「went（行った）」→ 今としょかんにいる！「She'll be home by five.（5時までに帰る）」と合っているね。"),
+    ],
+  },
+};
+
 const EIKEN_LEVELS = [
   { id: "5", label: "Grade 5", emoji: "⭐",      color: "#ff6b9d", desc: "Elementary level — everyday English" },
   { id: "4", label: "Grade 4", emoji: "⭐⭐",   color: "#ff9500", desc: "Junior high entry level" },
@@ -1363,7 +1490,13 @@ export default function App() {
   // Compute categories once based on current level — used throughout render
   const categories = getCategoriesByLevel(currentProfile?.level || "5");
 
+  const [dialogueTopic,    setDialogueTopic]    = useState(null);
+  const [dialoguePractice, setDialoguePractice] = useState(null); // "practice1"|"practice2"|"practice3"|"quiz"
+
   const goBack = () => {
+    if (screen === "dialogue_practice") { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
+    if (screen === "dialogue_topic")    { setScreen("dialogue_home"); setDialogueTopic(null); return; }
+    if (screen === "dialogue_home")     { setScreen("dashboard"); return; }
     const map = { vocab_study:"vocab_list", vocab_game:"vocab_list", vocab_results:"vocab_list", vocab_review:"vocab_list", vocab_list:"dashboard" };
     setScreen(map[screen] || "dashboard");
   };
@@ -1376,10 +1509,15 @@ export default function App() {
     vocab_game: activeCategory?.title || "Vocabulary",
     vocab_results: activeCategory?.title || "Results",
     vocab_review: "Review — get them all right!",
+    dialogue_home: "Dialogue Tests",
+    dialogue_topic: dialogueTopic?.title || "Dialogue Tests",
+    dialogue_practice: dialogueTopic?.title || "Dialogue Tests",
   }[screen] || "Eiken English Training";
 
   // Screens that use the two-column layout (sidebar + main)
   const twoCol = ["dashboard","vocab_list","vocab_study","vocab_game","vocab_results","vocab_review"].includes(screen);
+  // Dialogue screens use full-width single column
+  const isDialogueScreen = ["dialogue_home","dialogue_topic","dialogue_practice"].includes(screen);
 
   return (
     <>
@@ -1407,6 +1545,21 @@ export default function App() {
         {screen === "login" && (
           <LoginScreen profiles={profiles} onLogin={login}
             onNewProfile={p => { saveProfiles([...profiles, p]); login(p); }} />
+        )}
+
+        {/* Dialogue screens — full-width scrollable */}
+        {isDialogueScreen && currentProfile && (
+          <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
+            {screen === "dialogue_home" && (
+              <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} />
+            )}
+            {screen === "dialogue_topic" && dialogueTopic && (
+              <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} />
+            )}
+            {screen === "dialogue_practice" && dialogueTopic && dialoguePractice && (
+              <DialoguePracticeScreen key={dialogueTopic.id + dialoguePractice} topic={dialogueTopic} setKey={dialoguePractice} onBack={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }} onFinish={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }} />
+            )}
+          </div>
         )}
 
         {/* Two-column body for all logged-in screens */}
@@ -1470,6 +1623,7 @@ export default function App() {
             <div className="main">
               {screen === "dashboard" && (
                 <DashboardScreen profile={currentProfile} onVocab={() => setScreen("vocab_list")}
+                  onDialogue={() => setScreen("dialogue_home")}
                   categories={categories} getCatProgress={getCatProgress}
                   onLevelChange={changeLevel} />
               )}
@@ -1582,7 +1736,7 @@ function LoginScreen({ profiles, onLogin, onNewProfile }) {
 }
 
 /* ── Dashboard ── */
-function DashboardScreen({ profile, onVocab, categories, getCatProgress, onLevelChange }) {
+function DashboardScreen({ profile, onVocab, onDialogue, categories, getCatProgress, onLevelChange }) {
   const initials  = profile.name.slice(0,2).toUpperCase();
   const done      = categories.filter(c => getCatProgress(c.id) >= 70).length;
   const levels    = [
@@ -1643,16 +1797,22 @@ function DashboardScreen({ profile, onVocab, categories, getCatProgress, onLevel
           </div>
           <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
         </button>
-        {[{emoji:"💬",title:"Dialogue"},{emoji:"✏️",title:"Grammar"}].map(m => (
-          <button key={m.title} type="button" className="mod-card locked" disabled>
-            <div className="mod-icon" style={{background:"#f0f4f8"}}>{m.emoji}</div>
-            <div>
-              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#a0aec0"}}>{m.title}</div>
-              <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>Coming soon</div>
-            </div>
-            <span style={{marginLeft:"auto",fontSize:20}}>🔒</span>
-          </button>
-        ))}
+        <button type="button" className="mod-card" onClick={onDialogue}>
+          <div className="mod-icon" style={{background:"#f5f3ff"}}>💬</div>
+          <div>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#02020b"}}>Dialogue Tests</div>
+            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>{DIALOGUE_TOPICS.length} topic · practice & quiz</div>
+          </div>
+          <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
+        </button>
+        <button key="Grammar" type="button" className="mod-card locked" disabled>
+          <div className="mod-icon" style={{background:"#f0f4f8"}}>✏️</div>
+          <div>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#a0aec0"}}>Grammar</div>
+            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>Coming soon</div>
+          </div>
+          <span style={{marginLeft:"auto",fontSize:20}}>🔒</span>
+        </button>
       </div>
     </div>
   );
@@ -2571,6 +2731,299 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
         onClick={onRetry}>Try again ↩</button>
       <button type="button" className="btn btn-gray" style={{marginTop:10}} onClick={onHome}>
         Back to categories 📚
+      </button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   DIALOGUE TEST SCREENS
+══════════════════════════════════════════════ */
+
+/* LINE-style topic list */
+function DialogueHomeScreen({ onSelect, onBack }) {
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{textAlign:"center",marginBottom:24,paddingTop:8}}>
+        <div style={{fontSize:40,marginBottom:6}}>💬</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:22,color:"#02020b"}}>Dialogue Tests</div>
+        <div style={{fontSize:13,color:"#718096",marginTop:4}}>Choose a topic to practice</div>
+      </div>
+
+      <div style={{borderRadius:18,overflow:"hidden",boxShadow:"0 2px 14px rgba(0,0,0,.09)"}}>
+        <div style={{background:"#7c3aed",padding:"10px 16px",fontSize:12,fontWeight:700,color:"#e9d5ff",letterSpacing:1}}>
+          TOPICS
+        </div>
+        {DIALOGUE_TOPICS.map((topic, i) => (
+          <button key={topic.id} type="button" onClick={() => onSelect(topic)}
+            style={{width:"100%",display:"flex",alignItems:"center",gap:14,
+              padding:"16px 18px",background:"#fff",border:"none",
+              borderTop: i===0 ? "none" : "1px solid #f0f0f0",
+              cursor:"pointer",textAlign:"left",transition:"background .12s"}}
+            onMouseEnter={e => e.currentTarget.style.background="#f9f5ff"}
+            onMouseLeave={e => e.currentTarget.style.background="#fff"}>
+            <div style={{width:48,height:48,borderRadius:14,background:"#ede9fe",
+              display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>
+              {topic.emoji}
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
+              <div style={{fontSize:12,color:"#a78bfa",marginTop:2}}>Practice 1 · 2 · 3 · Quiz</div>
+            </div>
+            <span style={{fontSize:18,color:"#c4b5fd"}}>→</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* Practice/Quiz selector for a topic */
+function DialogueTopicScreen({ topic, onSelect, onBack }) {
+  const sets = [
+    { key:"practice1", label:"Practice 1", emoji:"⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice2", label:"Practice 2", emoji:"⭐⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice3", label:"Practice 3", emoji:"⭐⭐⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"quiz",      label:"QUIZ",       emoji:"🏆", sub:"7 questions · no hints · scored!", color:"#d97706", bg:"#fef3c7" },
+  ];
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
+        <div style={{fontSize:36}}>{topic.emoji}</div>
+        <div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:20,color:"#3b0764"}}>{topic.title}</div>
+          <div style={{fontSize:13,color:"#a78bfa"}}>Choose a set to start</div>
+        </div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:12}}>
+        {sets.map(s => (
+          <button key={s.key} type="button" onClick={() => onSelect(s.key)}
+            style={{display:"flex",alignItems:"center",gap:14,padding:"16px 18px",
+              borderRadius:16,border:`2px solid ${s.bg}`,background:"#fff",
+              cursor:"pointer",textAlign:"left",transition:"all .12s",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}
+            onMouseEnter={e => { e.currentTarget.style.background=s.bg; }}
+            onMouseLeave={e => { e.currentTarget.style.background="#fff"; }}>
+            <div style={{width:50,height:50,borderRadius:14,background:s.bg,
+              display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>
+              {s.emoji}
+            </div>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:s.color}}>{s.label}</div>
+              <div style={{fontSize:12,color:"#a0aec0",marginTop:2}}>{s.sub}</div>
+            </div>
+            <span style={{fontSize:20,color:s.color}}>→</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* Chat-style practice/quiz screen */
+function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
+  const questions = DIALOGUE_TESTS[topic.id]?.[setKey] || [];
+  const isQuiz = setKey === "quiz";
+  const [qIdx, setQIdx] = useState(0);
+  const [phase, setPhase] = useState("question"); // "question" | "correct" | "wrong" | "done"
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+  const [quizAnswers, setQuizAnswers] = useState([]);
+  const chatRef = useRef(null);
+
+  const q = questions[qIdx];
+
+  useEffect(() => {
+    if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }, [phase, qIdx]);
+
+  const handleSelect = (idx) => {
+    if (phase !== "question") return;
+    setSelected(idx);
+    const isCorrect = idx === q.correct;
+    if (isCorrect) {
+      setScore(s => s + 1);
+      setPhase("correct");
+    } else {
+      setPhase("wrong");
+    }
+    if (isQuiz) setQuizAnswers(prev => [...prev, { q, chosen: idx, correct: q.correct }]);
+  };
+
+  const handleNext = () => {
+    if (qIdx + 1 >= questions.length) {
+      setPhase("done");
+    } else {
+      setQIdx(i => i + 1);
+      setPhase("question");
+      setSelected(null);
+    }
+  };
+
+  if (phase === "done" && isQuiz) {
+    return <DialogueQuizResults score={score} total={questions.length} answers={quizAnswers} onBack={onBack} onRetry={() => { setQIdx(0); setPhase("question"); setSelected(null); setScore(0); setQuizAnswers([]); }} />;
+  }
+  if (phase === "done") {
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto",textAlign:"center",paddingTop:40}}>
+        <div style={{fontSize:60,marginBottom:12}}>🎉</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:24,color:"#3b0764",marginBottom:8}}>
+          よくできました！
+        </div>
+        <div style={{fontSize:15,color:"#718096",marginBottom:28}}>Practice complete!</div>
+        <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95",marginBottom:10}} onClick={onBack}>
+          Back to topic list
+        </button>
+      </div>
+    );
+  }
+
+  const optionColors = (idx) => {
+    if (phase === "question") return { bg:"#f9f5ff", border:"#ddd6fe", color:"#3b0764" };
+    if (idx === q.correct) return { bg:"#d1fae5", border:"#34d399", color:"#065f46" };
+    if (idx === selected && idx !== q.correct) return { bg:"#fee2e2", border:"#f87171", color:"#991b1b" };
+    return { bg:"#f3f4f6", border:"#e5e7eb", color:"#9ca3af" };
+  };
+
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto",display:"flex",flexDirection:"column",height:"calc(100vh - 120px)"}}>
+      {/* Header */}
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+        <div style={{width:40,height:40,borderRadius:12,background:"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>{topic.emoji}</div>
+        <div style={{flex:1}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>{topic.title} · {isQuiz ? "QUIZ 🏆" : setKey === "practice1" ? "Practice 1 ⭐" : setKey === "practice2" ? "Practice 2 ⭐⭐" : "Practice 3 ⭐⭐⭐"}</div>
+        </div>
+        <div style={{fontSize:12,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"4px 10px",borderRadius:20}}>
+          {qIdx + 1} / {questions.length}
+        </div>
+      </div>
+
+      {/* Chat window */}
+      <div ref={chatRef} style={{flex:1,overflowY:"auto",background:"#f0ebff",borderRadius:18,padding:"16px 14px",marginBottom:12,display:"flex",flexDirection:"column",gap:10}}>
+        {/* Person A bubble */}
+        <div style={{display:"flex",alignItems:"flex-end",gap:8}}>
+          <div style={{fontSize:28,flexShrink:0}}>{q.aEmoji}</div>
+          <div style={{background:"#fff",borderRadius:"18px 18px 18px 4px",padding:"10px 14px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+            <div style={{fontSize:14,color:"#1f2937",lineHeight:1.5}}>{q.a}</div>
+          </div>
+        </div>
+
+        {/* Person B bubble */}
+        <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:8}}>
+          <div style={{fontSize:28,flexShrink:0}}>{q.bEmoji}</div>
+          <div style={{background:"#ddd6fe",borderRadius:"18px 18px 4px 18px",padding:"10px 14px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+            <div style={{fontSize:14,color:"#3b0764",lineHeight:1.5,fontStyle:"italic"}}>{q.b}</div>
+          </div>
+        </div>
+
+        {/* Correct reaction */}
+        {phase === "correct" && (
+          <div style={{textAlign:"center",padding:"10px 0",fontSize:36,animation:"pop .3s ease"}}>
+            👍✨
+          </div>
+        )}
+        {phase === "correct" && (
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <div style={{background:"#d1fae5",borderRadius:14,padding:"8px 16px",fontSize:13,color:"#065f46",fontWeight:700,textAlign:"center"}}>
+              すごい！正解！🎉
+            </div>
+          </div>
+        )}
+
+        {/* Wrong + hint bubble */}
+        {phase === "wrong" && !isQuiz && q.hint && (
+          <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
+            <div style={{fontSize:24,flexShrink:0}}>💡</div>
+            <div style={{background:"#fefce8",border:"1px solid #fde68a",borderRadius:"18px 18px 18px 4px",padding:"10px 14px",maxWidth:"90%"}}>
+              {q.hint.split("\n").map((line, i) => (
+                <div key={i} style={{fontSize:13,color:"#92400e",lineHeight:1.6,marginBottom: i < q.hint.split("\n").length-1 ? 4 : 0}}>
+                  {i === 0 ? <strong>{line}</strong> : line}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {phase === "wrong" && isQuiz && (
+          <div style={{display:"flex",justifyContent:"center"}}>
+            <div style={{background:"#fee2e2",borderRadius:14,padding:"8px 16px",fontSize:13,color:"#991b1b",fontWeight:700}}>
+              ざんねん！正解は「{q.opts[q.correct]}」だよ。
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Answer options */}
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {q.opts.map((opt, idx) => {
+          const c = optionColors(idx);
+          return (
+            <button key={idx} type="button" onClick={() => handleSelect(idx)}
+              disabled={phase !== "question"}
+              style={{padding:"12px 16px",borderRadius:14,border:`2px solid ${c.border}`,
+                background:c.bg,color:c.color,fontFamily:"'Nunito',sans-serif",
+                fontWeight:700,fontSize:14,cursor:phase==="question"?"pointer":"default",
+                textAlign:"left",transition:"all .15s",
+                opacity: phase !== "question" && idx !== q.correct && idx !== selected ? 0.5 : 1}}>
+              {idx + 1}. {opt}
+              {phase !== "question" && idx === q.correct && " ✓"}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Next button */}
+      {phase !== "question" && (
+        <button type="button" className="btn" onClick={handleNext}
+          style={{marginTop:12,background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
+          {qIdx + 1 >= questions.length ? (isQuiz ? "See results 🏆" : "Finish! 🎉") : "Next →"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+/* Quiz results screen */
+function DialogueQuizResults({ score, total, answers, onBack, onRetry }) {
+  const pct = Math.round((score / total) * 100);
+  const msg = score === total ? { txt:"かんぺき！すごい！AT HOME マスター！", emoji:"🏆" }
+    : score >= 5 ? { txt:"よくできました！もう少しでかんぺき！", emoji:"⭐⭐" }
+    : score >= 3 ? { txt:"がんばったね！もう一度れんしゅうしてみよう！", emoji:"⭐" }
+    : { txt:"れんしゅう1からやり直してみよう！きっとできるよ！", emoji:"📖" };
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{textAlign:"center",padding:"28px 0 20px"}}>
+        <div style={{fontSize:56}}>{msg.emoji}</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:28,color:"#3b0764",margin:"10px 0 4px"}}>
+          {score} / {total}
+        </div>
+        <div style={{fontSize:14,color:"#7c3aed",fontWeight:700,marginBottom:8}}>{pct}%</div>
+        <div style={{fontSize:15,color:"#374151",background:"#ede9fe",borderRadius:12,padding:"10px 18px",display:"inline-block"}}>{msg.txt}</div>
+      </div>
+
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+        {answers.map(({ q, chosen, correct }, i) => (
+          <div key={i} style={{borderRadius:14,border:`2px solid ${chosen===correct?"#a7f3d0":"#fca5a5"}`,background:chosen===correct?"#f0fdf4":"#fff5f5",padding:"12px 14px"}}>
+            <div style={{fontSize:12,fontWeight:700,color:"#6b7280",marginBottom:4}}>Q{i+1}</div>
+            <div style={{fontSize:13,color:"#374151",marginBottom:6}}>{q.a}</div>
+            <div style={{fontSize:13,color:chosen===correct?"#065f46":"#991b1b",fontWeight:700}}>
+              {chosen===correct ? "✓" : "✗"} {q.opts[chosen]}
+            </div>
+            {chosen !== correct && (
+              <div style={{fontSize:12,color:"#059669",marginTop:4}}>正解: {q.opts[correct]}</div>
+            )}
+            {chosen !== correct && q.hint && (
+              <div style={{marginTop:6,padding:"6px 10px",background:"#fefce8",borderRadius:8,fontSize:11,color:"#92400e"}}>
+                💡 {q.hint.split("\n")[0]}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95",marginBottom:10}} onClick={onRetry}>
+        Try again 🔄
+      </button>
+      <button type="button" className="btn btn-gray" onClick={onBack}>
+        Back to topic list
       </button>
     </div>
   );
