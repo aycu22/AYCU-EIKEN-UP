@@ -84,8 +84,16 @@ const DIALOGUE_TOPICS = [
   { id:"at_home",     title:"AT HOME",     emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
   { id:"at_school",   title:"AT SCHOOL",   emoji:"🏫", color:"#0891b2", shadow:"#155e75", level:"5" },
   { id:"with_friends",title:"WITH FRIENDS",emoji:"👫", color:"#f43f5e", shadow:"#9f1239", level:"5" },
-  { id:"g4_at_home",  title:"AT HOME",     emoji:"🏠", color:"#2563eb", shadow:"#1e3a8a", level:"4" },
+  { id:"g4_at_home",  title:"AT HOME",     emoji:"🏡", color:"#2563eb", shadow:"#1e3a8a", level:"4" },
 ];
+
+// Practice-set progression icons, varied by grade level so sets never look identical across grades
+const PRACTICE_EMOJI_BY_LEVEL = {
+  "5": { practice1:"🥚", practice2:"🐣", practice3:"🐥" }, // egg -> chick -> chick
+  "4": { practice1:"🌱", practice2:"🌿", practice3:"🌳" }, // sprout -> sapling -> tree
+  "3": { practice1:"🥉", practice2:"🥈", practice3:"🥇" }, // bronze -> silver -> gold
+};
+const practiceEmoji = (level, key) => (PRACTICE_EMOJI_BY_LEVEL[level] || PRACTICE_EMOJI_BY_LEVEL["5"])[key];
 
 const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB, followUp) =>
   ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB, followUp });
@@ -3239,10 +3247,11 @@ function DialogueTopicScreen({ topic, onSelect, onBack, getSetProgress }) {
   const topicTests = DIALOGUE_TESTS[topic.id] || {};
   const countOf = key => topicTests[key]?.length || 7;
   const hasQuiz = !!topicTests.quiz;
+  const accentBg = topic.color + "1a"; // topic color at ~10% opacity for card tint
   const sets = [
-    { key:"practice1", label:"Practice 1", emoji:"🥚", sub:`${countOf("practice1")} questions · hints included`, color:"#7c3aed", bg:"#ede9fe" },
-    { key:"practice2", label:"Practice 2", emoji:"🐣", sub:`${countOf("practice2")} questions · hints included`, color:"#7c3aed", bg:"#ede9fe" },
-    { key:"practice3", label:"Practice 3", emoji:"🐥", sub:`${countOf("practice3")} questions · hints included`, color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice1", label:"Practice 1", emoji:practiceEmoji(topic.level,"practice1"), sub:`${countOf("practice1")} questions · hints included`, color:topic.color, bg:accentBg },
+    { key:"practice2", label:"Practice 2", emoji:practiceEmoji(topic.level,"practice2"), sub:`${countOf("practice2")} questions · hints included`, color:topic.color, bg:accentBg },
+    { key:"practice3", label:"Practice 3", emoji:practiceEmoji(topic.level,"practice3"), sub:`${countOf("practice3")} questions · hints included`, color:topic.color, bg:accentBg },
     ...(hasQuiz ? [{ key:"quiz", label:"QUIZ", emoji:"🏆", sub:`${countOf("quiz")} questions · no hints · scored!`, color:"#d97706", bg:"#fef3c7" }] : []),
   ];
   return (
@@ -3375,9 +3384,9 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
     <div className="fade" style={{maxWidth:480,margin:"0 auto",display:"flex",flexDirection:"column"}}>
       {/* Header */}
       <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-        <div style={{width:34,height:34,borderRadius:10,background:"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{topic.emoji}</div>
+        <div style={{width:34,height:34,borderRadius:10,background:topic.color+"1a",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{topic.emoji}</div>
         <div style={{flex:1}}>
-          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#3b0764"}}>{topic.title} · {isQuiz ? "QUIZ 🏆" : setKey === "practice1" ? "Practice 1 🥚" : setKey === "practice2" ? "Practice 2 🐣" : "Practice 3 🐥"}</div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#3b0764"}}>{topic.title} · {isQuiz ? "QUIZ 🏆" : `Practice ${setKey.slice(-1)} ${practiceEmoji(topic.level, setKey)}`}</div>
         </div>
         <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>
           {qIdx + 1} / {questions.length}
