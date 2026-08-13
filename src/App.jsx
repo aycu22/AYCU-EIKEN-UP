@@ -3242,13 +3242,17 @@ function DialogueHomeScreen({ onSelect, onBack, level, getSetProgress }) {
                     <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
                     {allDone && <span style={{fontSize:14}}>✅</span>}
                   </div>
-                  <div style={{display:"flex",gap:6,marginTop:5}}>
+                  <div style={{display:"flex",gap:6,marginTop:5,flexWrap:"wrap"}}>
                     {setKeys.map(k => {
-                      const done = doneSets.includes(k);
+                      const prog = getSetProgress?.(topic.id, k);
+                      const done = !!prog?.done;
+                      const scoreLabel = k === "quiz" && done && prog.score != null
+                        ? ` ${prog.score}/${prog.total} (${Math.round(prog.score/prog.total*100)}%)`
+                        : done ? " ✓" : "";
                       return (
                         <span key={k} style={{fontSize:10,fontWeight:800,padding:"2px 7px",borderRadius:20,
                           background:done?"#dcfce7":"#f3f4f6",color:done?"#15803d":"#9ca3af"}}>
-                          {SET_LABELS[k]}{done?" ✓":""}
+                          {SET_LABELS[k]}{scoreLabel}
                         </span>
                       );
                     })}
