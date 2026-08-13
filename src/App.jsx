@@ -78,6 +78,7 @@ const PROFILES_KEY = "eiken_profiles_v1";
 const CURRENT_KEY  = "eiken_current_v1";
 const PROGRESS_KEY = "eiken_progress_v1";
 const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
+const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 
 /* ── Dialogue Test Data ── */
 const DIALOGUE_TOPICS = [
@@ -2024,6 +2025,7 @@ export default function App() {
   const [currentProfile, setCurrentProfile] = useState(() => { try { return JSON.parse(localStorage.getItem(CURRENT_KEY))  || null; } catch { return null; }});
   const [progress,       setProgress]       = useState(() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }  catch { return {}; }});
   const [dialogueProgress, setDialogueProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_PROGRESS_KEY)) || {}; } catch { return {}; }});
+  const [dialogueNotesSeen, setDialogueNotesSeen] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_NOTES_SEEN_KEY)) || {}; } catch { return {}; }});
 
   const [screen,         setScreen]         = useState(currentProfile ? "dashboard" : "login");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -2059,6 +2061,14 @@ export default function App() {
   };
   const getDialogueSetProgress = (topicId, setKey) => dialogueProgress[`${currentProfile?.id}_${topicId}_${setKey}`] || null;
 
+  const markNotesSeen = (topicId) => {
+    const key = `${currentProfile.id}_${topicId}`;
+    const next = { ...dialogueNotesSeen, [key]: true };
+    setDialogueNotesSeen(next);
+    localStorage.setItem(DIALOGUE_NOTES_SEEN_KEY, JSON.stringify(next));
+  };
+  const notesSeen = (topicId) => !!dialogueNotesSeen[`${currentProfile?.id}_${topicId}`];
+
   // Compute categories once based on current level — used throughout render
   const categories = getCategoriesByLevel(currentProfile?.level || "5");
 
@@ -2066,6 +2076,7 @@ export default function App() {
   const [dialoguePractice, setDialoguePractice] = useState(null); // "practice1"|"practice2"|"practice3"|"quiz"
 
   const goBack = () => {
+    if (screen === "dialogue_notes")    { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_practice") { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_topic")    { setScreen("dialogue_home"); setDialogueTopic(null); return; }
     if (screen === "dialogue_home")     { setScreen("dashboard"); return; }
@@ -2083,13 +2094,14 @@ export default function App() {
     vocab_review: "Review — get them all right!",
     dialogue_home: "Dialogue Tests",
     dialogue_topic: dialogueTopic?.title || "Dialogue Tests",
+    dialogue_notes: dialogueTopic?.title ? `${dialogueTopic.title} · Notes` : "Dialogue Tests",
     dialogue_practice: dialogueTopic?.title || "Dialogue Tests",
   }[screen] || "Eiken English Training";
 
   // Screens that use the two-column layout (sidebar + main)
   const twoCol = ["dashboard","vocab_list","vocab_study","vocab_game","vocab_results","vocab_review"].includes(screen);
   // Dialogue screens use full-width single column
-  const isDialogueScreen = ["dialogue_home","dialogue_topic","dialogue_practice"].includes(screen);
+  const isDialogueScreen = ["dialogue_home","dialogue_topic","dialogue_notes","dialogue_practice"].includes(screen);
 
   return (
     <>
@@ -2126,7 +2138,18 @@ export default function App() {
               <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} level={currentProfile?.level || "5"} getSetProgress={getDialogueSetProgress} />
             )}
             {screen === "dialogue_topic" && dialogueTopic && (
-              <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} getSetProgress={getDialogueSetProgress} />
+              <DialogueTopicScreen topic={dialogueTopic} onSelect={key => {
+                setDialoguePractice(key);
+                if (key === "practice1" && DIALOGUE_NOTES[dialogueTopic.id] && !notesSeen(dialogueTopic.id)) {
+                  setScreen("dialogue_notes");
+                } else {
+                  setScreen("dialogue_practice");
+                }
+              }} onBack={goBack} getSetProgress={getDialogueSetProgress} />
+            )}
+            {screen === "dialogue_notes" && dialogueTopic && (
+              <DialogueNotesScreen topic={dialogueTopic}
+                onContinue={() => { markNotesSeen(dialogueTopic.id); setScreen("dialogue_practice"); }} />
             )}
             {screen === "dialogue_practice" && dialogueTopic && dialoguePractice && (
               <DialoguePracticeScreen key={dialogueTopic.id + dialoguePractice} topic={dialogueTopic} setKey={dialoguePractice} onBack={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }}
@@ -3304,6 +3327,133 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
         onClick={onRetry}>Try again ↩</button>
       <button type="button" className="btn btn-gray" style={{marginTop:10}} onClick={onHome}>
         Back to categories 📚
+      </button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   DIALOGUE GRAMMAR NOTES (shown once, before each topic's Practice 1)
+══════════════════════════════════════════════ */
+
+/* Highlighted keyword — color-codes the grammar signal word in an example */
+function Hi({ color, children }) {
+  return <span style={{ color, fontWeight: 900 }}>{children}</span>;
+}
+
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed" };
+
+function NoteSection({ label, isNew, children }) {
+  return (
+    <div style={{
+      background: isNew ? "#fffbeb" : "#f8fafc",
+      border: `1.5px solid ${isNew ? "#fde68a" : "#e2e8f0"}`,
+      borderRadius: 14, padding: "12px 14px", marginBottom: 10,
+    }}>
+      {label && (
+        <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:900, fontSize:13, color: isNew ? "#b45309" : "#475569", marginBottom:6 }}>
+          {label}
+        </div>
+      )}
+      <div style={{ fontSize:13, color:"#374151", lineHeight:1.9 }}>{children}</div>
+    </div>
+  );
+}
+
+function NotesAtHome() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="おさらい (G5)">
+        <div>もっと〜いる？ Do you want more…? → Yes, please. / No, thank you.</div>
+        <div>〜してくれる？ Could you…? → Sure, no problem.</div>
+        <div>どこ？ Where…? → 場所　｜　だれの？ Whose…? → 持ち主</div>
+        <div>〜してね → All right, Mom.</div>
+      </NoteSection>
+      <NoteSection label="🆕 過去のこと (Past)" isNew>
+        <div>質問が <Hi color={c.past}>did</Hi> / <Hi color={c.past}>~ed</Hi> なら、答えも過去形に。</div>
+        <div>What <Hi color={c.past}>did</Hi> you eat? → I <Hi color={c.past}>ate</Hi> a sandwich.（✕ I eat　✕ I will eat）</div>
+      </NoteSection>
+      <NoteSection label="🆕 これからのこと (Future)" isNew>
+        <div>明日・これからは <Hi color={c.future}>be going to</Hi>。</div>
+        <div>What are you <Hi color={c.future}>going to</Hi> do? → I'm <Hi color={c.future}>going to</Hi> do my homework.</div>
+      </NoteSection>
+      <NoteSection>
+        <div>💡 なぜ？ <Hi color={c.reason}>Why…?</Hi> → <Hi color={c.reason}>Because</Hi> で理由を答える。</div>
+        <div>💡 さくせん: 答えが空所の後ろにあることも！ 後の文をヒントにしよう。</div>
+      </NoteSection>
+    </>
+  );
+}
+
+function NotesAtSchool() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="おさらい">
+        <div>過去は<Hi color={c.past}>過去</Hi>で答える／未来は<Hi color={c.future}>going to</Hi>／<Hi color={c.reason}>Why → Because</Hi>（At Homeで習ったよ）。</div>
+      </NoteSection>
+      <NoteSection label="とくべつ">
+        <div>借りてもいい？ Can I borrow…? → Sure, here you are.</div>
+        <div>はじめての先生に → Nice to meet you.</div>
+      </NoteSection>
+      <NoteSection label="🆕 どうだった？ (Follow-up)" isNew>
+        <div>「〜した」に感想をきく。</div>
+        <div>I took the test. → <Hi color={c.past}>How was it?</Hi></div>
+      </NoteSection>
+      <NoteSection label="🆕 くらべる (Comparative)" isNew>
+        <div>Which is <Hi color={c.compare}>harder</Hi>, A or B? → A is <Hi color={c.compare}>harder</Hi>.（-er / more ~）</div>
+      </NoteSection>
+      <NoteSection label="🆕 〜したほうがいいよ (Advice)" isNew>
+        <div>You <Hi color={c.advice}>should</Hi> get some rest. 思いやりのアドバイス。</div>
+      </NoteSection>
+    </>
+  );
+}
+
+function NotesWithFriends() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="おさらい">
+        <div>過去／未来 <Hi color={c.future}>going to</Hi>／<Hi color={c.past}>How was it?</Hi>／くらべる comparative。</div>
+      </NoteSection>
+      <NoteSection label="🆕 さそう (Invitations)" isNew>
+        <div><Hi color={c.invite}>Let's…!</Hi> → Yes, let's! / That's a good idea!</div>
+        <div><Hi color={c.invite}>Would you like to…?</Hi> → Yes, I'd love to.</div>
+        <div><Hi color={c.invite}>Why don't we…?</Hi> → Good idea.</div>
+      </NoteSection>
+      <NoteSection label="🆕 あなたは？" isNew>
+        <div><Hi color={c.invite}>How about you?</Hi> → 自分のことを答える。</div>
+      </NoteSection>
+      <NoteSection label="🆕 ざんねん" isNew>
+        <div><Hi color={c.advice}>That's too bad.</Hi> → 相手のこまった出来事に思いやりを。</div>
+      </NoteSection>
+      <NoteSection>
+        <div>おさらい: ほめられたら → Thanks!</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesAtHome, at_school: NotesAtSchool, with_friends: NotesWithFriends };
+
+function DialogueNotesScreen({ topic, onContinue }) {
+  const NoteBody = DIALOGUE_NOTES[topic.id];
+  if (!NoteBody) return null;
+  return (
+    <div className="fade" style={{ maxWidth:480, margin:"0 auto" }}>
+      <div style={{ textAlign:"center", marginBottom:18, paddingTop:4 }}>
+        <div style={{ fontSize:34, marginBottom:4 }}>📘</div>
+        <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:900, fontSize:19, color:"#02020b" }}>
+          まなびポイント — {topic.emoji} {topic.title}
+        </div>
+        <div style={{ fontSize:12, color:"#a0aec0", marginTop:2 }}>れんしゅうの前に読もう！</div>
+      </div>
+      <NoteBody />
+      <button type="button" className="btn" onClick={onContinue}
+        style={{ marginTop:6, background:topic.color, boxShadow:`0 4px 0 ${topic.shadow}` }}>
+        わかった！れんしゅうを始める →
       </button>
     </div>
   );
