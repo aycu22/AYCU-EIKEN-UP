@@ -89,6 +89,7 @@ const DIALOGUE_TOPICS = [
   { id:"g4_at_home",   title:"AT HOME",   emoji:"🏡", color:"#2563eb", shadow:"#1e3a8a", level:"4" },
   { id:"g4_at_school", title:"AT SCHOOL", emoji:"🏫", color:"#f97316", shadow:"#c2410c", level:"4" },
   { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4" },
+  { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3" },
 ];
 
 // Practice-set progression icons, varied by grade level so sets never look identical across grades
@@ -99,8 +100,8 @@ const PRACTICE_EMOJI_BY_LEVEL = {
 };
 const practiceEmoji = (level, key) => (PRACTICE_EMOJI_BY_LEVEL[level] || PRACTICE_EMOJI_BY_LEVEL["5"])[key];
 
-const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB, followUp) =>
-  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB, followUp });
+const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB, followUp, mid, midEmoji, transMid) =>
+  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB, followUp, mid, midEmoji: midEmoji||"👦", transMid });
 
 const DIALOGUE_TESTS = {
   at_home: {
@@ -882,6 +883,130 @@ const DIALOGUE_TESTS = {
         3,
         "むずかしい！「No, thanks.」は「いいえ、けっこうです」ということわりの言葉。①②③はぜんぶ「行きたい・賛成」の意味になってしまうから、「No」と矛盾するよ。「I have to help my mom.（お母さんを手伝わなきゃ）」だけがことわる理由として自然だから正解！",
         "いっしょにビーチに行かない？","ううん、いい。お母さんを手伝わなきゃいけないんだ。"),
+    ],
+  },
+  g3_travel: {
+    practice1: [
+      mkQ("Why don't we go to the beach this Sunday?","👦","( ) I really want to swim.","👧",
+        ["Sounds great!","Here you are.","No, I'm not.","It's too late."],
+        0,
+        "さそいに「いいね！」と答える言い方は？\n「Sounds great!」→ さんせいの言い方だから正解！\n「Here you are.」→ ものをわたすときの言葉だよ。\n「No, I'm not.」→ be動詞のしつもんへの答えだよ。\n「It's too late.」→「おそすぎる」は「泳ぎたい」と合わないよ。",
+        "日曜日にビーチに行かない？","いいね！本当に泳ぎたいな。"),
+      mkQ("I'm going to Kyoto next week.","👦","( ) It's my first visit.","👦",
+        ["Yes, I have.","No, I haven't.","You're welcome.","See you later."],
+        1,
+        "次の文「はじめての訪問」がヒント。行ったこと「ない」？「ある」？\n「No, I haven't.」→「はじめて」に合うから正解！\n「Yes, I have.」→「行ったことある」は「はじめて」とむじゅんするよ。\n「You're welcome.」「See you later.」→ あいさつで会話に合わないよ。",
+        "来週、京都に行くんだ。","ううん、ないよ。はじめての訪問なんだ。",
+        null, "Nice! Have you been there before?", "👧", "いいね！前に行ったことある？"),
+      mkQ("Let's go to the zoo tomorrow.","👦","( ) I love animals.","👧",
+        ["You're welcome.","No, thank you.","That sounds fun!","It's mine."],
+        2,
+        "さそいに「楽しそう！」と答える言い方は？\n「That sounds fun!」→ さんせいの言い方だから正解！\n「You're welcome.」→ お礼への返事だよ。\n「No, thank you.」→ ことわる言い方だけど、次で「動物大好き」と続くのは不自然だよ。\n「It's mine.」→ 話に関係ないよ。",
+        "明日、動物園に行こうよ。","楽しそう！動物大好き。"),
+      mkQ("Have you ever been to Tokyo Tower?","👦","( ) I went there last summer.","👧",
+        ["No, never.","I'm busy now.","It's far.","Yes, I have."],
+        3,
+        "次の文「去年の夏に行った」がヒント。\n「Yes, I have.」→「去年行った」に合うから正解！\n「No, never.」→「一度もない」は「去年行った」とむじゅんするよ。\n「I'm busy now.」「It's far.」→ 話に合わないよ。",
+        "東京タワーに行ったことある？","うん、あるよ。去年の夏に行ったんだ。"),
+      mkQ("Shall we take a trip this weekend?","👦","( ) Where should we go?","👧",
+        ["Good idea!","You're right, it's mine.","No, I didn't.","Here you are."],
+        0,
+        "さそいにさんせいして、次に「どこ行く？」と続く言い方は？\n「Good idea!」→ さんせいの言い方だから正解！\n「You're right, it's mine.」→ 持ち主の話だよ。\n「No, I didn't.」→ 過去のしつもんへの答えだよ。\n「Here you are.」→ ものをわたすときの言葉だよ。",
+        "今週末、旅行しない？","いいね！どこに行こうか？"),
+    ],
+    practice2: [
+      mkQ("Where should we go this summer?","👦","How about Hokkaido? ( )","👧",
+        ["I lost my ticket.","It's too hot there.","The seafood is delicious.","I can't swim."],
+        2,
+        "次のAの「シーフード大好き」につながる文は？\n「The seafood is delicious.」→「シーフード大好き」に自然につながるから正解！\n「I lost my ticket.」→ 話に関係ないよ。\n「It's too hot there.」「I can't swim.」→ マイナスの内容だけどAは喜んでいるよ。",
+        "今年の夏はどこに行こう？","北海道はどう？シーフードがおいしいよ。",
+        { text:"Good idea! I love seafood.", trans:"いいね！魚介類大好き。" }),
+      mkQ("Have you ever eaten Thai food?","👦","( ) I ate it in Bangkok last year.","👧",
+        ["No, never.","I'm not hungry.","It's over there.","Yes, I have."],
+        3,
+        "次の文「去年バンコクで食べた」→食べたこと「ある」？\n「Yes, I have.」→「去年食べた」に合うから正解！\n「No, never.」→「一度もない」は「去年食べた」とむじゅんするよ。\n「I'm not hungry.」「It's over there.」→ 話に関係ないよ。",
+        "タイ料理を食べたことある？","うん、あるよ。去年バンコクで食べたんだ。"),
+      mkQ("Why don't we visit the museum on Saturday?","👦","( ) I hear the new art show is great.","👧",
+        ["That sounds great!","No, you can't.","I'm sorry to hear that.","It's not mine."],
+        0,
+        "さそいに「いいね！」→次で「新しい展示がいいらしい」と続くよ。\n「That sounds great!」→ さんせいの言い方だから正解！\n「No, you can't.」→ きょかの話だよ。\n「I'm sorry to hear that.」→ 悪い知らせへの返事だよ。\n「It's not mine.」→ 持ち主の話だよ。",
+        "土曜に美術館に行かない？","いいね！新しいアート展がすごいらしいよ。"),
+      mkQ("This is a picture from Paris.","👦","( ) I visited Paris two years ago.","👦",
+        ["No, I haven't.","Yes, I have.","I don't like pictures.","It will be sunny."],
+        1,
+        "次の文「2年前にパリを訪れた」がヒント。\n「Yes, I have.」→「2年前に訪れた」に合うから正解！\n「No, I haven't.」→「行ったことない」は「2年前に訪れた」とむじゅんするよ。\n「I don't like pictures.」→ 写真の連想わなだよ。\n「It will be sunny.」→ 天気の連想わなだよ。",
+        "これはパリの写真だよ。","うん、あるよ。2年前にパリを訪れたんだ。",
+        null, "Wow! Have you ever been to France?", "👧", "わあ！フランスに行ったことあるの？"),
+      mkQ("Let's plan our holiday. How about camping?","👦","( )","👧",
+        ["I don't have time.","Camping is boring.","Sounds perfect!","Where's my bag?"],
+        2,
+        "次でAが「テント持ってくね」→ Bはさんせいしているよ。\n「Sounds perfect!」→ さんせいの言い方だから正解！\n「I don't have time.」「Camping is boring.」→ ことわる／マイナスの返事だけど会話は前に進んでいるよ。\n「Where's my bag?」→ 話に関係ないよ。",
+        "休みの計画をたてよう。キャンプはどう？","完璧だね！",
+        { text:"Great, I'll bring the tent.", trans:"いいね、テント持ってくよ。" }),
+    ],
+    practice3: [
+      mkQ("I'm so excited about our trip to London!","👦","Me too. I'm looking forward to ( ) the museums.","👧",
+        ["visit","visiting","visited","visits"],
+        1,
+        "「look forward to」の to のあとは、動詞のどんな形？\n「visiting」→ to のあとは ~ing の形だから正解！\n「visit」「visited」「visits」→ 形がちがうよ。✕ to visit → ◯ to visiting",
+        "ロンドン旅行、すごく楽しみ！","私も。美術館を見るのを楽しみにしてるんだ。"),
+      mkQ("( )","👦","Sure! But let's take the train. It's too far to drive.","👧",
+        ["Why don't we visit the old castle?","Where did you buy your ticket?","How much was the hotel?","When did you come back?"],
+        0,
+        "Bの「電車で行こう」「運転するには遠すぎ」→ Aは「どこかへ行こう」とさそっているよ。\n「Why don't we visit the old castle?」→ さそいの文だから正解！\n他の3つは過去やお金のしつもんで、Bの「いいよ（Sure!）」という返事に合わないよ。",
+        "古いお城を見に行かない？","いいよ！でも電車で行こう。運転するには遠すぎ。",
+        { text:"OK, the train is fine.", trans:"うん、電車でいいよ。" }),
+      mkQ("This is a photo of Mt. Fuji.","👦","( ) I climbed it two years ago.","👦",
+        ["No, I haven't.","I don't have a camera.","Yes, I have.","It will rain tomorrow."],
+        2,
+        "次の文「2年前に登った」がヒント。\n「Yes, I have.」→「2年前に登った」に合うから正解！\n「No, I haven't.」→「登ったことない」は「2年前に登った」とむじゅんするよ。\n「I don't have a camera.」→ 写真の連想わなだよ。\n「It will rain tomorrow.」→ 天気の連想わなだよ。",
+        "これは富士山の写真だよ。","うん、あるよ。2年前に登ったんだ。",
+        null, "Wow! Have you ever climbed it?", "👧", "わあ！登ったことあるの？"),
+      mkQ("Are you ready for the trip to Canada?","👦","Almost! I'm really looking forward to ( ) skiing there.","👧",
+        ["go","goes","to go","going"],
+        3,
+        "「look forward to」の後ろは ~ing。go はどう変わる？\n「going」→ 正しい ~ing の形だから正解！\n「go」「goes」→ 原形／三単現だよ。\n「to go」→「to + to」になっておかしいよ（すでに to のあとだから）。",
+        "カナダ旅行の準備できた？","もう少し！スキーに行くのを本当に楽しみにしてるんだ。"),
+      mkQ("Have you ever ridden a night bus?","👦","( ) I always take the train instead.","👧",
+        ["Yes, many times.","No, I never have.","Yes, last night.","I have a car."],
+        1,
+        "次の文「いつも電車を使う」→夜行バスに乗ったこと「ある」？「ない」？\n「No, I never have.」→「いつも電車」に合うから正解！\n「Yes, many times.」「Yes, last night.」→「乗ったことある」は「いつも電車」と合わないよ。\n「I have a car.」→ 話に関係ないよ。",
+        "夜行バスに乗ったことある？","ううん、一度もないよ。いつも電車を使うんだ。"),
+    ],
+    quiz: [
+      mkQ("Why don't we go hiking on Saturday?","👦","( )","👧",
+        ["You're welcome.","That's a good idea!","No, it isn't.","I'm sorry to hear that."],
+        1, null,
+        "土曜にハイキングに行かない？","いいね！"),
+      mkQ("I'm visiting Australia this winter.","👦","( ) I went there in 2022.","👦",
+        ["No, never.","I have no time.","It's very far.","Yes, I have."],
+        3, null,
+        "この冬オーストラリアに行くんだ。","うん、あるよ。2022年に行ったんだ。",
+        null, "Great! Have you been there before?", "👧", "いいね！前に行ったことある？"),
+      mkQ("Let's plan our trip. Where should we stay?","👦","How about the beach hotel? ( )","👧",
+        ["It's near the sea.","It's too expensive.","I forgot my bag.","I can't swim well."],
+        0, null,
+        "旅行の計画をしよう。どこに泊まる？","ビーチホテルはどう？海の近くだよ。",
+        { text:"Perfect! I want to see the ocean.", trans:"完璧！海が見たいな。" }),
+      mkQ("Are you excited about the school trip?","👦","Yes! I'm looking forward to ( ) new friends.","👧",
+        ["make","made","making","makes"],
+        2, null,
+        "修学旅行、楽しみ？","うん！新しい友達を作るのが楽しみ。"),
+      mkQ("Have you ever visited Okinawa?","👦","( ) I want to go someday.","👧",
+        ["Yes, many times.","No, I haven't.","Yes, last summer.","I live there now."],
+        1, null,
+        "沖縄に行ったことある？","ううん、ないよ。いつか行きたいな。"),
+      mkQ("( )","👨","Sounds fun! I was thinking the same thing.","👩",
+        ["How much is the tent?","Did you enjoy camping?","Where is the campsite?","Shall we go camping this weekend?"],
+        3,
+        "むずかしい！男の人の空所のあとに続く「Sounds fun! I was thinking the same thing.」がヒント。キャンプに関係ある選択肢でも、「さそい」の文じゃないと「same thing」とつながらないよ。\n「Shall we go camping this weekend?」→ さそいの文だから正解！\n他の3つはキャンプに関係あるけど、さそいの文じゃないよ。",
+        "今週末キャンプに行かない？","楽しそう！同じこと考えてた。"),
+      mkQ("Nice bag! Is it new?","👦","Yes. ( )","👧",
+        ["I bought it in Italy last month.","I will buy it in Italy.","I don't like Italy.","Italy is a country."],
+        0,
+        "むずかしい！答え「先月イタリアで買った」が次の文「私はイタリアに行ったことないよ」につながるよ。\n「I bought it in Italy last month.」→ 過去形で「もう持っている」に合うから正解！\n「I will buy it in Italy.」→ 未来形だから「もう持ってる」と合わないよ。\n「I don't like Italy.」「Italy is a country.」→ 話に関係ないよ。",
+        "いいバッグ！新しいの？","うん。先月イタリアで買ったんだ。",
+        { text:"Really? I've never been to Italy.", trans:"ほんと？私はイタリアに行ったことないよ。" }),
     ],
   },
 };
@@ -3598,7 +3723,7 @@ function Hi({ color, children }) {
   return <span style={{ color, fontWeight: 900 }}>{children}</span>;
 }
 
-const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed" };
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777" };
 
 function NoteSection({ label, isNew, children }) {
   return (
@@ -3761,7 +3886,31 @@ function NotesGrade5() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends };
+function NotesG3Travel() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="🆕 けいけん (Experience)" isNew>
+        <div><Hi color={c.experience}>Have you ever been to ～?</Hi> = 「～に行ったことある？」</div>
+        <div>答え方 → Yes, I have. / No, I haven't. / No, never.</div>
+        <div style={{marginTop:4,fontStyle:"italic"}}>例: Have you ever been to Kyoto? 「京都に行ったことある？」</div>
+      </NoteSection>
+      <NoteSection label="🆕 さそう言い方 (Suggesting)" isNew>
+        <div><Hi color={c.invite}>Why don't we ～?</Hi> / <Hi color={c.invite}>Shall we ～?</Hi> / <Hi color={c.invite}>How about ～ing?</Hi> = 「～しない？」</div>
+        <div>さんせいの返事 → That sounds great! / Sounds good! / I was thinking the same thing.</div>
+      </NoteSection>
+      <NoteSection label="🆕 look forward to ～ing" isNew>
+        <div><Hi color={c.challenge}>look forward to ～ing</Hi> = 「～を楽しみにする」（to のあとは動詞に <Hi color={c.challenge}>ing</Hi>！）</div>
+        <ExampleWarning q="I'm looking forward to..." wrong="I'm looking forward to go." right="I'm looking forward to going." />
+      </NoteSection>
+      <NoteSection>
+        <div>💡 コツ: 答えのヒントは、空所（　）の「次の行」にあることが多いよ！</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
@@ -4021,6 +4170,16 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
           </div>
         </div>
 
+        {/* Mid bubble — a fixed line spoken between A and B (used for 3-line exchanges) */}
+        {q.mid && (
+          <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:6}}>
+            <div style={{fontSize:22,flexShrink:0}}>{q.midEmoji}</div>
+            <div style={{background:"#ddd6fe",borderRadius:"14px 14px 4px 14px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+              <div style={{fontSize:13,color:"#3b0764",lineHeight:1.4}}>{q.mid}</div>
+            </div>
+          </div>
+        )}
+
         {/* Person B bubble */}
         <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:6}}>
           <div style={{fontSize:22,flexShrink:0}}>{q.bEmoji}</div>
@@ -4050,11 +4209,12 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
             </div>
           </div>
         )}
-        {phase === "correct" && (q.transA || q.transB || q.followUp?.trans) && (
+        {phase === "correct" && (q.transA || q.transMid || q.transB || q.followUp?.trans) && (
           <div style={{background:"#fff",border:"1px solid #ddd6fe",borderRadius:12,padding:"7px 12px",fontSize:12,color:"#4c1d95",lineHeight:1.6}}>
             <div style={{fontSize:10,fontWeight:700,color:"#a78bfa",marginBottom:2}}>やくす 📖</div>
             {q.transA && <div>👤 {q.transA}</div>}
-            {q.transB && <div>💬 {q.transB}</div>}
+            {q.transMid && <div>💬 {q.transMid}</div>}
+            {q.transB && <div>👤 {q.transB}</div>}
             {q.followUp?.trans && <div>👤 {q.followUp.trans}</div>}
           </div>
         )}
