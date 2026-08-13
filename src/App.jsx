@@ -3436,7 +3436,7 @@ function NotesWithFriends() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesAtHome, at_school: NotesAtSchool, with_friends: NotesWithFriends };
+const DIALOGUE_NOTES = { g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
