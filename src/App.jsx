@@ -3761,7 +3761,7 @@ function NotesGrade5() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool };
+const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
