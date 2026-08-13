@@ -1864,6 +1864,8 @@ body { font-family:'Inter',sans-serif; background:#ece4b7; }
 .hdr-back:active { transform:translateY(2px); box-shadow:none; }
 .hdr-logout { background:#f97316; border:none; border-radius:10px; color:#fff; font-size:12px; font-weight:800; padding:8px 14px; cursor:pointer; font-family:'Inter',sans-serif; box-shadow:0 3px 0 #c2410c; flex-shrink:0; transition:transform .1s; }
 .hdr-logout:active { transform:translateY(2px); box-shadow:none; }
+.hdr-fullscreen { background:rgba(255,255,255,.25); border:none; border-radius:10px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:pointer; color:#fff; flex-shrink:0; margin-right:10px; transition:background .12s; }
+.hdr-fullscreen:hover { background:rgba(255,255,255,.4); }
 .hdr-title { font-family:'Nunito',sans-serif; font-weight:900; font-size:20px; color:#fff; }
 .hdr-sub   { font-size:12px; color:rgba(255,255,255,.82); font-weight:500; margin-top:1px; }
 
@@ -2034,6 +2036,17 @@ export default function App() {
 
   const [screen,         setScreen]         = useState(currentProfile ? "dashboard" : "login");
   const [activeCategory, setActiveCategory] = useState(null);
+  const [isFullscreen,   setIsFullscreen]   = useState(false);
+
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  };
   const [gameResults,    setGameResults]    = useState(null);
 
   const saveProfiles       = p  => { setProfiles(p);       localStorage.setItem(PROFILES_KEY, JSON.stringify(p)); };
@@ -2139,6 +2152,9 @@ export default function App() {
               {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : "Grade 5 · えいけん5きゅう"}
             </div>
           </div>
+          <button type="button" className="hdr-fullscreen" onClick={toggleFullscreen} title={isFullscreen ? "Exit full screen" : "Full screen"}>
+            {isFullscreen ? "⤦" : "⛶"}
+          </button>
           {screen !== "login" && currentProfile && (
             <button type="button" className="hdr-logout" onClick={logout}>
               Log out
@@ -2242,27 +2258,45 @@ export default function App() {
                   </>
                 );
               })()}
-              {screen === "vocab_list" && (
-                <>
-                  <div className="sidebar-title">Categories</div>
-                  {categories.map(cat => {
-                    const pct = getCatProgress(cat.id);
-                    return (
-                      <button type="button" key={cat.id}
-                        onClick={() => { setActiveCategory(cat); setScreen("vocab_study"); }}
-                        style={{display:"flex",alignItems:"center",gap:8,width:"100%",background:activeCategory?.id===cat.id?"#fdf5e8":"transparent",border:"none",cursor:"pointer",
-                          padding:"8px 10px",borderRadius:"10px",marginBottom:4,textAlign:"left"}}>
-                        {pct > 0 ? <ScoreCircle pct={pct} size={26} /> : <span style={{fontSize:18,width:26,textAlign:"center",flexShrink:0}}>{cat.emoji}</span>}
-                        <div style={{flex:1}}>
-                          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:cat.color}}>{cat.title}</div>
-                          <div style={{fontSize:11,color:"#a0aec0"}}>{pct>0?`${pct}% best`:"not started"}</div>
-                        </div>
-                        <span style={{fontSize:13}}>{pct>=70?"✅":pct>0?"🔄":""}</span>
-                      </button>
-                    );
-                  })}
-                </>
-              )}
+              {screen === "vocab_list" && (() => {
+                const catsWithMissed = categories
+                  .map(cat => ({ cat, words: cat.words.filter(w => getMissedWords(cat.id).includes(w.en)) }))
+                  .filter(g => g.words.length > 0);
+                const totalMissed = catsWithMissed.reduce((n,g) => n + g.words.length, 0);
+                return (
+                  <>
+                    <div className="sidebar-title">📝 Review Missed Words</div>
+                    {totalMissed === 0 ? (
+                      <div style={{fontSize:12,color:"#a0aec0",lineHeight:1.6,padding:"6px 2px"}}>
+                        No missed words yet! Finish a quiz and any words you get wrong will show up here so you can review them.
+                      </div>
+                    ) : (
+                      <>
+                        <div style={{fontSize:12,color:"#a0aec0",marginBottom:12}}>{totalMissed} word{totalMissed!==1?"s":""} to review — tap 🔈 to hear</div>
+                        {catsWithMissed.map(({cat, words}) => (
+                          <div key={cat.id} style={{marginBottom:14}}>
+                            <button type="button" onClick={() => { setActiveCategory(cat); setScreen("vocab_study"); }}
+                              style={{display:"flex",alignItems:"center",gap:6,width:"100%",background:"transparent",border:"none",cursor:"pointer",padding:"2px 0",marginBottom:4,textAlign:"left"}}>
+                              <span style={{fontSize:14}}>{cat.emoji}</span>
+                              <span style={{fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:12,color:cat.color}}>{cat.title}</span>
+                              <span style={{fontSize:11,color:"#cbd5e0",marginLeft:"auto"}}>→</span>
+                            </button>
+                            {words.map(w => (
+                              <div key={w.en} className="wl-row" style={{paddingLeft:8}}>
+                                <div style={{flex:1}}>
+                                  <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:"#02020b"}}>{w.en}</div>
+                                  <div style={{fontSize:11,color:"#a0aec0"}}>{w.kanji}</div>
+                                </div>
+                                <SpeakBtn text={w.en} size={24} />
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </>
+                );
+              })()}
               {(screen === "vocab_study" || screen === "vocab_game" || screen === "vocab_results" || screen === "vocab_review") && activeCategory && (() => {
                 const missedEn = getMissedWords(activeCategory.id);
                 const missedList = activeCategory.words.filter(w => missedEn.includes(w.en));
