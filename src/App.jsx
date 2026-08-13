@@ -77,6 +77,7 @@ function SpeakBtn({ text, size = 32, rate }) {
 const PROFILES_KEY = "eiken_profiles_v1";
 const CURRENT_KEY  = "eiken_current_v1";
 const PROGRESS_KEY = "eiken_progress_v1";
+const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
 
 /* ── Dialogue Test Data ── */
 const DIALOGUE_TOPICS = [
@@ -1489,6 +1490,7 @@ export default function App() {
   const [profiles,       setProfiles]       = useState(() => { try { return JSON.parse(localStorage.getItem(PROFILES_KEY)) || []; } catch { return []; }});
   const [currentProfile, setCurrentProfile] = useState(() => { try { return JSON.parse(localStorage.getItem(CURRENT_KEY))  || null; } catch { return null; }});
   const [progress,       setProgress]       = useState(() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }  catch { return {}; }});
+  const [dialogueProgress, setDialogueProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_PROGRESS_KEY)) || {}; } catch { return {}; }});
 
   const [screen,         setScreen]         = useState(currentProfile ? "dashboard" : "login");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -1514,6 +1516,15 @@ export default function App() {
     saveProgress(next);
   };
   const getCatProgress = catId => progress[`${currentProfile?.id}_${catId}`] || 0;
+
+  const markDialogueSetDone = (topicId, setKey, score, total) => {
+    const key  = `${currentProfile.id}_${topicId}_${setKey}`;
+    const prevBest = dialogueProgress[key]?.score ?? -1;
+    const next = { ...dialogueProgress, [key]: { done:true, score: score != null ? Math.max(prevBest, score) : null, total } };
+    setDialogueProgress(next);
+    localStorage.setItem(DIALOGUE_PROGRESS_KEY, JSON.stringify(next));
+  };
+  const getDialogueSetProgress = (topicId, setKey) => dialogueProgress[`${currentProfile?.id}_${topicId}_${setKey}`] || null;
 
   // Compute categories once based on current level — used throughout render
   const categories = getCategoriesByLevel(currentProfile?.level || "5");
@@ -1582,10 +1593,11 @@ export default function App() {
               <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} />
             )}
             {screen === "dialogue_topic" && dialogueTopic && (
-              <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} />
+              <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} getSetProgress={getDialogueSetProgress} />
             )}
             {screen === "dialogue_practice" && dialogueTopic && dialoguePractice && (
-              <DialoguePracticeScreen key={dialogueTopic.id + dialoguePractice} topic={dialogueTopic} setKey={dialoguePractice} onBack={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }} onFinish={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }} />
+              <DialoguePracticeScreen key={dialogueTopic.id + dialoguePractice} topic={dialogueTopic} setKey={dialoguePractice} onBack={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }}
+                onComplete={(score, total) => markDialogueSetDone(dialogueTopic.id, dialoguePractice, score, total)} />
             )}
           </div>
         )}
@@ -2807,7 +2819,7 @@ function DialogueHomeScreen({ onSelect, onBack }) {
 }
 
 /* Practice/Quiz selector for a topic */
-function DialogueTopicScreen({ topic, onSelect, onBack }) {
+function DialogueTopicScreen({ topic, onSelect, onBack, getSetProgress }) {
   const sets = [
     { key:"practice1", label:"Practice 1", emoji:"🥚", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
     { key:"practice2", label:"Practice 2", emoji:"🐣", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
@@ -2824,31 +2836,42 @@ function DialogueTopicScreen({ topic, onSelect, onBack }) {
         </div>
       </div>
       <div style={{display:"flex",flexDirection:"column",gap:12}}>
-        {sets.map(s => (
-          <button key={s.key} type="button" onClick={() => onSelect(s.key)}
-            style={{display:"flex",alignItems:"center",gap:14,padding:"16px 18px",
-              borderRadius:16,border:`2px solid ${s.bg}`,background:"#fff",
-              cursor:"pointer",textAlign:"left",transition:"all .12s",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}
-            onMouseEnter={e => { e.currentTarget.style.background=s.bg; }}
-            onMouseLeave={e => { e.currentTarget.style.background="#fff"; }}>
-            <div style={{width:50,height:50,borderRadius:14,background:s.bg,
-              display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>
-              {s.emoji}
-            </div>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:s.color}}>{s.label}</div>
-              <div style={{fontSize:12,color:"#a0aec0",marginTop:2}}>{s.sub}</div>
-            </div>
-            <span style={{fontSize:20,color:s.color}}>→</span>
-          </button>
-        ))}
+        {sets.map(s => {
+          const prog = getSetProgress ? getSetProgress(topic.id, s.key) : null;
+          const done = !!prog?.done;
+          return (
+            <button key={s.key} type="button" onClick={() => onSelect(s.key)}
+              style={{display:"flex",alignItems:"center",gap:14,padding:"16px 18px",
+                borderRadius:16,border:`2px solid ${done ? "#86efac" : s.bg}`,background:done?"#f0fdf4":"#fff",
+                cursor:"pointer",textAlign:"left",transition:"all .12s",boxShadow:"0 2px 8px rgba(0,0,0,.06)",position:"relative"}}
+              onMouseEnter={e => { e.currentTarget.style.background=done?"#dcfce7":s.bg; }}
+              onMouseLeave={e => { e.currentTarget.style.background=done?"#f0fdf4":"#fff"; }}>
+              <div style={{width:50,height:50,borderRadius:14,background:s.bg,
+                display:"flex",alignItems:"center",justifyContent:"center",fontSize:22,flexShrink:0}}>
+                {s.emoji}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{display:"flex",alignItems:"center",gap:6}}>
+                  <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:s.color}}>{s.label}</div>
+                  {done && <span style={{fontSize:15}}>✅</span>}
+                </div>
+                <div style={{fontSize:12,color:"#a0aec0",marginTop:2}}>
+                  {done && s.key === "quiz" && prog.score != null
+                    ? `Best score: ${prog.score} / ${prog.total} 🏆`
+                    : done ? "Completed" : s.sub}
+                </div>
+              </div>
+              <span style={{fontSize:20,color:s.color}}>→</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
 }
 
 /* Chat-style practice/quiz screen */
-function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
+function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
   const questions = DIALOGUE_TESTS[topic.id]?.[setKey] || [];
   const isQuiz = setKey === "quiz";
   const [qIdx, setQIdx] = useState(0);
@@ -2863,6 +2886,12 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
   useEffect(() => {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [phase, qIdx]);
+
+  useEffect(() => {
+    if (phase === "done" && onComplete) {
+      onComplete(isQuiz ? score : null, questions.length);
+    }
+  }, [phase]);
 
   useEffect(() => {
     const onKey = (e) => {
