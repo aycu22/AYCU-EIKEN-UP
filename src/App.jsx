@@ -1859,7 +1859,10 @@ body { font-family:'Inter',sans-serif; background:#ece4b7; }
 
 /* ── Header ── */
 .hdr       { background:linear-gradient(135deg,#7fb069,#a5c98a); padding:14px 28px; display:flex; align-items:center; gap:14px; box-shadow:0 3px 14px rgba(127,176,105,.35); flex-shrink:0; width:100%; }
-.hdr-back  { background:rgba(255,255,255,.25); border:none; border-radius:50%; width:36px; height:36px; display:flex; align-items:center; justify-content:center; font-size:17px; cursor:pointer; color:#fff; flex-shrink:0; }
+.hdr-back  { background:#fff; border:2.5px solid #02020b; border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:19px; font-weight:900; cursor:pointer; color:#02020b; flex-shrink:0; box-shadow:0 2px 0 #02020b; transition:transform .1s; }
+.hdr-back:active { transform:translateY(2px); box-shadow:none; }
+.hdr-logout { background:#f97316; border:none; border-radius:10px; color:#fff; font-size:12px; font-weight:800; padding:8px 14px; cursor:pointer; font-family:'Inter',sans-serif; box-shadow:0 3px 0 #c2410c; flex-shrink:0; transition:transform .1s; }
+.hdr-logout:active { transform:translateY(2px); box-shadow:none; }
 .hdr-title { font-family:'Nunito',sans-serif; font-weight:900; font-size:20px; color:#fff; }
 .hdr-sub   { font-size:12px; color:rgba(255,255,255,.82); font-weight:500; margin-top:1px; }
 
@@ -2118,9 +2121,8 @@ export default function App() {
               {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : "Grade 5 · えいけん5きゅう"}
             </div>
           </div>
-          {screen === "dashboard" && currentProfile && (
-            <button type="button" onClick={logout}
-              style={{background:"rgba(255,255,255,.22)",border:"none",borderRadius:"10px",color:"#fff",fontSize:"12px",fontWeight:700,padding:"6px 12px",cursor:"pointer",fontFamily:"'Inter',sans-serif"}}>
+          {screen !== "login" && currentProfile && (
+            <button type="button" className="hdr-logout" onClick={logout}>
               Log out
             </button>
           )}
@@ -3436,7 +3438,75 @@ function NotesWithFriends() {
   );
 }
 
-const DIALOGUE_NOTES = { g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool };
+/* Simple 2/3-column table for note pages */
+function MiniTable({ cols, rows }) {
+  return (
+    <div style={{ display:"grid", gridTemplateColumns:`repeat(${cols}, 1fr)`, border:"1px solid #e2e8f0", borderRadius:10, overflow:"hidden", marginBottom:4 }}>
+      {rows.map((row, ri) => row.map((cell, ci) => (
+        <div key={`${ri}-${ci}`} style={{
+          padding:"6px 9px", fontSize:12.5, lineHeight:1.5,
+          background: ri === 0 ? "#f1f5f9" : "#fff",
+          fontWeight: ri === 0 ? 800 : 500,
+          color: ri === 0 ? "#475569" : "#374151",
+          borderTop: ri === 0 ? "none" : "1px solid #f1f5f9",
+          borderRight: ci < cols - 1 ? "1px solid #f1f5f9" : "none",
+        }}>
+          {cell}
+        </div>
+      )))}
+    </div>
+  );
+}
+
+/* Example bubble showing a wrong (✗) vs right (✓) answer pair */
+function ExampleWarning({ q, wrong, right }) {
+  return (
+    <div style={{ background:"#fef2f2", border:"1px solid #fecaca", borderRadius:10, padding:"8px 12px", marginTop:6 }}>
+      <div style={{ fontSize:12, color:"#991b1b", marginBottom:4 }}>👩 {q}</div>
+      <div style={{ fontSize:12, color:"#b91c1c" }}>✗ {wrong}</div>
+      <div style={{ fontSize:12, color:"#15803d", fontWeight:700 }}>✓ {right}</div>
+    </div>
+  );
+}
+
+function NotesGrade5() {
+  return (
+    <>
+      <NoteSection label="Page 1 — きく会話 🎧" isNew>
+        <div style={{ marginBottom:6, fontWeight:700 }}>最初の言葉を見よう！</div>
+        <MiniTable cols={3} rows={[
+          ["言葉","答え方","例"],
+          ["What","もの・こと","I like soccer."],
+          ["Where","ばしょ","At the park."],
+          ["When","じかん・日にち","At six. / June 10th."],
+          ["Who","人","She's Ms. Green."],
+          ["Whose","だれのもの","It's mine."],
+          ["How","やり方","By train."],
+        ]} />
+        <div style={{ marginTop:8, fontSize:12, color:"#92400e" }}>⚠️ 同じ言葉があってもだまされないで！</div>
+        <ExampleWarning q="Where are my shoes?" wrong="I like shoes." right="They're by the door." />
+      </NoteSection>
+      <NoteSection label="Page 2 — 答える会話 💬" isNew>
+        <div style={{ marginBottom:6, fontWeight:700 }}>この返事をおぼえよう！</div>
+        <MiniTable cols={2} rows={[
+          ["このとき","答え方"],
+          ["Let's ~!","Yes, let's! / That's a good idea!"],
+          ["Can I ~?","Of course."],
+          ["〜してください","All right! / I'm sorry."],
+          ["ほめられた","Thanks, ○○!"],
+          ["今何してる？","I'm + ~ing."],
+        ]} />
+        <div style={{ marginTop:8, fontSize:12, color:"#92400e" }}>⚠️「I'm + ~ing」に気をつけよう！</div>
+        <ExampleWarning q="What are you doing?" wrong="I do homework." right="I'm doing my homework." />
+      </NoteSection>
+      <NoteSection>
+        <div>さあ、始めよう！ 🎉</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
