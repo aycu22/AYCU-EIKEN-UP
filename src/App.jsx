@@ -2006,7 +2006,7 @@ export default function App() {
         {isDialogueScreen && currentProfile && (
           <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
             {screen === "dialogue_home" && (
-              <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} level={currentProfile?.level || "5"} />
+              <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} level={currentProfile?.level || "5"} getSetProgress={getDialogueSetProgress} />
             )}
             {screen === "dialogue_topic" && dialogueTopic && (
               <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} getSetProgress={getDialogueSetProgress} />
@@ -3197,7 +3197,9 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
 ══════════════════════════════════════════════ */
 
 /* LINE-style topic list */
-function DialogueHomeScreen({ onSelect, onBack, level }) {
+const SET_LABELS = { practice1:"P1", practice2:"P2", practice3:"P3", quiz:"Q" };
+
+function DialogueHomeScreen({ onSelect, onBack, level, getSetProgress }) {
   const topics = DIALOGUE_TOPICS.filter(t => t.level === level);
   return (
     <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
@@ -3217,25 +3219,45 @@ function DialogueHomeScreen({ onSelect, onBack, level }) {
           <div style={{background:"#7c3aed",padding:"10px 16px",fontSize:12,fontWeight:700,color:"#e9d5ff",letterSpacing:1}}>
             TOPICS
           </div>
-          {topics.map((topic, i) => (
-            <button key={topic.id} type="button" onClick={() => onSelect(topic)}
-              style={{width:"100%",display:"flex",alignItems:"center",gap:14,
-                padding:"16px 18px",background:"#fff",border:"none",
-                borderTop: i===0 ? "none" : "1px solid #f0f0f0",
-                cursor:"pointer",textAlign:"left",transition:"background .12s"}}
-              onMouseEnter={e => e.currentTarget.style.background="#f9f5ff"}
-              onMouseLeave={e => e.currentTarget.style.background="#fff"}>
-              <div style={{width:48,height:48,borderRadius:14,background:"#ede9fe",
-                display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>
-                {topic.emoji}
-              </div>
-              <div style={{flex:1}}>
-                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
-                <div style={{fontSize:12,color:"#a78bfa",marginTop:2}}>Practice 1 · 2 · 3 · Quiz</div>
-              </div>
-              <span style={{fontSize:18,color:"#c4b5fd"}}>→</span>
-            </button>
-          ))}
+          {topics.map((topic, i) => {
+            const topicTests = DIALOGUE_TESTS[topic.id] || {};
+            const setKeys = ["practice1","practice2","practice3", ...(topicTests.quiz ? ["quiz"] : [])];
+            const doneSets = setKeys.filter(k => getSetProgress?.(topic.id, k)?.done);
+            const allDone = doneSets.length === setKeys.length;
+            return (
+              <button key={topic.id} type="button" onClick={() => onSelect(topic)}
+                style={{width:"100%",display:"flex",alignItems:"center",gap:14,
+                  padding:"16px 18px",background:allDone?"#f0fdf4":"#fff",border:"none",
+                  borderTop: i===0 ? "none" : "1px solid #f0f0f0",
+                  borderLeft: allDone ? "4px solid #22c55e" : "4px solid transparent",
+                  cursor:"pointer",textAlign:"left",transition:"background .12s"}}
+                onMouseEnter={e => e.currentTarget.style.background=allDone?"#dcfce7":"#f9f5ff"}
+                onMouseLeave={e => e.currentTarget.style.background=allDone?"#f0fdf4":"#fff"}>
+                <div style={{width:48,height:48,borderRadius:14,background:allDone?"#dcfce7":"#ede9fe",
+                  display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>
+                  {topic.emoji}
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{display:"flex",alignItems:"center",gap:6}}>
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
+                    {allDone && <span style={{fontSize:14}}>✅</span>}
+                  </div>
+                  <div style={{display:"flex",gap:6,marginTop:5}}>
+                    {setKeys.map(k => {
+                      const done = doneSets.includes(k);
+                      return (
+                        <span key={k} style={{fontSize:10,fontWeight:800,padding:"2px 7px",borderRadius:20,
+                          background:done?"#dcfce7":"#f3f4f6",color:done?"#15803d":"#9ca3af"}}>
+                          {SET_LABELS[k]}{done?" ✓":""}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+                <span style={{fontSize:18,color:allDone?"#4ade80":"#c4b5fd"}}>→</span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
