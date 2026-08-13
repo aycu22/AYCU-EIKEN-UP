@@ -82,15 +82,26 @@ const MISSED_WORDS_KEY = "eiken_missed_words_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 
 /* ── Dialogue Test Data ── */
+// Per-topic relationship labels shown above each chat bubble (fallback to DEFAULT_SPEAKER_LABEL by emoji)
+const AT_HOME_LABELS   = { "👩":"Mom", "👨":"Dad", "👧":"Girl", "👦":"Boy", "🧒":"You" };
+const AT_SCHOOL_LABELS = { "👩":"Teacher", "👨":"Teacher", "👧":"Girl", "👦":"Boy", "🧒":"You" };
+const FRIENDS_LABELS   = { "👦":"Boy", "👧":"Girl", "👨":"Man", "👩":"Woman", "🧒":"You" };
+
 const DIALOGUE_TOPICS = [
-  { id:"at_home",     title:"AT HOME",     emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
-  { id:"at_school",   title:"AT SCHOOL",   emoji:"🏫", color:"#0891b2", shadow:"#155e75", level:"5" },
-  { id:"with_friends",title:"WITH FRIENDS",emoji:"👫", color:"#f43f5e", shadow:"#9f1239", level:"5" },
-  { id:"g4_at_home",   title:"AT HOME",   emoji:"🏡", color:"#2563eb", shadow:"#1e3a8a", level:"4" },
-  { id:"g4_at_school", title:"AT SCHOOL", emoji:"🏫", color:"#f97316", shadow:"#c2410c", level:"4" },
-  { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4" },
-  { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3" },
+  { id:"at_home",     title:"AT HOME",     emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5", speakerLabels: AT_HOME_LABELS },
+  { id:"at_school",   title:"AT SCHOOL",   emoji:"🏫", color:"#0891b2", shadow:"#155e75", level:"5", speakerLabels: AT_SCHOOL_LABELS },
+  { id:"with_friends",title:"WITH FRIENDS",emoji:"👫", color:"#f43f5e", shadow:"#9f1239", level:"5", speakerLabels: FRIENDS_LABELS },
+  { id:"g4_at_home",   title:"AT HOME",   emoji:"🏡", color:"#2563eb", shadow:"#1e3a8a", level:"4", speakerLabels: AT_HOME_LABELS },
+  { id:"g4_at_school", title:"AT SCHOOL", emoji:"🏫", color:"#f97316", shadow:"#c2410c", level:"4", speakerLabels: AT_SCHOOL_LABELS },
+  { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4", speakerLabels: FRIENDS_LABELS },
+  { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3", speakerLabels: FRIENDS_LABELS },
 ];
+
+// Fallback label when a topic has no speakerLabels entry for that emoji
+const DEFAULT_SPEAKER_LABEL = { "🧒":"You", "👦":"Boy", "👧":"Girl", "👨":"Man", "👩":"Woman", "👨‍🏫":"Teacher", "👩‍🏫":"Teacher" };
+function speakerLabel(topic, emoji) {
+  return topic?.speakerLabels?.[emoji] || DEFAULT_SPEAKER_LABEL[emoji] || "";
+}
 
 // Practice-set progression icons, varied by grade level so sets never look identical across grades
 const PRACTICE_EMOJI_BY_LEVEL = {
@@ -4065,6 +4076,30 @@ function DialogueTopicScreen({ topic, onSelect, onBack, getSetProgress }) {
   );
 }
 
+/* A single chat message: relationship label on top, emoji + bubble below.
+   isLeft pins the speaker to the left column consistently (same speaker always same side). */
+function ChatBubble({ emoji, label, text, isLeft, italic }) {
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:isLeft?"flex-start":"flex-end"}}>
+      {label && (
+        <div style={{fontSize:10,fontWeight:800,color:"#7c6a9c",margin: isLeft ? "0 0 2px 30px" : "0 30px 2px 0"}}>
+          {label}
+        </div>
+      )}
+      <div style={{display:"flex",alignItems:"flex-end",flexDirection:isLeft?"row":"row-reverse",gap:6}}>
+        <div style={{fontSize:22,flexShrink:0}}>{emoji}</div>
+        <div style={{
+          background: isLeft ? "#fff" : "#ddd6fe",
+          borderRadius: isLeft ? "14px 14px 14px 4px" : "14px 14px 4px 14px",
+          padding:"7px 12px",maxWidth:"78%",boxShadow:"0 1px 4px rgba(0,0,0,.08)",
+        }}>
+          <div style={{fontSize:13,color:isLeft?"#1f2937":"#3b0764",lineHeight:1.4,fontStyle:italic?"italic":"normal"}}>{text}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* Chat-style practice/quiz screen */
 function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
   const questions = DIALOGUE_TESTS[topic.id]?.[setKey] || [];
@@ -4161,32 +4196,17 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
       </div>
 
       {/* Chat window */}
-      <div ref={chatRef} style={{maxHeight:"38vh",overflowY:"auto",background:"#f0ebff",borderRadius:14,padding:"10px 12px",marginBottom:10,display:"flex",flexDirection:"column",gap:6}}>
-        {/* Person A bubble */}
-        <div style={{display:"flex",alignItems:"flex-end",gap:6}}>
-          <div style={{fontSize:22,flexShrink:0}}>{q.aEmoji}</div>
-          <div style={{background:"#fff",borderRadius:"14px 14px 14px 4px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-            <div style={{fontSize:13,color:"#1f2937",lineHeight:1.4}}>{q.a}</div>
-          </div>
-        </div>
+      <div ref={chatRef} style={{maxHeight:"38vh",overflowY:"auto",background:"#f0ebff",borderRadius:14,padding:"10px 12px",marginBottom:10,display:"flex",flexDirection:"column",gap:8}}>
+        {/* Person A bubble — always on the left */}
+        <ChatBubble emoji={q.aEmoji} label={speakerLabel(topic, q.aEmoji)} text={q.a} isLeft />
 
-        {/* Mid bubble — a fixed line spoken between A and B (used for 3-line exchanges) */}
+        {/* Mid bubble — a fixed line spoken between A and B (used for 3-line exchanges). Side follows the actual speaker. */}
         {q.mid && (
-          <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:6}}>
-            <div style={{fontSize:22,flexShrink:0}}>{q.midEmoji}</div>
-            <div style={{background:"#ddd6fe",borderRadius:"14px 14px 4px 14px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-              <div style={{fontSize:13,color:"#3b0764",lineHeight:1.4}}>{q.mid}</div>
-            </div>
-          </div>
+          <ChatBubble emoji={q.midEmoji} label={speakerLabel(topic, q.midEmoji)} text={q.mid} isLeft={q.midEmoji === q.aEmoji} />
         )}
 
-        {/* Person B bubble */}
-        <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:6}}>
-          <div style={{fontSize:22,flexShrink:0}}>{q.bEmoji}</div>
-          <div style={{background:"#ddd6fe",borderRadius:"14px 14px 4px 14px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-            <div style={{fontSize:13,color:"#3b0764",lineHeight:1.4,fontStyle:"italic"}}>{q.b}</div>
-          </div>
-        </div>
+        {/* Person B bubble — side follows the actual speaker (A speaking again stays on the left) */}
+        <ChatBubble emoji={q.bEmoji} label={speakerLabel(topic, q.bEmoji)} text={q.b} isLeft={q.bEmoji === q.aEmoji} italic />
 
         {/* Correct reaction */}
         {phase === "correct" && (
@@ -4202,12 +4222,7 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
           </div>
         )}
         {phase === "correct" && q.followUp && (
-          <div style={{display:"flex",alignItems:"flex-end",gap:6}}>
-            <div style={{fontSize:22,flexShrink:0}}>{q.aEmoji}</div>
-            <div style={{background:"#fff",borderRadius:"14px 14px 14px 4px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-              <div style={{fontSize:13,color:"#1f2937",lineHeight:1.4}}>{q.followUp.text}</div>
-            </div>
-          </div>
+          <ChatBubble emoji={q.aEmoji} label={speakerLabel(topic, q.aEmoji)} text={q.followUp.text} isLeft />
         )}
         {phase === "correct" && (q.transA || q.transMid || q.transB || q.followUp?.trans) && (
           <div style={{background:"#fff",border:"1px solid #ddd6fe",borderRadius:12,padding:"7px 12px",fontSize:12,color:"#4c1d95",lineHeight:1.6}}>
