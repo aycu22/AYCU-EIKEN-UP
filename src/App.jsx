@@ -2165,18 +2165,65 @@ export default function App() {
           <div className="body-wrap">
             {/* Left sidebar */}
             <div className="sidebar">
-              {screen === "dashboard" && (
-                <>
-                  <div className="sidebar-title">Navigation</div>
-                  <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#D36135",marginBottom:4}}>📖 Vocabulary</div>
-                  {categories.map(cat => (
-                    <div key={cat.id} style={{fontSize:13,color:"#718096",padding:"5px 0 5px 12px",borderLeft:`3px solid ${getCatProgress(cat.id)>=70?cat.color:"#e2e8f0"}`,
-                      marginBottom:4,fontWeight:getCatProgress(cat.id)>=70?700:400}}>
-                      {cat.title} {getCatProgress(cat.id)>=70?"✅":""}
+              {screen === "dashboard" && (() => {
+                const vocabDone = categories.filter(c => getCatProgress(c.id) >= 70).length;
+                const vocabStarted = categories.filter(c => getCatProgress(c.id) > 0);
+                const dTopics = DIALOGUE_TOPICS.filter(t => t.level === (currentProfile?.level || "5"));
+                const dSetsAll = dTopics.flatMap(t => {
+                  const keys = ["practice1","practice2","practice3", ...(DIALOGUE_TESTS[t.id]?.quiz ? ["quiz"] : [])];
+                  return keys.map(k => ({ topic:t, key:k, prog:getDialogueSetProgress(t.id, k) }));
+                });
+                const dDone = dSetsAll.filter(s => s.prog?.done).length;
+                const dAttempted = dSetsAll.filter(s => s.prog?.done);
+                return (
+                  <>
+                    <div className="sidebar-title">Progress Report</div>
+
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#D36135",marginBottom:6}}>
+                      📖 Vocabulary — {vocabDone}/{categories.length}
                     </div>
-                  ))}
-                </>
-              )}
+                    {vocabStarted.length === 0 ? (
+                      <div style={{fontSize:12,color:"#a0aec0",marginBottom:16}}>No categories started yet.</div>
+                    ) : (
+                      <div style={{marginBottom:16}}>
+                        {vocabStarted.map(cat => {
+                          const pct = getCatProgress(cat.id);
+                          const sc = scoreColor(pct);
+                          return (
+                            <div key={cat.id} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
+                              <span style={{fontSize:11,fontWeight:800,color:sc.text,background:sc.bg,border:`1.5px solid ${sc.ring}`,borderRadius:20,padding:"1px 7px",flexShrink:0}}>{pct}%</span>
+                              <span style={{fontSize:12,color:"#4a5568",flex:1}}>{cat.title}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#7c3aed",marginBottom:6}}>
+                      💬 Dialogue — {dDone}/{dSetsAll.length}
+                    </div>
+                    {dAttempted.length === 0 ? (
+                      <div style={{fontSize:12,color:"#a0aec0",marginBottom:16}}>No sets started yet.</div>
+                    ) : (
+                      <div style={{marginBottom:16}}>
+                        {dAttempted.map(({topic, key, prog}) => (
+                          <div key={topic.id+key} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
+                            <span style={{fontSize:11,fontWeight:800,color:"#15803d",background:"#dcfce7",border:"1.5px solid #22c55e",borderRadius:20,padding:"1px 7px",flexShrink:0}}>
+                              {key==="quiz" && prog.score!=null ? `${prog.score}/${prog.total}` : "✓"}
+                            </span>
+                            <span style={{fontSize:12,color:"#4a5568",flex:1}}>{topic.title} · {SET_LABELS[key]}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#a0aec0",marginBottom:6}}>
+                      ✏️ Grammar
+                    </div>
+                    <div style={{fontSize:12,color:"#a0aec0"}}>Coming soon</div>
+                  </>
+                );
+              })()}
               {screen === "vocab_list" && (
                 <>
                   <div className="sidebar-title">Categories</div>
@@ -2187,7 +2234,7 @@ export default function App() {
                         onClick={() => { setActiveCategory(cat); setScreen("vocab_study"); }}
                         style={{display:"flex",alignItems:"center",gap:8,width:"100%",background:activeCategory?.id===cat.id?"#fdf5e8":"transparent",border:"none",cursor:"pointer",
                           padding:"8px 10px",borderRadius:"10px",marginBottom:4,textAlign:"left"}}>
-                        <span style={{fontSize:18}}>{cat.emoji}</span>
+                        {pct > 0 ? <ScoreCircle pct={pct} size={26} /> : <span style={{fontSize:18,width:26,textAlign:"center",flexShrink:0}}>{cat.emoji}</span>}
                         <div style={{flex:1}}>
                           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:cat.color}}>{cat.title}</div>
                           <div style={{fontSize:11,color:"#a0aec0"}}>{pct>0?`${pct}% best`:"not started"}</div>
@@ -2416,6 +2463,30 @@ function DashboardScreen({ profile, onVocab, onDialogue, categories, getCatProgr
   );
 }
 
+/* Score → color tiers, used anywhere a percentage badge is shown */
+function scoreColor(pct) {
+  if (pct >= 85) return { bg:"#dcfce7", text:"#15803d", ring:"#22c55e" };
+  if (pct >= 70) return { bg:"#ecfccb", text:"#4d7c0f", ring:"#84cc16" };
+  if (pct >= 50) return { bg:"#ffedd5", text:"#c2410c", ring:"#f97316" };
+  return { bg:"#fee2e2", text:"#b91c1c", ring:"#ef4444" };
+}
+
+/* Colored percentage badge — replaces a category's emoji once it has been attempted */
+function ScoreCircle({ pct, size = 44 }) {
+  const c = scoreColor(pct);
+  return (
+    <div style={{
+      width:size, height:size, borderRadius:"50%", flexShrink:0,
+      background:c.bg, border:`2.5px solid ${c.ring}`,
+      display:"flex", alignItems:"center", justifyContent:"center",
+      fontFamily:"'Nunito',sans-serif", fontWeight:900, color:c.text,
+      fontSize: size >= 40 ? 12.5 : 10.5, lineHeight:1,
+    }}>
+      {pct}%
+    </div>
+  );
+}
+
 /* ── Vocab List ── */
 function VocabListScreen({ categories, getCatProgress, onSelect }) {
   return (
@@ -2426,7 +2497,9 @@ function VocabListScreen({ categories, getCatProgress, onSelect }) {
           const pct = getCatProgress(cat.id);
           return (
             <button type="button" key={cat.id} className="cat-card" onClick={() => onSelect(cat)}>
-              <span style={{fontSize:26}}>{cat.emoji}</span>
+              {pct > 0
+                ? <ScoreCircle pct={pct} />
+                : <span style={{fontSize:26,width:44,textAlign:"center",flexShrink:0}}>{cat.emoji}</span>}
               <div style={{width:4,height:40,borderRadius:4,background:cat.color,flexShrink:0}} />
               <div style={{flex:1}}>
                 <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:cat.color}}>{cat.title}</div>
