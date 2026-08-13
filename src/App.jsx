@@ -96,6 +96,7 @@ const DIALOGUE_TOPICS = [
   { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4", speakerLabels: FRIENDS_LABELS },
   { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3", speakerLabels: FRIENDS_LABELS },
   { id:"g3_directions", title:"GETTING AROUND", emoji:"🧭", color:"#65a30d", shadow:"#3f6212", level:"3", speakerLabels: FRIENDS_LABELS },
+  { id:"g3_family", title:"FAMILY LIFE", emoji:"🏡", color:"#e11d48", shadow:"#881337", level:"3", speakerLabels: AT_HOME_LABELS },
 ];
 
 // Fallback label when a topic has no speakerLabels entry for that emoji
@@ -1140,6 +1141,126 @@ const DIALOGUE_TESTS = {
         ["so I walked instead.","so I rode it to school.","but I like cycling.","so I will fix it tomorrow."],
         0, null,
         "昨日なんで自転車で来なかった？","壊れてたから、かわりに歩いた。"),
+    ],
+  },
+  g3_family: {
+    practice1: [
+      mkQ("It's cold in here. ( ) the window, please?","👩","Sure, Mom.","🧒",
+        ["Will you close","Are you close","Do you closed","Will you closing"],
+        0,
+        "「Will you ～?」のあとは動詞の原形だよ。\n「Will you close」→ 原形だから正解！\n「Are you close」「Do you closed」「Will you closing」→ 形がちがうよ。",
+        "ここ寒いね。窓を閉めてくれる？","うん、ママ。"),
+      mkQ("( ) some tea?","👩","Yes, please. Thank you.","🧒",
+        ["Did you drink","Would you like","Are you liking","Have you had"],
+        1,
+        "「Would you like ～?」で「～はいかが？」とすすめる言い方だよ。\n「Would you like」→ さそいの言い方だから正解！\n他の3つは「いかが？」のさそいにならないよ。",
+        "お茶はいかが？","はい、お願いします。"),
+      mkQ("You look sad. ( )","👩","I lost my favorite pen.","🧒",
+        ["Here you are.","You're welcome.","What's the matter?","Nice to meet you."],
+        2,
+        "「悲しそうだね」に合う心配の言葉は？\n「What's the matter?」→「どうしたの？」と心配しているから正解！\n他の3つは決まり文句で「悲しそう」に合わないよ。",
+        "悲しそうだね。どうしたの？","お気に入りのペンをなくしたんだ。"),
+      mkQ("Dinner is ready! Come to the table.","👩","OK, ( )","🧒",
+        ["I'm going tomorrow.","I'm too busy.","I'll call you.","I'll be there in a minute."],
+        3,
+        "「夕食できたよ！」の呼びかけに合う返事は？\n「I'll be there in a minute.」→「すぐ行くね」と自然に答えているから正解！\n他の3つは呼びかけに合わないよ。",
+        "夕食できたよ！","うん、すぐ行くね。"),
+      mkQ("This box is heavy. Can you give me a ( )?","🧒","Sure, I'll help you.","👩",
+        ["hand","leg","face","foot"],
+        0,
+        "「give me a hand」で「手伝って」という意味になるよ。\n「hand」→ 正しい言い方だから正解！\n「leg」「face」「foot」→ どれも意味にならないよ。",
+        "この箱重い。手を貸してくれる？","いいよ、手伝う。"),
+    ],
+    practice2: [
+      mkQ("Ken, the music is too loud. ( )","👩","Sorry, Mom. I'll make it quieter.","🧒",
+        ["Will you turn it up?","Will you turn it down?","Will you buy it?","Will you sing it?"],
+        1,
+        "次の文「静かにするよ」に合う言い方は？\n「Will you turn it down?」→「小さくして」だから正解！\n「Will you turn it up?」→「大きく」で意味が逆になっちゃうよ。",
+        "ケン、音楽が大きすぎ。小さくして。","ごめん、静かにするよ。"),
+      mkQ("I can't finish all this homework tonight.","🧒","( ) I'm good at math.","👧",
+        ["Shall I help you?","Did you finish it?","I hate homework.","Is it your book?"],
+        0,
+        "次のAの「ありがとう、やさしいね」につながる申し出は？\n「Shall I help you?」→「手伝おうか？」だから正解！\n他の3つは「ありがとう」につながらないよ。",
+        "今夜これ全部終わらない。","手伝おうか？数学得意だよ。",
+        { text:"Thank you! That's very kind.", trans:"ありがとう！やさしいね。" }),
+      mkQ("( ) You look tired.","👩","I couldn't sleep well last night.","🧒",
+        ["Congratulations!","Long time no see.","Here you are.","What's the matter?"],
+        3,
+        "「疲れてるね」に合う心配の言葉は？\n「What's the matter?」→「どうしたの？」だから正解！\n他の3つは「疲れてる」に合わないよ。",
+        "どうしたの？疲れてるね。","昨夜よく眠れなかったんだ。"),
+      mkQ("Can you play now?","👦","Not yet. I haven't finished ( ) the dishes.","🧒",
+        ["wash","washed","washing","to wash"],
+        2,
+        "「finish」のあとは ~ing の形だよ。\n「washing」→ 正しい形だから正解！\n「wash」「washed」「to wash」→ 形がちがうよ。",
+        "今遊べる？","まだ。皿洗いが終わってない。",
+        { text:"OK, I'll wait.", trans:"わかった、待つよ。" }),
+      mkQ("I'm going to the store. ( ) anything?","👩","Yes, could you buy some milk?","🧒",
+        ["Are you needing","Do you need","Have you needed","Do you needed"],
+        1,
+        "「Do you ～?」の形が正しいよ。\n「Do you need」→ 正しい形だから正解！\n他の3つは文法がちがうよ。",
+        "お店に行くよ。何か要る？","うん、牛乳買ってきてくれる？"),
+    ],
+    practice3: [
+      mkQ("You look happy!","👩","Yes! I just finished ( ) my new book. It was great.","🧒",
+        ["read","reading","to read","reads"],
+        1,
+        "「finish」のあとは ~ing の形だよ。\n「reading」→ 正しい形だから正解！\n「read」「to read」「reads」→ 形がちがうよ。",
+        "うれしそう！","うん！新しい本を読み終わったところ。すごくよかった。"),
+      mkQ("( )","🧒","Of course. How much water do you need?","👩",
+        ["Could you get me some water?","Do you like water?","Where is the water?","Have you drunk water?"],
+        0,
+        "Bの「どれくらい要る？」に合うたのみ方は？\n「Could you get me some water?」→ ていねいなたのみ方だから正解！\n他の3つは「どれくらい要る？」につながらないよ。",
+        "お水を持ってきてくれる？","もちろん。どれくらい？",
+        { text:"Just one glass, please.", trans:"コップ1杯で。" }),
+      mkQ("Hi, Mom.","🧒","Oh, Martin. ( )","👩",
+        ["You got a good score.","Have a nice day.","You're home early.","It's not for you."],
+        2,
+        "次の文「クラブがなくて早く出た」が理由。何を言われた？\n「You're home early.」→「早いのね」と自然につながるから正解！\n他の3つは無関係だよ。",
+        "ただいま。","あら、早いのね。",
+        { text:"We didn't have club today, so I left school early.", trans:"今日はクラブがなかったから、早く学校を出たんだ。" }),
+      mkQ("We have cake and ice cream. ( )","👩","I'd like some cake, please.","🧒",
+        ["Do you made this?","Where did you buy it?","Have you eaten it?","Which would you like?"],
+        3,
+        "Bは「ケーキがいい」と選んでいるよ。どんなしつもんだった？\n「Which would you like?」→「どっちがいい？」だから正解！\n「Do you made this?」は文法がちがうよ。",
+        "ケーキとアイスがあるよ。どっちがいい？","ケーキをお願い。"),
+      mkQ("It's really hot in this room.","🧒","( )","👩",
+        ["Will you close all the windows?","Will you turn on the fan?","Do you want a blanket?","Shall I make some hot tea?"],
+        1,
+        "「暑い」と言っているから、すずしくする申し出をさがそう。\n「Will you turn on the fan?」→「扇風機つけようか？」だから正解！\n「Do you want a blanket?」「Shall I make some hot tea?」→ 毛布や熱いお茶は「寒い時」用で逆だよ。",
+        "この部屋すごく暑い。","扇風機つけようか？",
+        { text:"Thanks, that feels much better.", trans:"ありがとう、だいぶ涼しくなった。" }),
+    ],
+    quiz: [
+      mkQ("My hands are full. ( ) the door for me?","🧒","Sure, no problem.","👩",
+        ["Will you open","Are you open","Did you opened","Have you open"],
+        0, null,
+        "手がふさがってる。ドア開けてくれる？","いいよ。"),
+      mkQ("( ) You're not eating your lunch.","👩","I'm just not hungry today.","🧒",
+        ["What's your name?","How much is it?","What's the matter?","When did you eat?"],
+        2, null,
+        "どうしたの？お昼食べてないね。","今日はおなかすいてないんだ。"),
+      mkQ("You look cold. ( )","👩","Yes, please. A warm blanket would be nice.","🧒",
+        ["Did you buy a blanket?","Is this your blanket?","Where's the blanket?","Would you like a blanket?"],
+        3, null,
+        "寒そうだね。毛布はいかが？","はい、あたたかい毛布がいいな。"),
+      mkQ("Are you ready to go out?","👩","Almost. I just finished ( ) my hair.","🧒",
+        ["dry","dried","to dry","drying"],
+        3, null,
+        "出かける準備できた？","もう少し。今、髪をかわかし終わったところ。"),
+      mkQ("Emma, your friend is here!","👩","( )","🧒",
+        ["I'll be down in a minute.","I went there yesterday.","She isn't my friend.","I'm not home."],
+        0, null,
+        "エマ、お友達が来たよ！","すぐ降りるね。"),
+      mkQ("The baby is sleeping. ( )","👩","Oops, sorry. I'll be quiet.","🧒",
+        ["Will you turn it up?","Will you speak louder?","Will you be quiet, please?","Will you wake her up?"],
+        2,
+        "むずかしい！赤ちゃんが寝ているから、静かにしてほしいという内容が入るよ。\n「Will you be quiet, please?」→「静かにして」だから、Bの「静かにする」に合うから正解！\n「Will you turn it up?」「Will you speak louder?」「Will you wake her up?」→ どれも「静かにする」と逆の意味になってしまうよ。",
+        "赤ちゃんが寝てるの。静かにしてくれる？","あ、ごめん。静かにする。"),
+      mkQ("You came home early today.","👩","( )","🧒",
+        ["I won the game!","I didn't feel well, so I left work.","I have a lot of work.","I'll stay late tonight."],
+        1, null,
+        "今日は早いね。","気分が悪くて早退したんだ。",
+        { text:"Oh no, I hope you feel better soon.", trans:"あら、早くよくなってね。" }),
     ],
   },
 };
@@ -3862,7 +3983,7 @@ function Hi({ color, children }) {
   return <span style={{ color, fontWeight: 900 }}>{children}</span>;
 }
 
-const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed" };
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed", request:"#2563eb" };
 
 function NoteSection({ label, isNew, children }) {
   return (
@@ -4079,7 +4200,35 @@ function NotesG3Directions() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions };
+function NotesG3Family() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="🆕 たのむ (Requests)" isNew>
+        <div><Hi color={c.request}>Will you ～?</Hi> / <Hi color={c.request}>Can you ～?</Hi> / <Hi color={c.request}>Could you ～?</Hi> = 「～してくれる？」</div>
+        <div style={{marginTop:4}}>→ 後ろは動詞の原形！</div>
+      </NoteSection>
+      <NoteSection label="🆕 すすめる (Suggesting / Offering)" isNew>
+        <div><Hi color={c.invite}>Would you like ～?</Hi> / <Hi color={c.invite}>Shall I ～?</Hi> = 「～はいかが？／～しようか？」</div>
+      </NoteSection>
+      <NoteSection label="🆕 心配する (Showing concern)" isNew>
+        <div><Hi color={c.reason}>What's the matter?</Hi> / <Hi color={c.reason}>What happened?</Hi> = 「どうしたの？」</div>
+      </NoteSection>
+      <NoteSection label="🆕 よばれた時の返事 (When called)" isNew>
+        <div><Hi color={c.enough}>I'll be there in a minute.</Hi> / <Hi color={c.enough}>Just a minute.</Hi> = 「すぐ行くよ」</div>
+      </NoteSection>
+      <NoteSection label="🆕 finish / enjoy / stop + ～ing" isNew>
+        <div><Hi color={c.challenge}>finish / enjoy / stop + ～ing</Hi> = 「～し終える／楽しむ／やめる」</div>
+        <ExampleWarning q="I finished..." wrong="I finished to clean." right="I finished cleaning." />
+      </NoteSection>
+      <NoteSection>
+        <div>💡 コツ: 空所の「次の行」がヒント。たのみ事か、心配か、さそいかを見わけよう。</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
