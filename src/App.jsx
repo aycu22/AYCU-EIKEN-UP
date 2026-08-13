@@ -2781,9 +2781,9 @@ function DialogueHomeScreen({ onSelect, onBack }) {
 /* Practice/Quiz selector for a topic */
 function DialogueTopicScreen({ topic, onSelect, onBack }) {
   const sets = [
-    { key:"practice1", label:"Practice 1", emoji:"⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
-    { key:"practice2", label:"Practice 2", emoji:"⭐⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
-    { key:"practice3", label:"Practice 3", emoji:"⭐⭐⭐", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice1", label:"Practice 1", emoji:"🥚", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice2", label:"Practice 2", emoji:"🐣", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
+    { key:"practice3", label:"Practice 3", emoji:"🐥", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
     { key:"quiz",      label:"QUIZ",       emoji:"🏆", sub:"7 questions · no hints · scored!", color:"#d97706", bg:"#fef3c7" },
   ];
   return (
@@ -2885,45 +2885,45 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
   };
 
   return (
-    <div className="fade" style={{maxWidth:480,margin:"0 auto",display:"flex",flexDirection:"column",height:"calc(100vh - 120px)"}}>
+    <div className="fade" style={{maxWidth:480,margin:"0 auto",display:"flex",flexDirection:"column"}}>
       {/* Header */}
-      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
-        <div style={{width:40,height:40,borderRadius:12,background:"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:22}}>{topic.emoji}</div>
+      <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+        <div style={{width:34,height:34,borderRadius:10,background:"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18}}>{topic.emoji}</div>
         <div style={{flex:1}}>
-          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>{topic.title} · {isQuiz ? "QUIZ 🏆" : setKey === "practice1" ? "Practice 1 ⭐" : setKey === "practice2" ? "Practice 2 ⭐⭐" : "Practice 3 ⭐⭐⭐"}</div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#3b0764"}}>{topic.title} · {isQuiz ? "QUIZ 🏆" : setKey === "practice1" ? "Practice 1 🥚" : setKey === "practice2" ? "Practice 2 🐣" : "Practice 3 🐥"}</div>
         </div>
-        <div style={{fontSize:12,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"4px 10px",borderRadius:20}}>
+        <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>
           {qIdx + 1} / {questions.length}
         </div>
       </div>
 
       {/* Chat window */}
-      <div ref={chatRef} style={{flex:1,overflowY:"auto",background:"#f0ebff",borderRadius:18,padding:"16px 14px",marginBottom:12,display:"flex",flexDirection:"column",gap:10}}>
+      <div ref={chatRef} style={{maxHeight:"38vh",overflowY:"auto",background:"#f0ebff",borderRadius:14,padding:"10px 12px",marginBottom:10,display:"flex",flexDirection:"column",gap:6}}>
         {/* Person A bubble */}
-        <div style={{display:"flex",alignItems:"flex-end",gap:8}}>
-          <div style={{fontSize:28,flexShrink:0}}>{q.aEmoji}</div>
-          <div style={{background:"#fff",borderRadius:"18px 18px 18px 4px",padding:"10px 14px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-            <div style={{fontSize:14,color:"#1f2937",lineHeight:1.5}}>{q.a}</div>
+        <div style={{display:"flex",alignItems:"flex-end",gap:6}}>
+          <div style={{fontSize:22,flexShrink:0}}>{q.aEmoji}</div>
+          <div style={{background:"#fff",borderRadius:"14px 14px 14px 4px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+            <div style={{fontSize:13,color:"#1f2937",lineHeight:1.4}}>{q.a}</div>
           </div>
         </div>
 
         {/* Person B bubble */}
-        <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:8}}>
-          <div style={{fontSize:28,flexShrink:0}}>{q.bEmoji}</div>
-          <div style={{background:"#ddd6fe",borderRadius:"18px 18px 4px 18px",padding:"10px 14px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
-            <div style={{fontSize:14,color:"#3b0764",lineHeight:1.5,fontStyle:"italic"}}>{q.b}</div>
+        <div style={{display:"flex",alignItems:"flex-end",flexDirection:"row-reverse",gap:6}}>
+          <div style={{fontSize:22,flexShrink:0}}>{q.bEmoji}</div>
+          <div style={{background:"#ddd6fe",borderRadius:"14px 14px 4px 14px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+            <div style={{fontSize:13,color:"#3b0764",lineHeight:1.4,fontStyle:"italic"}}>{q.b}</div>
           </div>
         </div>
 
         {/* Correct reaction */}
         {phase === "correct" && (
-          <div style={{textAlign:"center",padding:"10px 0",fontSize:36,animation:"pop .3s ease"}}>
+          <div style={{textAlign:"center",padding:"2px 0",fontSize:26,animation:"pop .3s ease"}}>
             👍✨
           </div>
         )}
         {phase === "correct" && (
           <div style={{display:"flex",justifyContent:"center"}}>
-            <div style={{background:"#d1fae5",borderRadius:14,padding:"8px 16px",fontSize:13,color:"#065f46",fontWeight:700,textAlign:"center"}}>
+            <div style={{background:"#d1fae5",borderRadius:12,padding:"5px 14px",fontSize:12,color:"#065f46",fontWeight:700,textAlign:"center"}}>
               すごい！正解！🎉
             </div>
           </div>
@@ -2931,11 +2931,11 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
 
         {/* Wrong + hint bubble */}
         {phase === "wrong" && !isQuiz && q.hint && (
-          <div style={{display:"flex",alignItems:"flex-start",gap:8}}>
-            <div style={{fontSize:24,flexShrink:0}}>💡</div>
-            <div style={{background:"#fefce8",border:"1px solid #fde68a",borderRadius:"18px 18px 18px 4px",padding:"10px 14px",maxWidth:"90%"}}>
+          <div style={{display:"flex",alignItems:"flex-start",gap:6}}>
+            <div style={{fontSize:18,flexShrink:0}}>💡</div>
+            <div style={{background:"#fefce8",border:"1px solid #fde68a",borderRadius:"14px 14px 14px 4px",padding:"7px 12px",maxWidth:"90%"}}>
               {q.hint.split("\n").map((line, i) => (
-                <div key={i} style={{fontSize:13,color:"#92400e",lineHeight:1.6,marginBottom: i < q.hint.split("\n").length-1 ? 4 : 0}}>
+                <div key={i} style={{fontSize:12,color:"#92400e",lineHeight:1.5,marginBottom: i < q.hint.split("\n").length-1 ? 3 : 0}}>
                   {i === 0 ? <strong>{line}</strong> : line}
                 </div>
               ))}
@@ -2944,7 +2944,7 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
         )}
         {phase === "wrong" && isQuiz && (
           <div style={{display:"flex",justifyContent:"center"}}>
-            <div style={{background:"#fee2e2",borderRadius:14,padding:"8px 16px",fontSize:13,color:"#991b1b",fontWeight:700}}>
+            <div style={{background:"#fee2e2",borderRadius:12,padding:"5px 14px",fontSize:12,color:"#991b1b",fontWeight:700}}>
               ざんねん！正解は「{q.opts[q.correct]}」だよ。
             </div>
           </div>
@@ -2952,15 +2952,15 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
       </div>
 
       {/* Answer options */}
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
         {q.opts.map((opt, idx) => {
           const c = optionColors(idx);
           return (
             <button key={idx} type="button" onClick={() => handleSelect(idx)}
               disabled={phase !== "question"}
-              style={{padding:"12px 16px",borderRadius:14,border:`2px solid ${c.border}`,
+              style={{padding:"9px 14px",borderRadius:12,border:`2px solid ${c.border}`,
                 background:c.bg,color:c.color,fontFamily:"'Nunito',sans-serif",
-                fontWeight:700,fontSize:14,cursor:phase==="question"?"pointer":"default",
+                fontWeight:700,fontSize:13,cursor:phase==="question"?"pointer":"default",
                 textAlign:"left",transition:"all .15s",
                 opacity: phase !== "question" && idx !== q.correct && idx !== selected ? 0.5 : 1}}>
               {idx + 1}. {opt}
@@ -2973,7 +2973,7 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
       {/* Next button */}
       {phase !== "question" && (
         <button type="button" className="btn" onClick={handleNext}
-          style={{marginTop:12,background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
+          style={{marginTop:10,padding:"11px",background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
           {qIdx + 1 >= questions.length ? (isQuiz ? "See results 🏆" : "Finish! 🎉") : "Next →"}
         </button>
       )}
