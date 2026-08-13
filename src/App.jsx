@@ -95,6 +95,7 @@ const DIALOGUE_TOPICS = [
   { id:"g4_at_school", title:"AT SCHOOL", emoji:"🏫", color:"#f97316", shadow:"#c2410c", level:"4", speakerLabels: AT_SCHOOL_LABELS },
   { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4", speakerLabels: FRIENDS_LABELS },
   { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3", speakerLabels: FRIENDS_LABELS },
+  { id:"g3_directions", title:"GETTING AROUND", emoji:"🧭", color:"#65a30d", shadow:"#3f6212", level:"3", speakerLabels: FRIENDS_LABELS },
 ];
 
 // Fallback label when a topic has no speakerLabels entry for that emoji
@@ -1018,6 +1019,127 @@ const DIALOGUE_TESTS = {
         "むずかしい！答え「先月イタリアで買った」が次の文「私はイタリアに行ったことないよ」につながるよ。\n「I bought it in Italy last month.」→ 過去形で「もう持っている」に合うから正解！\n「I will buy it in Italy.」→ 未来形だから「もう持ってる」と合わないよ。\n「I don't like Italy.」「Italy is a country.」→ 話に関係ないよ。",
         "いいバッグ！新しいの？","うん。先月イタリアで買ったんだ。",
         { text:"Really? I've never been to Italy.", trans:"ほんと？私はイタリアに行ったことないよ。" }),
+    ],
+  },
+  g3_directions: {
+    practice1: [
+      mkQ("Excuse me. ( )","👦","Sure. Go straight and turn left. It's next to the bank.","👩",
+        ["How can I get to the station?","What time is it now?","Do you like this town?","How much is it?"],
+        0,
+        "「Go straight and turn left. It's next to the bank.」は道案内だよ。前のしつもんは？\n「How can I get to the station?」→ 道をたずねているから正解！\n他の3つは道案内の返事と合わないよ。",
+        "すみません、駅へはどう行けば？","まっすぐ行って左へ。銀行のとなりです。"),
+      mkQ("Let's walk to the mall.","👦","No, it's ( ) far to walk. Let's take the bus.","👧",
+        ["enough","too","very much","more than"],
+        1,
+        "「too ～ to …」で「～すぎて…できない」という意味になるよ。\n「too」→ 遠すぎて歩けない、が正解！\n「enough」→「十分」で意味が逆になっちゃうよ。\n「very much」「more than」→ 文法がちがうよ。",
+        "モールまで歩こう。","ダメ、歩くには遠すぎ。バスにしよう。"),
+      mkQ("Which bus goes to the airport?","👦","( )","👩",
+        ["It's raining now.","I like buses.","The number 5 bus does.","See you later."],
+        2,
+        "「どのバスが空港へ行く？」というしつもんに答えよう。\n「The number 5 bus does.」→ バスの番号を答えているから正解！\n他の3つはしつもんに答えていないよ。",
+        "どのバスが空港へ行く？","5番のバスだよ。"),
+      mkQ("Why are you taking a taxi?","👦","I'm late, ( ) I need to hurry.","👧",
+        ["but","or","because","so"],
+        3,
+        "「だから」の意味になる言葉は？\n「so」→「おくれてる、だから急がなきゃ」と自然につながるから正解！\n「but」「or」「because」→「だから」の意味にならないよ。",
+        "なんでタクシー？","おくれてる、だから急がなきゃ。"),
+      mkQ("The train leaves in five minutes. ( )","👦","OK, let's go!","👧",
+        ["We should hurry.","I'm not ready.","It's my pleasure.","You're welcome."],
+        0,
+        "「OK, let's go!（うん、行こう！）」につながる言葉は？\n「We should hurry.」→「急ごう」と自然につながるから正解！\n「I'm not ready.」→「行こう」と矛盾するよ。\n「It's my pleasure.」「You're welcome.」→ 決まり文句で合わないよ。",
+        "電車あと5分だよ。急ごう。","うん、行こう！"),
+    ],
+    practice2: [
+      mkQ("Excuse me, how can I get to the museum?","👦","( ) It's across from the park.","👩",
+        ["I don't have a map.","Walk for five minutes and turn right.","I've never been there.","The museum is closed."],
+        1,
+        "道をたずねられたら、道案内で答えよう。\n「Walk for five minutes and turn right.」→ 道案内になっているから正解！\n他の3つは道案内になっていないよ。",
+        "美術館へはどう行けば？","5分歩いて右へ。公園の向かいです。",
+        { text:"Thank you very much!", trans:"ありがとう！" }),
+      mkQ("Should we ride our bikes to the concert?","👦","( ) It's too far. Let's take the train instead.","👧",
+        ["Yes, let's ride.","Good idea!","No, I don't think so.","I love bikes."],
+        2,
+        "次の文「遠すぎ、電車にしよう」から、自転車には反対しているよ。\n「No, I don't think so.」→ 反対の返事だから正解！\n「Yes, let's ride.」「Good idea!」「I love bikes.」→ どれも自転車にさんせいしているけど、Bは「遠すぎ」と言っているよ。",
+        "コンサートまで自転車で行く？","やめとこう。遠すぎ。電車にしよう。"),
+      mkQ("Is the library far?","👦","No, it's close ( ) to walk. Only five minutes.","👧",
+        ["too","very","more","enough"],
+        3,
+        "「～ enough to …」で「…するのに十分～」という意味になるよ。\n「enough」→ 歩けるくらい近い、が正解！\n「too」→「遠すぎ」で意味が逆になっちゃうよ。\n「very」「more」→ 文法がちがうよ。",
+        "図書館は遠い？","ううん、歩けるくらい近いよ。たった5分。"),
+      mkQ("We missed the bus!","👦","Don't worry. Another one comes soon, ( )","👩",
+        ["so let's wait here.","but I hate buses.","or take a taxi now.","so I lost my ticket."],
+        0,
+        "「すぐ次が来る」の流れに合う言葉は？\n「so let's wait here.」→「だからここで待とう」と自然につながるから正解！\n他の3つは流れに合わないよ。",
+        "バス乗り遅れた！","大丈夫、すぐ次が来るからここで待とう。",
+        { text:"OK, I'll wait with you.", trans:"うん、一緒に待つ。" }),
+      mkQ("Excuse me. Is this the right way to the station?","👦","( ) Go back and turn left at the corner.","👩",
+        ["Yes, keep going straight.","The station is beautiful.","No, you're going the wrong way.","I don't take trains."],
+        2,
+        "次の文「もどって角を左へ」から、道はまちがっているとわかるよ。\n「No, you're going the wrong way.」→「いいえ」で始まり、まちがいを伝えているから正解！\n「Yes, keep going straight.」→「はい」なのに「もどって」と矛盾するよ。",
+        "駅へはこの道で合ってる？","いいえ、道をまちがえてます。もどって角を左へ。"),
+    ],
+    practice3: [
+      mkQ("Why can't we walk to the stadium?","👦","It's ( ) to walk. It takes two hours by car!","👧",
+        ["close enough","too far","near enough","not far"],
+        1,
+        "車で2時間かかる＝遠いよ。\n「too far」→「遠すぎて歩けない」だから正解！\n「close enough」「near enough」「not far」→ どれも「近い」意味になってしまうよ。",
+        "なんでスタジアムまで歩けないの？","歩くには遠すぎ。車で2時間だよ！"),
+      mkQ("Why did you go to the station so early?","👦","I went there early ( ) a good seat on the train.","👧",
+        ["get","getting","to get","got"],
+        2,
+        "「～するために」は「to + 動詞」の形だよ。\n「to get」→ 正しい形だから正解！\n「get」「getting」「got」→ 形がちがうよ。",
+        "なんでそんな早く駅に？","電車でいい席をとるために早く行ったんだ。"),
+      mkQ("Excuse me. I want to go to the city hall, but I'm lost.","👦","( )","👩",
+        ["I love this city.","The city hall is old.","You should walk there.","It's too far to walk, so take the subway."],
+        3,
+        "「地下鉄に乗ります」につながる返事は？\n「It's too far to walk, so take the subway.」→ 地下鉄をすすめているから正解！\n「You should walk there.」→「歩いて」は次の「地下鉄に乗る」と矛盾するよ。",
+        "市役所に行きたいけど迷った。","歩くには遠すぎるから地下鉄に乗って。",
+        { text:"Great, I'll take the subway then.", trans:"じゃあ地下鉄にします。" }),
+      mkQ("Our flight leaves at 9, and it's already 7:30.","👦","( ) The airport is far from here.","👧",
+        ["We have a lot of time.","We should leave now.","I don't want to go.","The plane is big."],
+        1,
+        "「もう7時半」なのに合う返事は？\n「We should leave now.」→「もう出発しなきゃ」と自然につながるから正解！\n「We have a lot of time.」→「もう7時半」と矛盾するよ。",
+        "飛行機9時発でもう7時半。","もう出発しなきゃ。空港は遠いよ。",
+        { text:"You're right. Let's call a taxi now.", trans:"だね、タクシー呼ぼう。" }),
+      mkQ("You look tired. Did you walk here?","👦","Yes. The buses weren't running, ( )","👧",
+        ["so I had to walk.","so I took the bus.","but I drove my car.","so I stayed home."],
+        0,
+        "「バスが動いてない」に合う結果は？\n「so I had to walk.」→「だから歩くしかなかった」と自然につながるから正解！\n「so I took the bus.」→「バスに乗った」は「バスが動いてない」と矛盾するよ。",
+        "疲れてるね。歩いて来たの？","うん。バスが動いてなくて、歩くしかなかった。"),
+    ],
+    quiz: [
+      mkQ("Excuse me. ( )","👦","Yes, go straight for two blocks. It's on your right.","👩",
+        ["Is there a post office near here?","What time do you open?","Do you have a pen?","How was your trip?"],
+        0, null,
+        "近くに郵便局ありますか？","はい、2ブロックまっすぐ。右側です。"),
+      mkQ("Let's walk to the beach.","👦","It's ( ) hot to walk today. Let's drive.","👧",
+        ["enough","too","so much","very well"],
+        1, null,
+        "ビーチまで歩こう。","今日は歩くには暑すぎ。車にしよう。"),
+      mkQ("Why are you going to the station now?","👦","I'm going there ( ) my grandmother. She arrives at three.","👧",
+        ["meet","met","to meet","meeting"],
+        2, null,
+        "なんで今駅に？","祖母をむかえるため。3時に着くんだ。"),
+      mkQ("The show starts in ten minutes!","👦","( )","👧",
+        ["We have time to relax.","I want some popcorn.","Let's go home.","We should hurry, or we'll be late."],
+        3, null,
+        "ショーあと10分！","急がないと遅れるよ。",
+        { text:"OK, run!", trans:"うん、走ろう！" }),
+      mkQ("Can your little brother reach the button?","👦","Yes, he's tall ( ) to reach it now.","👧",
+        ["too","very","enough","more"],
+        2,
+        "むずかしい！「tall enough to ～」で「～するのに十分せが高い」という意味になるよ。\n「enough」→ 正しい形だから正解！\n「too」→「too ～ to」は「～すぎてできない」の意味になり、逆の意味になっちゃうよ。",
+        "弟くんボタンに届く？","うん、今はもう届くくらい背が高いよ。"),
+      mkQ("Excuse me, which way is the hospital?","👦","( )","👩",
+        ["It's next to the library.","It's about ten minutes away.","Go straight and turn left.","Turn right at the traffic light."],
+        3,
+        "むずかしい！①②③も道案内っぽいけど、Aが最後に「turn right at the light」とくり返しているから、Bの答えは④「Turn right at the traffic light.」でないと合わないよ。",
+        "病院はどっち？","信号を右に。",
+        { text:"Thanks. I'll turn right at the light.", trans:"信号で右ね、ありがとう。" }),
+      mkQ("Why didn't you come to school by bike yesterday?","👦","My bike was broken, ( )","👧",
+        ["so I walked instead.","so I rode it to school.","but I like cycling.","so I will fix it tomorrow."],
+        0, null,
+        "昨日なんで自転車で来なかった？","壊れてたから、かわりに歩いた。"),
     ],
   },
 };
@@ -3734,7 +3856,7 @@ function Hi({ color, children }) {
   return <span style={{ color, fontWeight: 900 }}>{children}</span>;
 }
 
-const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777" };
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed" };
 
 function NoteSection({ label, isNew, children }) {
   return (
@@ -3921,7 +4043,37 @@ function NotesG3Travel() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel };
+function NotesG3Directions() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="🆕 道をたずねる (Asking directions)" isNew>
+        <div><Hi color={c.direction}>How can I get to ～?</Hi> / <Hi color={c.direction}>Which bus goes to ～?</Hi> = 「～へはどう行けばいい？」</div>
+      </NoteSection>
+      <NoteSection label="🆕 道を教える (Giving directions)" isNew>
+        <div><Hi color={c.direction}>Go straight.</Hi> / <Hi color={c.direction}>Turn left (right).</Hi> / <Hi color={c.direction}>It's next to ～.</Hi></div>
+      </NoteSection>
+      <NoteSection label="🆕 too ～ to …" isNew>
+        <div><Hi color={c.too}>too ～ to …</Hi> = 「～すぎて…できない」</div>
+        <div style={{marginTop:4,fontStyle:"italic"}}>It's too far to walk.（歩くには遠すぎる）</div>
+      </NoteSection>
+      <NoteSection label="🆕 ～ enough to …" isNew>
+        <div><Hi color={c.enough}>～ enough to …</Hi> = 「…するのに十分～」</div>
+        <div style={{marginTop:4,fontStyle:"italic"}}>It's close enough to walk.（歩けるくらい近い）</div>
+      </NoteSection>
+      <NoteSection label="🆕 to + 動詞（目的）" isNew>
+        <div><Hi color={c.purpose}>to + 動詞</Hi> = 「～するために」</div>
+        <div style={{marginTop:4,fontStyle:"italic"}}>I went early to get a seat.（せきをとるために早く行った）</div>
+      </NoteSection>
+      <NoteSection>
+        <div>🔁 リマインド: 理由・結果は <Hi color={c.reason}>so</Hi>（だから）や <Hi color={c.reason}>because</Hi>。</div>
+        <div style={{marginTop:4}}>💡 コツ: 空所の「次の行」がヒント。乗り物を選ぶ理由をさがそう。</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const NoteBody = DIALOGUE_NOTES[topic.id];
