@@ -81,7 +81,7 @@ const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
 
 /* ── Dialogue Test Data ── */
 const DIALOGUE_TOPICS = [
-  { id:"at_home", title:"AT HOME", emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95" },
+  { id:"at_home", title:"AT HOME", emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
 ];
 
 const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB) =>
@@ -1590,7 +1590,7 @@ export default function App() {
         {isDialogueScreen && currentProfile && (
           <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
             {screen === "dialogue_home" && (
-              <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} />
+              <DialogueHomeScreen onSelect={topic => { setDialogueTopic(topic); setScreen("dialogue_topic"); }} onBack={goBack} level={currentProfile?.level || "5"} />
             )}
             {screen === "dialogue_topic" && dialogueTopic && (
               <DialogueTopicScreen topic={dialogueTopic} onSelect={key => { setDialoguePractice(key); setScreen("dialogue_practice"); }} onBack={goBack} getSetProgress={getDialogueSetProgress} />
@@ -1841,7 +1841,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, categories, getCatProgr
           <div className="mod-icon" style={{background:"#f5f3ff"}}>💬</div>
           <div>
             <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#02020b"}}>Dialogue Tests</div>
-            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>{DIALOGUE_TOPICS.length} topic · practice & quiz</div>
+            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>{DIALOGUE_TOPICS.filter(t=>t.level===profile.level).length} topic · practice & quiz</div>
           </div>
           <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
         </button>
@@ -2781,7 +2781,8 @@ function ResultsScreen({ results, category, onHome, onRetry }) {
 ══════════════════════════════════════════════ */
 
 /* LINE-style topic list */
-function DialogueHomeScreen({ onSelect, onBack }) {
+function DialogueHomeScreen({ onSelect, onBack, level }) {
+  const topics = DIALOGUE_TOPICS.filter(t => t.level === level);
   return (
     <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
       <div style={{textAlign:"center",marginBottom:24,paddingTop:8}}>
@@ -2790,30 +2791,37 @@ function DialogueHomeScreen({ onSelect, onBack }) {
         <div style={{fontSize:13,color:"#718096",marginTop:4}}>Choose a topic to practice</div>
       </div>
 
-      <div style={{borderRadius:18,overflow:"hidden",boxShadow:"0 2px 14px rgba(0,0,0,.09)"}}>
-        <div style={{background:"#7c3aed",padding:"10px 16px",fontSize:12,fontWeight:700,color:"#e9d5ff",letterSpacing:1}}>
-          TOPICS
+      {topics.length === 0 ? (
+        <div style={{textAlign:"center",padding:"40px 20px",color:"#a0aec0"}}>
+          <div style={{fontSize:36,marginBottom:10}}>🚧</div>
+          <div style={{fontSize:14}}>No topics yet for this level.<br/>Check back soon!</div>
         </div>
-        {DIALOGUE_TOPICS.map((topic, i) => (
-          <button key={topic.id} type="button" onClick={() => onSelect(topic)}
-            style={{width:"100%",display:"flex",alignItems:"center",gap:14,
-              padding:"16px 18px",background:"#fff",border:"none",
-              borderTop: i===0 ? "none" : "1px solid #f0f0f0",
-              cursor:"pointer",textAlign:"left",transition:"background .12s"}}
-            onMouseEnter={e => e.currentTarget.style.background="#f9f5ff"}
-            onMouseLeave={e => e.currentTarget.style.background="#fff"}>
-            <div style={{width:48,height:48,borderRadius:14,background:"#ede9fe",
-              display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>
-              {topic.emoji}
-            </div>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
-              <div style={{fontSize:12,color:"#a78bfa",marginTop:2}}>Practice 1 · 2 · 3 · Quiz</div>
-            </div>
-            <span style={{fontSize:18,color:"#c4b5fd"}}>→</span>
-          </button>
-        ))}
-      </div>
+      ) : (
+        <div style={{borderRadius:18,overflow:"hidden",boxShadow:"0 2px 14px rgba(0,0,0,.09)"}}>
+          <div style={{background:"#7c3aed",padding:"10px 16px",fontSize:12,fontWeight:700,color:"#e9d5ff",letterSpacing:1}}>
+            TOPICS
+          </div>
+          {topics.map((topic, i) => (
+            <button key={topic.id} type="button" onClick={() => onSelect(topic)}
+              style={{width:"100%",display:"flex",alignItems:"center",gap:14,
+                padding:"16px 18px",background:"#fff",border:"none",
+                borderTop: i===0 ? "none" : "1px solid #f0f0f0",
+                cursor:"pointer",textAlign:"left",transition:"background .12s"}}
+              onMouseEnter={e => e.currentTarget.style.background="#f9f5ff"}
+              onMouseLeave={e => e.currentTarget.style.background="#fff"}>
+              <div style={{width:48,height:48,borderRadius:14,background:"#ede9fe",
+                display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>
+                {topic.emoji}
+              </div>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
+                <div style={{fontSize:12,color:"#a78bfa",marginTop:2}}>Practice 1 · 2 · 3 · Quiz</div>
+              </div>
+              <span style={{fontSize:18,color:"#c4b5fd"}}>→</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
