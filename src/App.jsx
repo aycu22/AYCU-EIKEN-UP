@@ -81,12 +81,13 @@ const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
 
 /* ── Dialogue Test Data ── */
 const DIALOGUE_TOPICS = [
-  { id:"at_home",   title:"AT HOME",   emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
-  { id:"at_school", title:"AT SCHOOL", emoji:"🏫", color:"#0891b2", shadow:"#155e75", level:"5" },
+  { id:"at_home",     title:"AT HOME",     emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
+  { id:"at_school",   title:"AT SCHOOL",   emoji:"🏫", color:"#0891b2", shadow:"#155e75", level:"5" },
+  { id:"with_friends",title:"WITH FRIENDS",emoji:"👫", color:"#f43f5e", shadow:"#9f1239", level:"5" },
 ];
 
-const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB) =>
-  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB });
+const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB, followUp) =>
+  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB, followUp });
 
 const DIALOGUE_TESTS = {
   at_home: {
@@ -375,6 +376,120 @@ const DIALOGUE_TESTS = {
         2,
         "むずかしい！\n「She likes the nurse's office.」→ 好きだと言っているけど、今どこにいるかじゃないよ。\n「She went to the nurse's office.」→ 「went（行った）」→ 今保健室にいる！「She'll be back by two.（2時までに戻る）」と合っているね。",
         "ミア、クラスメートはどこ？2時までに戻ると言っていたよ。","保健室に行ったよ。"),
+    ],
+  },
+  with_friends: {
+    practice1: [
+      mkQ("Do you have any brothers, Ken?","👧","( )","👦",
+        ["He is tall.","Yes, I have one brother.","I like my family.","Brothers are nice."],
+        1,
+        "「Do you have any brothers?」→ 自分の家族について答えよう！\n「Yes, I have one brother.」→ しつもんに直接答えているから正解！\n「He is tall.」→ 兄弟の説明だけど、しつもんには答えていないよ。\n「I like my family.」→ 兄弟がいるかどうかを答えていないよ。",
+        "ケン、兄弟はいますか。","はい、兄が一人います。"),
+      mkQ("When is your birthday, Amy?","👦","( )","👧",
+        ["I like cake.","It's June 10th.","Birthdays are fun.","My mom makes cake."],
+        1,
+        "「When」はひづけをきく言葉だよ！\n「It's June 10th.」→ ひづけを答えているから正解！\n「I like cake.」→ 「何がすき？」への答えだよ。\n「Birthdays are fun.」→ かんそうで、ひづけじゃないね。",
+        "エイミー、たんじょう日はいつですか。","6月10日です。"),
+      mkQ("What do you do after school, Sam?","👧","( )","👦",
+        ["School is fun.","I play baseball.","After dinner.","My school is big."],
+        1,
+        "「What do you do?」→ かつどうを答えよう！\n「I play baseball.」→ かつどうを答えているから正解！\n「After dinner.」→ 「いつ？」への答えだよ。\n「School is fun.」→ 学校の感想で、かつどうじゃないね。",
+        "サム、放課後は何をしますか。","野球をします。"),
+      mkQ("Let's play soccer after school!","👦","( )","👧",
+        ["Soccer is popular.","I like school.","Yes, let's!","It's after school."],
+        2,
+        "「Let's~!」にはさんせいするときのきまり文句で答えよう！\n「Yes, let's!」→ さそいにさんせいする決まった言い方だから正解！\n他の答えはさそいに答えていないよ。",
+        "放課後にサッカーをしよう！","うん、しよう！"),
+      mkQ("Can you come to my house today, Tom?","👧","( )","👦",
+        ["Your house is nice.","I like your house.","Sorry, I have a piano lesson.","Yes, it is."],
+        2,
+        "トムは行けないよ。ていねいにどうやってことわる？\n「Sorry, I have a piano lesson.」→ 理由をそえてていねいにことわっているから正解！\n「Your house is nice.」→ さそいへの返事ではなく、ほめ言葉だよ。",
+        "トム、今日わたしの家に来られる？","ごめん、ピアノのレッスンがあるんだ。"),
+      mkQ("Wow, your bag is really nice!","👦","( )","👧",
+        ["It's in my bag.","Thanks, Ken!","It's a bag.","I like bags."],
+        1,
+        "ほめられたときは何と言う？\n「Thanks, Ken!」→ ほめ言葉への自然な返事だから正解！\n「It's in my bag.」→ 「どこ？」への答えだよ。\n「I like bags.」→ ほめ言葉に答えていないよ。",
+        "わあ、あなたのバッグすごくすてきだね！","ありがとう、ケン！"),
+      mkQ("What color is your new bicycle, Bob?","👧","( )","👦",
+        ["It's fast.","It's blue.","I like bicycles.","It's in the garage."],
+        1,
+        "「What color」→ 色を答えよう！\n「It's blue.」→ 色を答えているから正解！\n「It's fast.」→ はやさの説明で、色じゃないね。\n「It's in the garage.」→ 「どこ？」への答えだよ。",
+        "ボブ、新しい自転車は何色ですか。","青色です。"),
+    ],
+    practice2: [
+      mkQ("Do you have any sisters, Mark?","👧","( ) She's in high school.","👦",
+        ["No, but I have one brother.","No, but I have one sister.","Yes, I have two brothers.","I like my sister."],
+        1,
+        "「She's in high school」の「she」は次の文でつながる人物を指すよ。だから答えは女の子について言っているものだよ！\n「No, but I have one sister.」→ 妹（姉）を紹介して、「She's in high school」で説明しているから正解！\n「No, but I have one brother.」→ 男の子を紹介しているので、次の「she」とつながらないよ。",
+        "マーク、姉妹はいますか。","いいえ、でも妹が一人います。高校生です。"),
+      mkQ("When's your English test, Yuki?","👦","( ) I need to study tonight!","👧",
+        ["English is difficult.","It's tomorrow.","I study every day.","My teacher is nice."],
+        1,
+        "「I need to study tonight!」→ テストはもうすぐみたい。どの答えが合う？\n「It's tomorrow.」→ 「あしたテストがあるから今夜勉強しなきゃ」と自然につながるから正解！\n「English is difficult.」→ いつのことか答えていないよ。",
+        "ユキ、英語のテストはいつですか。","あしたです。今夜勉強しなきゃ！"),
+      mkQ("What do you usually do on weekends, Chris?","👧","( ) I go every Saturday morning.","👦",
+        ["I like weekends.","I play tennis.","Weekends are fun.","I go home."],
+        1,
+        "「I go every Saturday morning」→ 毎週土曜日の朝に「行く」かつどうって何だろう？\n「I play tennis.」→ テニスを習いに行くと自然につながるから正解！\n「I go home.」→ 週末のしゅみとしてはつながらないよ。",
+        "クリス、週末はいつも何をしますか。","テニスをします。毎週土曜日の朝に行きます。"),
+      mkQ("Let's take some pictures in the park!","👦","( ) The flowers are so beautiful today!","👧",
+        ["I have a camera.","Parks are nice.","That's a good idea.","It's a sunny day."],
+        2,
+        "「The flowers are so beautiful today!」→ うれしそうにさんせいしているよ。「Let's~」にさんせいする言い方は？\n「That's a good idea!」→ さんせいの気持ちを表していて、花のはなしに自然につながるから正解！\n「I have a camera.」→ さんせいの言葉ではないよ。",
+        "公園で写真をとろう！","いいアイデアだね！今日の花はとてもきれいだね！"),
+      mkQ("Let's go to the library after school, Riko.","👧","( ) I have to go straight home today.","👦",
+        ["That's a good idea.","Yes, let's.","Sorry, I can't.","The library is nice."],
+        2,
+        "「I have to go straight home today」→ さんせいしている？ことわっている？\n「Sorry, I can't.」→ ことわる言い方で、「まっすぐ家に帰らなきゃ」と自然につながるから正解！\n「That's a good idea.」と「Yes, let's.」→ どちらもさんせいの言葉だから、「まっすぐ帰る」と合わないよ。",
+        "リコ、放課後に図書館に行こう。","ごめん、行けないの。今日はまっすぐ家に帰らなきゃ。"),
+      mkQ("Your new pencil case is really cute, Hana!","👧","( ) My mom gave it to me.","👦",
+        ["Thanks, Sara!","It's my pencil case.","I like pencil cases.","It's in my bag."],
+        0,
+        "ほめられたら、まず「Thanks,」と言ってから理由を説明するよ。\n「Thanks, Sara!」→ ほめ言葉への自然な返事だから正解！「My mom gave it to me.」と自然につながるね。\n他の答えはほめ言葉に答えていないよ。",
+        "ハナ、あなたの新しいペンケースすごくかわいいね！","ありがとう、サラ！お母さんがくれたの。"),
+      mkQ("Do you have any pets, Emma?","👦","( ) His name is Koko.","👧",
+        ["I like animals.","Yes, I have a cat.","Pets are cute.","I want a dog."],
+        1,
+        "「His name is Koko」の「his」は男の子（オス）のペットを指しているよ。\n「Yes, I have a cat.」→ ペットを紹介していて、「his」で自然につながるから正解！\n「I want a dog.」→ まだ飼っていないという意味だから、名前の話につながらないよ。",
+        "エマ、ペットは飼っていますか。","はい、ねこを飼っています。名前はココです。"),
+    ],
+    practice3: [
+      mkQ("You look like your mom, Ken. Do you have any brothers or sisters?","👧","( ) But I have two cousins who live near me.","👦",
+        ["Yes, I have one sister.","No, I'm an only child.","My mom is kind.","I like my family."],
+        1,
+        "「But I have two cousins」の「but」は前の文と反対の内容をつなぐよ。だから最初の答えは「兄弟姉妹がいない」内容のはずだよ。\n「No, I'm an only child.」→ 「でもいとこが二人いる」と自然につながるから正解！\n「Yes, I have one sister.」→ 「but」の反対の意味にならないよ。",
+        "ケン、お母さんに似てるね。兄弟姉妹はいる？","いいや、ひとりっ子だよ。でも近くに住んでいるいとこが二人いるんだ。"),
+      mkQ("When is your school festival, Mika?","👦","( ) You should come and watch!","👧",
+        ["It's fun every year.","It's next Friday.","My school is big.","I like festivals."],
+        1,
+        "「You should come and watch!」→ さそっているから、ひづけは近いはずだよ。\n「It's next Friday.」→ 近い日にちを答えていて、さそいと自然につながるから正解！\n「It's fun every year.」→ ひづけを答えていないよ。",
+        "ミカ、学園祭はいつですか。","今度の金曜日だよ。ぜひ見に来てね！"),
+      mkQ("What do you do on weekends, Yuta? I always see you leaving early in the morning.","👧","( ) I practice with my team every Sunday.","👦",
+        ["I wake up early.","I play basketball.","Mornings are cold.","I like my team."],
+        1,
+        "「I practice with my team every Sunday」→ 毎週日曜日にチームでれんしゅうするスポーツって何だろう？\n「I play basketball.」→ チームスポーツを紹介していて、自然につながるから正解！\n「I wake up early.」→ 見た理由の説明で、かつどうを答えていないよ。",
+        "ユウタ、週末は何をしているの？いつも朝早く出かけるのを見かけるよ。","バスケットボールをしているんだ。毎週日曜日にチームでれんしゅうしているよ。"),
+      mkQ("Hey Sara, let's study together for the science test on Friday!","👦","( ) How about at the library after school on Thursday?","👧",
+        ["Science is difficult.","That's a good idea!","I like the library.","Friday is busy."],
+        1,
+        "「How about at the library after school on Thursday?」→ 具体的なていあんをしているから、その前にさんせいしているはずだよ。\n「That's a good idea!」→ さんせいの言葉で、具体的なていあんに自然につながるから正解！\n「Science is difficult.」→ さんせいの言葉ではないよ。",
+        "サラ、金曜日の理科のテストのためにいっしょに勉強しよう！","いいアイデアだね！木曜日の放課後に図書館でどう？"),
+      mkQ("We're all going to the new pizza restaurant after school. Can you come, Hiro?","👧","( ) I have to go to my grandmother's house today.","👦",
+        ["Pizza sounds delicious.","I love pizza.","Sorry, I can't.","That's a good idea."],
+        2,
+        "「I have to go to my grandmother's house today」→ レストランに行く？行かない？\n「Sorry, I can't.」→ ていねいにことわっていて、「おばあちゃんの家に行かなきゃ」と自然につながるから正解！\n「That's a good idea.」→ さんせいの意味になり、次の文と合わないよ。",
+        "みんなで放課後に新しいピザ屋さんに行くの。ヒロも来られる？","ごめん、行けないの。今日はおばあちゃんの家に行かなきゃいけないんだ。"),
+      mkQ("Wow, you speak English really well, Taro!","👧","( ) I practice every day with my app.","👦",
+        ["English is fun.","Thanks, Lisa!","I like English.","My teacher is good."],
+        1,
+        "ほめられたら、まずお礼を言ってから理由を説明するよ。\n「Thanks, Lisa!」→ ほめ言葉への自然な返事で、「アプリで毎日れんしゅうしているよ」と自然につながるから正解！\n他の答えはほめ言葉に直接答えていないよ。",
+        "わあ、タロウは英語がとてもじょうずだね！","ありがとう、リサ！アプリで毎日れんしゅうしているんだ。"),
+      mkQ("This water bottle is really nice!","👧","( )","👦",
+        ["I drink a lot of water.","Water is important.","Whose is it?","It's in my bag."],
+        2,
+        "女の子は「Oh! It's so cute.（かわいいね）」と、水とうについて新しく知ったことを話しているよ。どんな質問だとこの返事につながる？\n「Whose is it?（だれのですか）」→ だれのものか聞いていて、そのあとに「かわいいね、新しいの？」と自然につながるから正解！\n他の答えは会話を自然につなげていないよ。",
+        "この水とう、すごくすてきだね！","だれのですか。",
+        { text:"Oh! It's so cute. Is it new?", trans:"わあ！かわいいね。新しいの？" }),
     ],
   },
 };
@@ -2973,11 +3088,12 @@ function DialogueHomeScreen({ onSelect, onBack, level }) {
 
 /* Practice/Quiz selector for a topic */
 function DialogueTopicScreen({ topic, onSelect, onBack, getSetProgress }) {
+  const hasQuiz = !!DIALOGUE_TESTS[topic.id]?.quiz;
   const sets = [
     { key:"practice1", label:"Practice 1", emoji:"🥚", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
     { key:"practice2", label:"Practice 2", emoji:"🐣", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
     { key:"practice3", label:"Practice 3", emoji:"🐥", sub:"7 questions · hints included", color:"#7c3aed", bg:"#ede9fe" },
-    { key:"quiz",      label:"QUIZ",       emoji:"🏆", sub:"7 questions · no hints · scored!", color:"#d97706", bg:"#fef3c7" },
+    ...(hasQuiz ? [{ key:"quiz", label:"QUIZ", emoji:"🏆", sub:"7 questions · no hints · scored!", color:"#d97706", bg:"#fef3c7" }] : []),
   ];
   return (
     <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
@@ -3149,11 +3265,20 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onComplete }) {
             </div>
           </div>
         )}
-        {phase === "correct" && (q.transA || q.transB) && (
+        {phase === "correct" && q.followUp && (
+          <div style={{display:"flex",alignItems:"flex-end",gap:6}}>
+            <div style={{fontSize:22,flexShrink:0}}>{q.aEmoji}</div>
+            <div style={{background:"#fff",borderRadius:"14px 14px 14px 4px",padding:"7px 12px",maxWidth:"80%",boxShadow:"0 1px 4px rgba(0,0,0,.08)"}}>
+              <div style={{fontSize:13,color:"#1f2937",lineHeight:1.4}}>{q.followUp.text}</div>
+            </div>
+          </div>
+        )}
+        {phase === "correct" && (q.transA || q.transB || q.followUp?.trans) && (
           <div style={{background:"#fff",border:"1px solid #ddd6fe",borderRadius:12,padding:"7px 12px",fontSize:12,color:"#4c1d95",lineHeight:1.6}}>
             <div style={{fontSize:10,fontWeight:700,color:"#a78bfa",marginBottom:2}}>やくす 📖</div>
             {q.transA && <div>👤 {q.transA}</div>}
             {q.transB && <div>💬 {q.transB}</div>}
+            {q.followUp?.trans && <div>👤 {q.followUp.trans}</div>}
           </div>
         )}
 
