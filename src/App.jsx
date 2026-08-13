@@ -78,6 +78,7 @@ const PROFILES_KEY = "eiken_profiles_v1";
 const CURRENT_KEY  = "eiken_current_v1";
 const PROGRESS_KEY = "eiken_progress_v1";
 const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
+const MISSED_WORDS_KEY = "eiken_missed_words_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 
 /* ── Dialogue Test Data ── */
@@ -2029,6 +2030,7 @@ export default function App() {
   const [progress,       setProgress]       = useState(() => { try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }  catch { return {}; }});
   const [dialogueProgress, setDialogueProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_PROGRESS_KEY)) || {}; } catch { return {}; }});
   const [dialogueNotesSeen, setDialogueNotesSeen] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_NOTES_SEEN_KEY)) || {}; } catch { return {}; }});
+  const [missedWords,    setMissedWords]    = useState(() => { try { return JSON.parse(localStorage.getItem(MISSED_WORDS_KEY)) || {}; } catch { return {}; }});
 
   const [screen,         setScreen]         = useState(currentProfile ? "dashboard" : "login");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -2054,6 +2056,22 @@ export default function App() {
     saveProgress(next);
   };
   const getCatProgress = catId => progress[`${currentProfile?.id}_${catId}`] || 0;
+
+  // Track which words a student has ever missed in a category, per attempt:
+  // words missed this attempt are added, words gotten right first-try are cleared (mastered).
+  const updateMissedWords = (catId, results) => {
+    const key = `${currentProfile.id}_${catId}`;
+    const missedNow = new Set(results.missed.map(m => m.word.en));
+    const prevSet = new Set(missedWords[key] || []);
+    results.words.forEach(w => {
+      if (missedNow.has(w.en)) prevSet.add(w.en);
+      else prevSet.delete(w.en);
+    });
+    const next = { ...missedWords, [key]: [...prevSet] };
+    setMissedWords(next);
+    localStorage.setItem(MISSED_WORDS_KEY, JSON.stringify(next));
+  };
+  const getMissedWords = catId => missedWords[`${currentProfile?.id}_${catId}`] || [];
 
   const markDialogueSetDone = (topicId, setKey, score, total) => {
     const key  = `${currentProfile.id}_${topicId}_${setKey}`;
@@ -2245,23 +2263,35 @@ export default function App() {
                   })}
                 </>
               )}
-              {(screen === "vocab_study" || screen === "vocab_game" || screen === "vocab_results" || screen === "vocab_review") && activeCategory && (
-                <>
-                  <div className="sidebar-title" style={{color:activeCategory.color}}>{activeCategory.title}</div>
-                  <div style={{fontSize:12,color:"#a0aec0",marginBottom:10}}>Word list — tap 🔈 to hear</div>
-                  {activeCategory.words.map((w, i) => (
-                    <div key={w.en} className="wl-row">
-                      <div className="wl-num" style={{color:activeCategory.color}}>{i+1}</div>
-                      <div style={{flex:1}}>
-                        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:"#02020b"}}>{w.en}</div>
-                        {!w.isOrdinal && <div style={{fontSize:11,color:"#a0aec0"}}>{w.kanji}</div>}
-                        {w.isOrdinal && <div style={{fontSize:12,color:activeCategory.color,fontWeight:700}}>{w.kanji}</div>}
+              {(screen === "vocab_study" || screen === "vocab_game" || screen === "vocab_results" || screen === "vocab_review") && activeCategory && (() => {
+                const missedEn = getMissedWords(activeCategory.id);
+                const missedList = activeCategory.words.filter(w => missedEn.includes(w.en));
+                return (
+                  <>
+                    <div className="sidebar-title" style={{color:activeCategory.color}}>{activeCategory.title}</div>
+                    <div style={{fontSize:12,color:"#a0aec0",marginBottom:10}}>❌ Words you've missed — tap 🔈 to hear</div>
+                    {missedList.length === 0 ? (
+                      <div style={{fontSize:12,color:"#a0aec0",lineHeight:1.6,padding:"6px 2px"}}>
+                        {getCatProgress(activeCategory.id) > 0
+                          ? "🎉 No missed words right now — nice work!"
+                          : "Finish a quiz to see the words you need to practice here."}
                       </div>
-                      <SpeakBtn text={w.en} size={26} />
-                    </div>
-                  ))}
-                </>
-              )}
+                    ) : (
+                      missedList.map((w, i) => (
+                        <div key={w.en} className="wl-row">
+                          <div className="wl-num" style={{color:activeCategory.color}}>{i+1}</div>
+                          <div style={{flex:1}}>
+                            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:"#02020b"}}>{w.en}</div>
+                            {!w.isOrdinal && <div style={{fontSize:11,color:"#a0aec0"}}>{w.kanji}</div>}
+                            {w.isOrdinal && <div style={{fontSize:12,color:activeCategory.color,fontWeight:700}}>{w.kanji}</div>}
+                          </div>
+                          <SpeakBtn text={w.en} size={26} />
+                        </div>
+                      ))
+                    )}
+                  </>
+                );
+              })()}
             </div>
 
             {/* Main content */}
@@ -2283,6 +2313,7 @@ export default function App() {
                 <VocabGameScreen key={activeCategory.id} category={activeCategory}
                   onComplete={results => {
                     markCategoryDone(activeCategory.id, results.pct);
+                    updateMissedWords(activeCategory.id, results);
                     setGameResults(results);
                     setScreen(results.missed.length > 0 ? "vocab_review" : "vocab_results");
                   }} />
