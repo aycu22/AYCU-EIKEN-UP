@@ -83,8 +83,8 @@ const DIALOGUE_TOPICS = [
   { id:"at_home", title:"AT HOME", emoji:"🏠", color:"#7c3aed", shadow:"#4c1d95" },
 ];
 
-const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint) =>
-  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint });
+const mkQ = (a, aEmoji, b, bEmoji, opts, correct, hint, transA, transB) =>
+  ({ a, aEmoji: aEmoji||"👩", b, bEmoji: bEmoji||"👦", opts, correct, hint, transA, transB });
 
 const DIALOGUE_TESTS = {
   at_home: {
@@ -92,115 +92,143 @@ const DIALOGUE_TESTS = {
       mkQ("Mom, where are my shoes?","👦","( )","👩",
         ["It's Tuesday.","They're by the door.","I like shoes.","Yes, I do."],
         1,
-        "「Where」はばしょをきく言葉だよ！\n「They're by the door.」→ ばしょを答えているから正解！\n「It's Tuesday.」→ これは「いつ？」への答えだよ。\n「I like shoes.」→ これは「すきなもの」を答えているよ。"),
+        "「Where」はばしょをきく言葉だよ！\n「They're by the door.」→ ばしょを答えているから正解！\n「It's Tuesday.」→ これは「いつ？」への答えだよ。\n「I like shoes.」→ これは「すきなもの」を答えているよ。",
+        "お母さん、ぼくのくつはどこ？","ドアのそばにあるよ。"),
       mkQ("What do you want for breakfast?","👩","( )","👧",
         ["It's delicious.","Toast and milk, please.","After school.","Yes, I am."],
         1,
-        "「What do you want?」→ ほしいものを答えよう！\n「Toast and milk, please.」→ たべものを答えているから正解！\n「After school.」→ これは「いつ？」への答えだよ。\n「It's delicious.」→ これは食べものの感想だよ。"),
+        "「What do you want?」→ ほしいものを答えよう！\n「Toast and milk, please.」→ たべものを答えているから正解！\n「After school.」→ これは「いつ？」への答えだよ。\n「It's delicious.」→ これは食べものの感想だよ。",
+        "朝ごはんは何がほしい？","トーストと牛乳をお願いします。"),
       mkQ("When is Dad coming home?","👧","( )","👩",
         ["He's in the kitchen.","He likes cooking.","At six o'clock.","It's cold today."],
         2,
-        "「When」はじかんをきく言葉だよ！\n「At six o'clock.」→ じかんを答えているから正解！\n「He's in the kitchen.」→ これは「どこ？」への答えだよ。\n「He likes cooking.」→ これは「すきなこと」を答えているよ。"),
+        "「When」はじかんをきく言葉だよ！\n「At six o'clock.」→ じかんを答えているから正解！\n「He's in the kitchen.」→ これは「どこ？」への答えだよ。\n「He likes cooking.」→ これは「すきなこと」を答えているよ。",
+        "お父さんはいつ帰ってくるの？","6時だよ。"),
       mkQ("Please clean your room, Tom.","👩","( )","👦",
         ["All right, Mom.","It's Tuesday.","I like cleaning.","She's at home."],
         0,
-        "お母さんが「〜してください」と言っているよ。なんて答える？\n「All right, Mom.」→ 「わかった！」という意味だから正解！\n「I like cleaning.」→ すきかどうかは聞かれていないよ。"),
+        "お母さんが「〜してください」と言っているよ。なんて答える？\n「All right, Mom.」→ 「わかった！」という意味だから正解！\n「I like cleaning.」→ すきかどうかは聞かれていないよ。",
+        "トム、部屋をそうじしてね。","わかった、お母さん。"),
       mkQ("Mom, can I watch TV now?","👦","( )","👩",
         ["It's a good show.","Of course.","I watch TV too.","It's in the living room."],
         1,
-        "「Can I~?」はゆるしをもとめる言い方だよ。お母さんはなんて言う？\n「Of course.」→ 「もちろん！」という意味だから正解！\n「It's in the living room.」→ これは「どこ？」への答えだよ。"),
+        "「Can I~?」はゆるしをもとめる言い方だよ。お母さんはなんて言う？\n「Of course.」→ 「もちろん！」という意味だから正解！\n「It's in the living room.」→ これは「どこ？」への答えだよ。",
+        "お母さん、今テレビを見てもいい？","もちろん。"),
       mkQ("What are you doing, Lisa?","👩","( )","👧",
         ["I'm doing my homework.","It's my homework.","I do homework every day.","Homework is difficult."],
         0,
-        "「What are you doing?」→「I'm ＋ 〜ing」で答えよう！\n「I'm doing my homework.」→ 「I'm +〜ing」の形だから正解！\n「I do homework every day.」→ これはまいにちのことを言っているよ。今やっていることじゃないね。"),
+        "「What are you doing?」→「I'm ＋ 〜ing」で答えよう！\n「I'm doing my homework.」→ 「I'm +〜ing」の形だから正解！\n「I do homework every day.」→ これはまいにちのことを言っているよ。今やっていることじゃないね。",
+        "リサ、何をしているの？","宿題をしているよ。"),
       mkQ("Where's Dad, Mom?","👦","( )","👩",
         ["He likes the garden.","He's in the garden.","He's tall.","He comes home at six."],
         1,
-        "「Where's Dad?」→ ばしょを答えよう！\n「He's in the garden.」→ ばしょを答えているから正解！\n「He likes the garden.」→ これは「すきなばしょ」を言っているよ。\n「He comes home at six.」→ これは「いつ？」への答えだよ。"),
+        "「Where's Dad?」→ ばしょを答えよう！\n「He's in the garden.」→ ばしょを答えているから正解！\n「He likes the garden.」→ これは「すきなばしょ」を言っているよ。\n「He comes home at six.」→ これは「いつ？」への答えだよ。",
+        "お父さんはどこ、お母さん？","庭にいるよ。"),
     ],
     practice2: [
       mkQ("Mom, I can't find my umbrella.","👧","( ) I put it there this morning.","👩",
         ["It's raining outside.","Check by the front door.","You need an umbrella.","It's a nice umbrella."],
         1,
-        "「I put it there」→「そこに置いたよ」という意味。「there（そこ）」はどこのこと？\n「Check by the front door.」→ ばしょを教えているから正解！「there」= 玄関のそばだね。\n「It's raining outside.」→ てんきのことを言っているよ。かさのばしょじゃないね。"),
+        "「I put it there」→「そこに置いたよ」という意味。「there（そこ）」はどこのこと？\n「Check by the front door.」→ ばしょを教えているから正解！「there」= 玄関のそばだね。\n「It's raining outside.」→ てんきのことを言っているよ。かさのばしょじゃないね。",
+        "お母さん、かさが見つからないの。今朝そこに置いたのに。","玄関のそばを見てみて。"),
       mkQ("Are you hungry, Ben?","👩","Yes! ( )","👦",
         ["Can I have some pasta, please?","I like pasta.","Pasta is Italian food.","It's in the kitchen."],
         0,
-        "Benは「Yes!」と言っているよ。おなかがすいている人は次に何を言う？\n「Can I have some pasta, please?」→ たべものをたのんでいるから正解！\n「I like pasta.」→ すきだと言っているけど、たのんでいないよ。"),
+        "Benは「Yes!」と言っているよ。おなかがすいている人は次に何を言う？\n「Can I have some pasta, please?」→ たべものをたのんでいるから正解！\n「I like pasta.」→ すきだと言っているけど、たのんでいないよ。",
+        "ベン、おなかすいた？うん！","パスタをもらえる？"),
       mkQ("When is Grandma's birthday?","👦","( ) We're going to have a party!","👧",
         ["She's very kind.","It's next Sunday.","She lives far away.","I like birthday cake."],
         1,
-        "「We're going to have a party!」→ パーティーをするよ！いつ？\n「It's next Sunday.」→ 日にちを答えているから正解！\n「I like birthday cake.」→ ケーキのことを言っているけど、「いつ？」に答えていないよ。"),
+        "「We're going to have a party!」→ パーティーをするよ！いつ？\n「It's next Sunday.」→ 日にちを答えているから正解！\n「I like birthday cake.」→ ケーキのことを言っているけど、「いつ？」に答えていないよ。",
+        "おばあちゃんのたんじょう日はいつ？パーティーをするよ！","今度の日曜日だよ。"),
       mkQ("Beth, please don't run in the house.","👩","( ) I'll be careful.","👧",
         ["I can run fast.","I'm sorry, Mom.","The house is big.","I like running."],
         1,
-        "お母さんにちゅういされたよ。「I'll be careful.（気をつけます）」の前に何を言う？\n「I'm sorry, Mom.」→ あやまっているから正解！あやまってから「気をつけます」と言うのが自然だね。\n「I can run fast.」→ 速く走れるかどうかは関係ないよ。"),
+        "お母さんにちゅういされたよ。「I'll be careful.（気をつけます）」の前に何を言う？\n「I'm sorry, Mom.」→ あやまっているから正解！あやまってから「気をつけます」と言うのが自然だね。\n「I can run fast.」→ 速く走れるかどうかは関係ないよ。",
+        "ベス、家の中で走らないで。気をつけるね。","ごめんなさい、お母さん。"),
       mkQ("Dad, can we go to the park today?","👧","( ) Put on your shoes!","👨",
         ["This year.","Of course.","The park is nice.","I go to the park."],
         1,
-        "「Put on your shoes!（くつをはきなさい！）」→ 公園に行くってこと！お父さんはなんと言った？\n「Of course.」→ 「もちろん！」という意味だから正解！くつをはくように言っているから、OKしたんだね。\n「The park is nice.」→ 公園のことを言っているけど、ゆるしを答えていないよ。"),
+        "「Put on your shoes!（くつをはきなさい！）」→ 公園に行くってこと！お父さんはなんと言った？\n「Of course.」→ 「もちろん！」という意味だから正解！くつをはくように言っているから、OKしたんだね。\n「The park is nice.」→ 公園のことを言っているけど、ゆるしを答えていないよ。",
+        "お父さん、今日公園に行ける？くつをはいて！","もちろん。"),
       mkQ("Jack, what are you doing in the kitchen?","👩","( ) It's for Dad's birthday!","👦",
         ["I like the kitchen.","The kitchen is big.","I'm making a cake.","I made a cake yesterday."],
         2,
-        "「It's for Dad's birthday!（お父さんのたんじょう日のため！）」→ たんじょう日に何を作る？「I'm ＋〜ing」で答えよう！\n「I'm making a cake.」→ 「I'm +〜ing」の形で、たんじょう日ケーキを作っているから正解！\n「I made a cake yesterday.」→ 「made」はきのうのこと。今やっていることじゃないよ。"),
+        "「It's for Dad's birthday!（お父さんのたんじょう日のため！）」→ たんじょう日に何を作る？「I'm ＋〜ing」で答えよう！\n「I'm making a cake.」→ 「I'm +〜ing」の形で、たんじょう日ケーキを作っているから正解！\n「I made a cake yesterday.」→ 「made」はきのうのこと。今やっていることじゃないよ。",
+        "ジャック、台所で何してるの？お父さんのたんじょう日のためだよ！","ケーキを作っているよ。"),
       mkQ("Where's my sister, Mom?","👦","( ) She'll be home for dinner.","👩",
         ["She's at her friend's house.","She's very funny.","She likes her friends.","She comes home every day."],
         0,
-        "「She'll be home for dinner.（ゆうしょくには帰ってくるよ）」→ 今はどこにいる？\n「She's at her friend's house.」→ ばしょを答えているから正解！今は友達の家にいるんだね。\n「She's very funny.」→ どんな人かを言っているけど、ばしょじゃないよ。"),
+        "「She'll be home for dinner.（ゆうしょくには帰ってくるよ）」→ 今はどこにいる？\n「She's at her friend's house.」→ ばしょを答えているから正解！今は友達の家にいるんだね。\n「She's very funny.」→ どんな人かを言っているけど、ばしょじゃないよ。",
+        "お母さん、妹はどこ？夕食には帰ってくるよ。","友達の家にいるよ。"),
     ],
     practice3: [
       mkQ("Ken, your jacket is not in the closet.","👩","( ) I wore it yesterday.","👦",
         ["It's in my room.","I like my jacket.","It's a nice jacket.","The closet is big."],
         0,
-        "「I wore it yesterday.（きのう着たよ）」→ 着たあと、ジャケットはどこに行く？\n「It's in my room.」→ ばしょを答えているから正解！きのう着たから、部屋にあるんだね。\n「The closet is big.」→ 「closet（クローゼット）」という言葉をくり返しているよ。だまされないで！"),
+        "「I wore it yesterday.（きのう着たよ）」→ 着たあと、ジャケットはどこに行く？\n「It's in my room.」→ ばしょを答えているから正解！きのう着たから、部屋にあるんだね。\n「The closet is big.」→ 「closet（クローゼット）」という言葉をくり返しているよ。だまされないで！",
+        "ケン、ジャケットがクローゼットにないよ。きのう着たんだ。","ぼくの部屋にあるよ。"),
       mkQ("Dinner is almost ready. What do you want to drink?","👩","( )","👦",
         ["I'm not hungry.","Dinner smells good.","Water, please.","I ate already."],
         2,
-        "「What do you want to DRINK?」→ のみものを答えよう！\n「Water, please.」→ のみものを答えているから正解！\n「Dinner smells good.」→ ゆうしょくのことを言っているけど、のみものじゃないよ。\n「I'm not hungry.」→ 「おなかがすいていない」は、のみものとちがうよ。"),
+        "「What do you want to DRINK?」→ のみものを答えよう！\n「Water, please.」→ のみものを答えているから正解！\n「Dinner smells good.」→ ゆうしょくのことを言っているけど、のみものじゃないよ。\n「I'm not hungry.」→ 「おなかがすいていない」は、のみものとちがうよ。",
+        "もうすぐ夕食よ。何を飲みたい？","水をお願いします。"),
       mkQ("When is Mom's birthday, Dad?","👧","( ) Let's buy her a present tomorrow!","👨",
         ["She likes flowers.","It's next Saturday.","She's at work.","Mom is happy."],
         1,
-        "「Let's buy her a present tomorrow!（あした、プレゼントを買おう！）」→ たんじょう日はもうすぐ！いつ？\n「It's next Saturday.」→ 日にちを答えているから正解！あしたプレゼントを買うなら、来週の土曜日が近いね。\n「She's at work.」→ これは「どこ？」への答えだよ。"),
+        "「Let's buy her a present tomorrow!（あした、プレゼントを買おう！）」→ たんじょう日はもうすぐ！いつ？\n「It's next Saturday.」→ 日にちを答えているから正解！あしたプレゼントを買うなら、来週の土曜日が近いね。\n「She's at work.」→ これは「どこ？」への答えだよ。",
+        "お父さん、お母さんのたんじょう日はいつ？あしたプレゼントを買おう！","今度の土曜日だよ。"),
       mkQ("Please turn off the TV, Anna. It's time for bed.","👨","( )","👧",
         ["I like this show.","The TV is loud.","OK, Dad. Good night!","It's a good show."],
         2,
-        "お父さんがテレビを消してねと言っているよ。もう寝る時間！なんて答える？\n「OK, Dad. Good night!」→ 「わかった！おやすみ！」は、寝る時間への自然な答えだから正解！\n「I like this show.」と「It's a good show.」→ 両方ともテレビ番組のことを言っているよ。だまされないで！"),
+        "お父さんがテレビを消してねと言っているよ。もう寝る時間！なんて答える？\n「OK, Dad. Good night!」→ 「わかった！おやすみ！」は、寝る時間への自然な答えだから正解！\n「I like this show.」と「It's a good show.」→ 両方ともテレビ番組のことを言っているよ。だまされないで！",
+        "アンナ、テレビを消してね。もう寝る時間だよ。","わかった、お父さん。おやすみ！"),
       mkQ("Mom, can I have some ice cream after dinner?","👦","( ) But finish your vegetables first.","👩",
         ["Ice cream is cold.","Of course.","I like ice cream.","It's in the freezer."],
         1,
-        "「But finish your vegetables first.（でも、まず野菜を食べてね）」→ 条件をつけてOKしているよ。どの答えがOKの意味？\n「Of course.」→ 「もちろん！」という意味だから正解！条件をつけてOKしているんだね。\n「It's in the freezer.」→ 「freezer（冷とう庫）」はアイスクリームのばしょだよ。「どこ？」への答えになっているね。"),
+        "「But finish your vegetables first.（でも、まず野菜を食べてね）」→ 条件をつけてOKしているよ。どの答えがOKの意味？\n「Of course.」→ 「もちろん！」という意味だから正解！条件をつけてOKしているんだね。\n「It's in the freezer.」→ 「freezer（冷とう庫）」はアイスクリームのばしょだよ。「どこ？」への答えになっているね。",
+        "お母さん、夕食のあとアイスを食べてもいい？でも先に野菜を食べてね。","もちろん。"),
       mkQ("You're so quiet, Tom. What are you doing in there?","👩","( ) It's for school tomorrow.","👦",
         ["I was reading a book.","I read every night.","I'm reading a book.","Books are interesting."],
         2,
-        "「What are you doing?」→「I'm ＋〜ing」で答えよう！「It's for school tomorrow.（あしたのがっこうのため）」→ 今やっていることだよ。\n「I'm reading a book.」→ 「I'm +〜ing」の形だから正解！\n「I was reading a book.」→「was」を使うとまえのことになるよ。今じゃないね！"),
+        "「What are you doing?」→「I'm ＋〜ing」で答えよう！「It's for school tomorrow.（あしたのがっこうのため）」→ 今やっていることだよ。\n「I'm reading a book.」→ 「I'm +〜ing」の形だから正解！\n「I was reading a book.」→「was」を使うとまえのことになるよ。今じゃないね！",
+        "トム、静かね。何をしているの？あしたの学校のためだよ。","本を読んでいるよ。"),
       mkQ("Dad, where's my brother?","👧","( ) He'll be home for lunch.","👨",
         ["He's playing outside.","He likes playing outside.","He plays outside every day.","He's a good boy."],
         0,
-        "「He'll be home for lunch.（お昼には帰ってくるよ）」→ 今はまだ外にいるんだね。今どこ？\n「He's playing outside.」→ 今いるばしょとしていることを答えているから正解！\n「He likes playing outside.」→ すきなことを言っているけど、今どこにいるかじゃないよ。\n「He plays outside every day.」→ まいにちのことを言っているよ。今のことじゃないね。"),
+        "「He'll be home for lunch.（お昼には帰ってくるよ）」→ 今はまだ外にいるんだね。今どこ？\n「He's playing outside.」→ 今いるばしょとしていることを答えているから正解！\n「He likes playing outside.」→ すきなことを言っているけど、今どこにいるかじゃないよ。\n「He plays outside every day.」→ まいにちのことを言っているよ。今のことじゃないね。",
+        "お父さん、お兄ちゃんはどこ？お昼には帰ってくるよ。","外で遊んでいるよ。"),
     ],
     quiz: [
       mkQ("Mom, where's my math book?","👦","( )","👩",
         ["It's Tuesday.","Math is difficult.","It's on the table.","I like math."],
-        2, null),
+        2, null,
+        "お母さん、算数の教科書はどこ？","テーブルの上にあるよ。"),
       mkQ("What do you want for lunch, Ken?","👩","( )","👦",
         ["Lunch is good.","After school.","Rice and soup, please.","I ate lunch."],
-        2, null),
+        2, null,
+        "ケン、お昼ごはんは何がいい？","ごはんとスープをお願いします。"),
       mkQ("When is the school trip, Mom?","👦","( ) We need to pack your bag!","👩",
         ["School is fun.","It's next Wednesday.","She's at school.","I like trips."],
-        1, null),
+        1, null,
+        "お母さん、遠足はいつ？かばんの準備をしなきゃ！","今度の水曜日だよ。"),
       mkQ("Please wash your hands before dinner, Yuki.","👩","( )","👧",
         ["Dinner smells good.","I like dinner.","All right, Mom!","My hands are cold."],
-        2, null),
+        2, null,
+        "ユキ、夕食の前に手を洗ってね。","わかった、お母さん！"),
       mkQ("Mom, can I have a cookie?","👧","( ) Just one, OK?","👩",
         ["Cookies are sweet.","Of course.","It's in the kitchen.","I like cookies."],
-        1, null),
+        1, null,
+        "お母さん、クッキーを食べてもいい？1つだけよ。","もちろん。"),
       mkQ("Sora, what are you doing?","👨","( ) It's due tomorrow!","👦",
         ["I did my homework.","I do homework every day.","I'm doing my homework.","Homework is hard."],
-        2, null),
+        2, null,
+        "ソラ、何をしているの？あしたが締め切りだよ！","宿題をしているよ。"),
       mkQ("Where's your sister, Kenji?","👩","( ) She said she'll be home by five.","👦",
         ["She's very kind.","She likes the library.","She went to the library.","She goes there every day."],
         2,
-        "むずかしい！\n「She likes the library.」→ としょかんがすきだと言っているけど、今どこにいるかじゃないよ。\n「She went to the library.」→ 「went（行った）」→ 今としょかんにいる！「She'll be home by five.（5時までに帰る）」と合っているね。"),
+        "むずかしい！\n「She likes the library.」→ としょかんがすきだと言っているけど、今どこにいるかじゃないよ。\n「She went to the library.」→ 「went（行った）」→ 今としょかんにいる！「She'll be home by five.（5時までに帰る）」と合っているね。",
+        "ケンジ、妹はどこ？5時までに帰ると言っていたよ。","図書館に行ったよ。"),
     ],
   },
 };
@@ -2836,6 +2864,17 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
     if (chatRef.current) chatRef.current.scrollTop = chatRef.current.scrollHeight;
   }, [phase, qIdx]);
 
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Enter" && phase !== "question") {
+        e.preventDefault();
+        handleNext();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
+
   const handleSelect = (idx) => {
     if (phase !== "question") return;
     setSelected(idx);
@@ -2928,6 +2967,13 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
             </div>
           </div>
         )}
+        {phase === "correct" && (q.transA || q.transB) && (
+          <div style={{background:"#fff",border:"1px solid #ddd6fe",borderRadius:12,padding:"7px 12px",fontSize:12,color:"#4c1d95",lineHeight:1.6}}>
+            <div style={{fontSize:10,fontWeight:700,color:"#a78bfa",marginBottom:2}}>やくす 📖</div>
+            {q.transA && <div>👤 {q.transA}</div>}
+            {q.transB && <div>💬 {q.transB}</div>}
+          </div>
+        )}
 
         {/* Wrong + hint bubble */}
         {phase === "wrong" && !isQuiz && q.hint && (
@@ -2970,12 +3016,14 @@ function DialoguePracticeScreen({ topic, setKey, onBack, onFinish }) {
         })}
       </div>
 
-      {/* Next button */}
+      {/* Next button — sticky so it's always visible, no scroll needed */}
       {phase !== "question" && (
-        <button type="button" className="btn" onClick={handleNext}
-          style={{marginTop:10,padding:"11px",background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
-          {qIdx + 1 >= questions.length ? (isQuiz ? "See results 🏆" : "Finish! 🎉") : "Next →"}
-        </button>
+        <div style={{position:"sticky",bottom:0,background:"#fff",paddingTop:8,marginTop:10}}>
+          <button type="button" className="btn" onClick={handleNext} autoFocus
+            style={{padding:"11px",background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
+            {qIdx + 1 >= questions.length ? (isQuiz ? "See results 🏆" : "Finish! 🎉") : "Next → (Enter)"}
+          </button>
+        </div>
       )}
     </div>
   );
