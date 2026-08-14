@@ -1438,6 +1438,18 @@ const PRONOUN_OVERVIEW_ROWS = [
   { person:"かれら",   subj:"they", obj:"them", poss:"their", possP:"theirs" },
 ];
 
+// Hover-reference examples for the Final Test — keyed by lowercase pronoun word
+const PRONOUN_EXAMPLES = {
+  i:"I like soccer.", you:"You are good at English.", he:"He is my teacher.", she:"She runs every day.",
+  it:"It is my cat.", we:"We are friends.", they:"They are at school.",
+  me:"Please help me.", him:"I gave him a book.", her:"I gave her a present.",
+  us:"Can you call us tonight?", them:"I invited them to the party.",
+  my:"This is my bag.", your:"Is this your book?", his:"This is his bicycle.",
+  its:"The dog wagged its tail.", our:"Let's clean our classroom.", their:"This is their house.",
+  mine:"This bag is mine.", yours:"That is yours.", hers:"That umbrella is hers.",
+  ours:"That desk is ours.", theirs:"This book is theirs.",
+};
+
 const PRONOUN_FINAL_TEST = [
   { before:"", blank:BLANK, after:"is my brother. He is 10 years old.", opts:["He","She","It","They"], correct:0 },
   { before:"Mom made a cake and gave", blank:BLANK, after:"to me.", opts:["it","him","her","them"], correct:0 },
@@ -5267,12 +5279,81 @@ function GrammarOverviewScreen({ onContinue }) {
   );
 }
 
+/* A pronoun word colored to stand out, with an example-sentence tooltip on hover */
+function HoverPronoun({ word }) {
+  const [hover, setHover] = useState(false);
+  const example = PRONOUN_EXAMPLES[word.toLowerCase()];
+  return (
+    <span style={{position:"relative",display:"inline-block"}}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      onClick={() => setHover(h => !h)}>
+      <span style={{color:"#1e40af",fontWeight:800,cursor:example?"help":"default",borderBottom:example?"2px dotted #93c5fd":"none"}}>
+        {word}
+      </span>
+      {hover && example && (
+        <div style={{position:"absolute",bottom:"120%",left:"50%",transform:"translateX(-50%)",
+          background:"#1e293b",color:"#fff",fontSize:11,fontWeight:600,padding:"6px 10px",borderRadius:8,
+          whiteSpace:"nowrap",zIndex:20,boxShadow:"0 4px 10px rgba(0,0,0,.25)"}}>
+          {example}
+          <div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",
+            borderWidth:"5px 5px 0 5px",borderStyle:"solid",borderColor:"#1e293b transparent transparent transparent"}} />
+        </div>
+      )}
+    </span>
+  );
+}
+
+/* Slide-in reference panel — every pronoun form, hoverable for an example sentence */
+function HintsPanel({ open, onClose }) {
+  if (!open) return null;
+  return (
+    <>
+      <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.35)",zIndex:29}} />
+      <div style={{position:"fixed",top:0,right:0,bottom:0,width:"min(320px, 88vw)",background:"#fff",
+        zIndex:30,boxShadow:"-4px 0 20px rgba(0,0,0,.15)",overflowY:"auto",padding:"18px 16px"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>📋 だいめいし まとめ</div>
+          <button type="button" onClick={onClose} style={{background:"#f3f4f6",border:"none",borderRadius:8,width:28,height:28,cursor:"pointer",fontSize:14}}>✕</button>
+        </div>
+        <div style={{fontSize:11,color:"#a0aec0",marginBottom:10}}>ホバーで例文が見られるよ 👆</div>
+        <div style={{overflowX:"auto"}}>
+          <table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}>
+            <thead>
+              <tr style={{background:"#f5f3ff"}}>
+                {["人","だれが","だれを","〜の","〜のもの"].map(h => (
+                  <th key={h} style={{padding:"6px 6px",fontSize:10,color:"#7c6a9c",fontWeight:800,whiteSpace:"nowrap"}}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {PRONOUN_OVERVIEW_ROWS.map((r,i) => (
+                <tr key={r.person} style={{background:i%2===0?"#faf5ff":"#fff"}}>
+                  <td style={{padding:"7px 6px",color:"#3b0764",fontWeight:700,whiteSpace:"nowrap"}}>{r.person}</td>
+                  <td style={{padding:"7px 6px"}}><HoverPronoun word={r.subj} /></td>
+                  <td style={{padding:"7px 6px"}}><HoverPronoun word={r.obj} /></td>
+                  <td style={{padding:"7px 6px"}}><HoverPronoun word={r.poss} /></td>
+                  <td style={{padding:"7px 6px"}}>{r.possP === "—" ? "—" : <HoverPronoun word={r.possP} />}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div style={{marginTop:14,background:"#fffbeb",border:"1.5px solid #fde68a",borderRadius:10,padding:"10px 12px",fontSize:11,color:"#92400e",lineHeight:1.6}}>
+          <div>💡 名詞のまえ → 〜の（my, his, her...）</div>
+          <div>💡 名詞のあと → 〜のもの（mine, his, hers...）</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 function GrammarFinalTestScreen({ onComplete, onBack }) {
   const [qIdx, setQIdx] = useState(0);
   const [phase, setPhase] = useState("question");
   const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState([]);
+  const [panelOpen, setPanelOpen] = useState(false);
   const q = PRONOUN_FINAL_TEST[qIdx];
 
   const handleSelect = (idx) => {
@@ -5284,6 +5365,7 @@ function GrammarFinalTestScreen({ onComplete, onBack }) {
     setAnswers(prev => [...prev, { q, chosen:idx, correct:q.correct }]);
   };
   const handleNext = () => {
+    setPanelOpen(false); // hints close automatically so the next question starts fresh
     if (qIdx+1 >= PRONOUN_FINAL_TEST.length) {
       onComplete(score, PRONOUN_FINAL_TEST.length, answers);
     } else {
@@ -5300,9 +5382,13 @@ function GrammarFinalTestScreen({ onComplete, onBack }) {
 
   return (
     <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
-        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>🏆 Final Practice Test</div>
-        <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>{qIdx+1} / {PRONOUN_FINAL_TEST.length}</div>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12,gap:8}}>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764",flex:1}}>🏆 Final Practice Test</div>
+        <button type="button" onClick={() => setPanelOpen(true)}
+          style={{background:"#ede9fe",border:"none",borderRadius:20,padding:"5px 11px",fontSize:11,fontWeight:800,color:"#7c3aed",cursor:"pointer",flexShrink:0}}>
+          💡 Hints
+        </button>
+        <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20,flexShrink:0}}>{qIdx+1} / {PRONOUN_FINAL_TEST.length}</div>
       </div>
       <div style={{background:"#f0ebff",borderRadius:14,padding:"18px 16px",marginBottom:12}}>
         <div style={{fontSize:15,color:"#1f2937",lineHeight:1.6,fontWeight:600}}>
@@ -5326,6 +5412,7 @@ function GrammarFinalTestScreen({ onComplete, onBack }) {
           {qIdx+1 >= PRONOUN_FINAL_TEST.length ? "See results 🏆" : "Next →"}
         </button>
       )}
+      <HintsPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
     </div>
   );
 }
