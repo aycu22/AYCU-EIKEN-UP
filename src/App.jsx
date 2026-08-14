@@ -79,6 +79,8 @@ const CURRENT_KEY  = "eiken_current_v1";
 const PROGRESS_KEY = "eiken_progress_v1";
 const DIALOGUE_PROGRESS_KEY = "eiken_dialogue_progress_v1";
 const MISSED_WORDS_KEY = "eiken_missed_words_v1";
+const GRAMMAR_PART_PROGRESS_KEY = "eiken_grammar_part_progress_v1";
+const GRAMMAR_FINAL_PROGRESS_KEY = "eiken_grammar_final_progress_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 
 /* ── Dialogue Test Data ── */
@@ -1264,6 +1266,176 @@ const DIALOGUE_TESTS = {
     ],
   },
 };
+
+/* ══════════════════════════════════════════════
+   GRAMMAR MODULE
+══════════════════════════════════════════════ */
+const GRAMMAR_TOPICS = [
+  { id:"pronouns", title:"Pronouns / だいめいし", emoji:"🔤", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
+];
+
+const PRONOUN_PARTS = [
+  {
+    id:"part1", short:"P1", title:"だれが", subtitle:"Subject Pronouns", emoji:"🟦",
+    cards: [
+      { en:"I",    kana:"わたし" },
+      { en:"You",  kana:"あなた" },
+      { en:"He",   kana:"かれ" },
+      { en:"She",  kana:"かのじょ" },
+      { en:"It",   kana:"それ" },
+      { en:"We",   kana:"わたしたち" },
+      { en:"They", kana:"かれら・かのじょら" },
+    ],
+    matchPairs: [
+      { en:"He",   jp:"かれ" },
+      { en:"I",    jp:"わたし" },
+      { en:"They", jp:"かれら" },
+      { en:"She",  jp:"かのじょ" },
+      { en:"We",   jp:"わたしたち" },
+    ],
+    lessonRows: [
+      { jp:["わたしは","サッカーが","好きです。"], en:[{t:"I",c:"blue"},{t:"like soccer."}] },
+      { jp:["かれは","わたしの","先生です。"],     en:[{t:"He",c:"blue"},{t:"is my teacher."}] },
+      { jp:["かのじょは","毎日","走ります。"],     en:[{t:"She",c:"blue"},{t:"runs every day."}] },
+    ],
+    lessonNote: "英語では「だれが」がいちばん最初にくるよ！",
+    questions: [
+      { before:"", blank:"( )", after:"is my friend. He plays tennis.", context:"talking about a boy",
+        opts:["He","She","It","They"], correct:0 },
+      { before:"", blank:"( )", after:"are in my class. We study together.", context:"talking about a group",
+        opts:["They","She","It","He"], correct:0 },
+      { before:"", blank:"( )", after:"is a cute dog. It lives next door.", context:"talking about an animal",
+        opts:["It","He","She","They"], correct:0 },
+    ],
+  },
+  {
+    id:"part2", short:"P2", title:"だれを・だれに", subtitle:"Object Pronouns", emoji:"🟦",
+    cards: [
+      { en:"me",   kana:"わたしを・わたしに" },
+      { en:"you",  kana:"あなたを・あなたに" },
+      { en:"him",  kana:"かれを・かれに" },
+      { en:"her",  kana:"かのじょを・かのじょに" },
+      { en:"it",   kana:"それを・それに" },
+      { en:"us",   kana:"わたしたちを・わたしたちに" },
+      { en:"them", kana:"かれらを・かれらに" },
+    ],
+    matchPairs: [
+      { en:"me",   jp:"わたしを" },
+      { en:"him",  jp:"かれを" },
+      { en:"them", jp:"かれらを" },
+      { en:"her",  jp:"かのじょを" },
+      { en:"us",   jp:"わたしたちを" },
+    ],
+    lessonRows: [
+      { jp:["わたしを","てつだってください。"],        en:[{t:"Please"},{t:"help",c:"green"},{t:"me.",c:"blue"}] },
+      { jp:["かれに","ほんを","わたした。"],            en:[{t:"I"},{t:"gave",c:"green"},{t:"him",c:"blue"},{t:"a book."}] },
+      { jp:["わたしたちに","プレゼントを","くれた。"],  en:[{t:"She"},{t:"gave",c:"green"},{t:"us",c:"blue"},{t:"a present."}] },
+    ],
+    lessonNote: "「だれを・だれに」は動詞のあとにくるよ！",
+    questions: [
+      { before:"Please help", blank:"( )", after:". I can't carry this box!", context:"わたしを",
+        opts:["me","him","her","them"], correct:0 },
+      { before:"I gave", blank:"( )", after:"a birthday card. She was very happy!", context:"かのじょに",
+        opts:["her","him","them","us"], correct:0 },
+      { before:"Can you call", blank:"( )", after:"tonight? We want to talk to you!", context:"わたしたちに",
+        opts:["us","them","him","her"], correct:0 },
+    ],
+  },
+  {
+    id:"part3", short:"P3", title:"〜の", subtitle:"Possessive Adjectives", emoji:"🟦",
+    cards: [
+      { en:"my",    kana:"わたしの" },
+      { en:"your",  kana:"あなたの" },
+      { en:"his",   kana:"かれの" },
+      { en:"her",   kana:"かのじょの" },
+      { en:"its",   kana:"それの" },
+      { en:"our",   kana:"わたしたちの" },
+      { en:"their", kana:"かれらの" },
+    ],
+    matchPairs: [
+      { en:"my",    jp:"わたしの" },
+      { en:"his",   jp:"かれの" },
+      { en:"our",   jp:"わたしたちの" },
+      { en:"her",   jp:"かのじょの" },
+      { en:"their", jp:"かれらの" },
+    ],
+    lessonRows: [
+      { jp:["わたしの","かばん"],       en:[{t:"My",c:"blue"},{t:"bag",c:"orange"}] },
+      { jp:["かれの","じてんしゃ"],     en:[{t:"His",c:"blue"},{t:"bicycle",c:"orange"}] },
+      { jp:["わたしたちの","きょうしつ"],en:[{t:"Our",c:"blue"},{t:"classroom",c:"orange"}] },
+    ],
+    lessonNote: "「〜の」のあとにはかならず名詞がくるよ！",
+    lessonExtra: { good:"My bag ✓", bad:"My ✗　← 名詞がないとダメ！" },
+    questions: [
+      { before:"This is", blank:"( )", after:"dog. His name is Koko.", context:"talking about MY dog",
+        opts:["my","his","her","our"], correct:0 },
+      { before:"Let's clean", blank:"( )", after:"classroom.", context:"talking about OUR classroom",
+        opts:["our","my","their","its"], correct:0 },
+      { before:"I like", blank:"( )", after:"English class. She is a great teacher!", context:"talking about HER class",
+        opts:["her","his","their","our"], correct:0 },
+    ],
+  },
+  {
+    id:"part4", short:"P4", title:"〜のもの", subtitle:"Possessive Pronouns", emoji:"🟦",
+    cards: [
+      { en:"mine",   kana:"わたしのもの" },
+      { en:"yours",  kana:"あなたのもの" },
+      { en:"his",    kana:"かれのもの" },
+      { en:"hers",   kana:"かのじょのもの" },
+      { en:"ours",   kana:"わたしたちのもの" },
+      { en:"theirs", kana:"かれらのもの" },
+    ],
+    matchPairs: [
+      { en:"mine",   jp:"わたしのもの" },
+      { en:"yours",  jp:"あなたのもの" },
+      { en:"hers",   jp:"かのじょのもの" },
+      { en:"ours",   jp:"わたしたちのもの" },
+      { en:"theirs", jp:"かれらのもの" },
+    ],
+    lessonRows: [
+      { jp:["これはわたしのものです。"],     en:[{t:"This bag is"},{t:"mine.",c:"blue"}] },
+      { jp:["あのかさはかのじょのものです。"],en:[{t:"That umbrella is"},{t:"hers.",c:"blue"}] },
+      { jp:["このほんはかれらのものです。"],  en:[{t:"This book is"},{t:"theirs.",c:"blue"}] },
+    ],
+    lessonNote: "「〜のもの」のあとには名詞がこないよ！",
+    lessonExtra: { good:"This is mine. ✓", bad:"This is mine bag. ✗" },
+    compareRows: [
+      { jp:"「my」のあとに「bag」がある！",   en:[{t:"My",c:"blue"},{t:"bag",c:"orange"},{t:"is blue."}] },
+      { jp:"「mine」のあとに名詞がない！",     en:[{t:"This bag is"},{t:"mine.",c:"blue"}] },
+    ],
+    questions: [
+      { before:"A: Whose pencil is this?\nB: It's", blank:"( )", after:".", context:"わたしのもの",
+        opts:["mine","yours","his","hers"], correct:0 },
+      { before:"A: Is this Ken's umbrella?\nB: No, it's", blank:"( )", after:".", context:"かのじょのもの（女の子の話）",
+        opts:["hers","his","mine","ours"], correct:0 },
+      { before:"A: Whose classroom is this?\nB: It's", blank:"( )", after:".", context:"わたしたちのもの",
+        opts:["ours","yours","theirs","mine"], correct:0 },
+    ],
+  },
+];
+
+const PRONOUN_OVERVIEW_ROWS = [
+  { person:"わたし",   subj:"I",    obj:"me",   poss:"my",    possP:"mine" },
+  { person:"あなた",   subj:"you",  obj:"you",  poss:"your",  possP:"yours" },
+  { person:"かれ",     subj:"he",   obj:"him",  poss:"his",   possP:"his" },
+  { person:"かのじょ", subj:"she",  obj:"her",  poss:"her",   possP:"hers" },
+  { person:"それ",     subj:"it",   obj:"it",   poss:"its",   possP:"—" },
+  { person:"わたしたち",subj:"we",  obj:"us",   poss:"our",   possP:"ours" },
+  { person:"かれら",   subj:"they", obj:"them", poss:"their", possP:"theirs" },
+];
+
+const PRONOUN_FINAL_TEST = [
+  { before:"", blank:"( )", after:"is my brother. He is 10 years old.", opts:["He","She","It","They"], correct:0 },
+  { before:"Mom made a cake and gave", blank:"( )", after:"to me.", opts:["it","him","her","them"], correct:0 },
+  { before:"Is this", blank:"( )", after:"book?", opts:["your","you","yours","his"], correct:0 },
+  { before:"This umbrella is not mine. It's", blank:"( )", after:".", opts:["his","him","he","its"], correct:0 },
+  { before:"", blank:"( )", after:"are my classmates. They are very kind.", opts:["They","She","It","We"], correct:0 },
+  { before:"I can't find", blank:"( )", after:"keys.", opts:["my","mine","me","I"], correct:0 },
+  { before:"Please wait for", blank:"( )", after:". We will be there soon.", opts:["us","we","our","ours"], correct:0 },
+  { before:"Whose bag is this? It's", blank:"( )", after:".", opts:["yours","your","you","yes"], correct:0 },
+  { before:"Look at Yui!", blank:"( ) is walking ( ) dog.", after:"", opts:["She / her","He / his","They / their","We / our"], correct:0 },
+  { before:"Emma and Tom are here.", blank:"( ) are ( ) friends.", after:"", opts:["They / our","He / his","She / her","It / its"], correct:0, tricky:true },
+];
 
 const EIKEN_LEVELS = [
   { id: "5", label: "Grade 5", emoji: "⭐",      color: "#ff6b9d", desc: "Elementary level — everyday English" },
@@ -2611,11 +2783,39 @@ export default function App() {
   const [dialogueTopic,    setDialogueTopic]    = useState(null);
   const [dialoguePractice, setDialoguePractice] = useState(null); // "practice1"|"practice2"|"practice3"|"quiz"
 
+  const [grammarPartProgress, setGrammarPartProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(GRAMMAR_PART_PROGRESS_KEY)) || {}; } catch { return {}; }});
+  const [grammarFinalProgress, setGrammarFinalProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(GRAMMAR_FINAL_PROGRESS_KEY)) || {}; } catch { return {}; }});
+  const [grammarTopic, setGrammarTopic] = useState(null);
+  const [grammarPart,  setGrammarPart]  = useState(null);
+  const [grammarFinalResults, setGrammarFinalResults] = useState(null);
+
+  const markGrammarPartDone = (partId) => {
+    const key = `${currentProfile.id}_${partId}`;
+    const next = { ...grammarPartProgress, [key]: true };
+    setGrammarPartProgress(next);
+    localStorage.setItem(GRAMMAR_PART_PROGRESS_KEY, JSON.stringify(next));
+  };
+  const getGrammarPartDone = (partId) => !!grammarPartProgress[`${currentProfile?.id}_${partId}`];
+  const markGrammarFinalDone = (topicId, score, total) => {
+    const key = `${currentProfile.id}_${topicId}`;
+    const prevBest = grammarFinalProgress[key]?.score ?? -1;
+    const next = { ...grammarFinalProgress, [key]: { score: Math.max(prevBest, score), total } };
+    setGrammarFinalProgress(next);
+    localStorage.setItem(GRAMMAR_FINAL_PROGRESS_KEY, JSON.stringify(next));
+  };
+  const getGrammarFinalProgress = (topicId) => grammarFinalProgress[`${currentProfile?.id}_${topicId}`] || null;
+
   const goBack = () => {
     if (screen === "dialogue_notes")    { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_practice") { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_topic")    { setScreen("dialogue_home"); setDialogueTopic(null); return; }
     if (screen === "dialogue_home")     { setScreen("dashboard"); return; }
+    if (screen === "grammar_part")           { setScreen("grammar_topic"); setGrammarPart(null); return; }
+    if (screen === "grammar_overview")       { setScreen("grammar_topic"); return; }
+    if (screen === "grammar_final")          { setScreen("grammar_topic"); return; }
+    if (screen === "grammar_final_results")  { setScreen("grammar_topic"); setGrammarFinalResults(null); return; }
+    if (screen === "grammar_topic")          { setScreen("grammar_home"); setGrammarTopic(null); return; }
+    if (screen === "grammar_home")           { setScreen("dashboard"); return; }
     const map = { vocab_study:"vocab_list", vocab_game:"vocab_list", vocab_results:"vocab_list", vocab_review:"vocab_list", vocab_list:"dashboard" };
     setScreen(map[screen] || "dashboard");
   };
@@ -2632,12 +2832,19 @@ export default function App() {
     dialogue_topic: dialogueTopic?.title || "Dialogue Tests",
     dialogue_notes: dialogueTopic?.title ? `${dialogueTopic.title} · Notes` : "Dialogue Tests",
     dialogue_practice: dialogueTopic?.title || "Dialogue Tests",
+    grammar_home: "Grammar",
+    grammar_topic: grammarTopic?.title || "Grammar",
+    grammar_part: grammarPart ? `${grammarPart.short} ${grammarPart.title}` : "Grammar",
+    grammar_overview: "Overview",
+    grammar_final: "Final Practice Test",
+    grammar_final_results: "Results",
   }[screen] || "Eiken English Training";
 
   // Screens that use the two-column layout (sidebar + main)
   const twoCol = ["dashboard","vocab_list","vocab_study","vocab_game","vocab_results","vocab_review"].includes(screen);
-  // Dialogue screens use full-width single column
+  // Dialogue and Grammar screens use full-width single column
   const isDialogueScreen = ["dialogue_home","dialogue_topic","dialogue_notes","dialogue_practice"].includes(screen);
+  const isGrammarScreen = ["grammar_home","grammar_topic","grammar_part","grammar_overview","grammar_final","grammar_final_results"].includes(screen);
 
   return (
     <>
@@ -2696,6 +2903,46 @@ export default function App() {
           </div>
         )}
 
+        {/* Grammar screens — full-width scrollable */}
+        {isGrammarScreen && currentProfile && (
+          <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
+            {screen === "grammar_home" && (
+              <GrammarHomeScreen level={currentProfile?.level || "5"} onBack={goBack}
+                onSelect={topic => { setGrammarTopic(topic); setScreen("grammar_topic"); }} />
+            )}
+            {screen === "grammar_topic" && grammarTopic && (
+              <GrammarTopicScreen topic={grammarTopic}
+                getPartDone={getGrammarPartDone}
+                getFinalProgress={() => getGrammarFinalProgress(grammarTopic.id)}
+                onSelectPart={part => { setGrammarPart(part); setScreen("grammar_part"); }}
+                onSelectOverview={() => setScreen("grammar_overview")}
+                onSelectFinal={() => setScreen("grammar_final")} />
+            )}
+            {screen === "grammar_part" && grammarPart && (
+              <GrammarPartScreen key={grammarPart.id} part={grammarPart}
+                onDone={() => { markGrammarPartDone(grammarPart.id); setScreen("grammar_topic"); setGrammarPart(null); }}
+                onBack={goBack} />
+            )}
+            {screen === "grammar_overview" && (
+              <GrammarOverviewScreen onContinue={() => setScreen("grammar_topic")} />
+            )}
+            {screen === "grammar_final" && grammarTopic && (
+              <GrammarFinalTestScreen
+                onComplete={(score, total, answers) => {
+                  markGrammarFinalDone(grammarTopic.id, score, total);
+                  setGrammarFinalResults({ score, total, answers });
+                  setScreen("grammar_final_results");
+                }}
+                onBack={goBack} />
+            )}
+            {screen === "grammar_final_results" && grammarFinalResults && (
+              <GrammarFinalResultsScreen {...grammarFinalResults}
+                onBack={() => { setScreen("grammar_topic"); setGrammarFinalResults(null); }}
+                onRetry={() => setScreen("grammar_final")} />
+            )}
+          </div>
+        )}
+
         {/* Two-column body for all logged-in screens */}
         {twoCol && currentProfile && (
           <div className="body-wrap">
@@ -2711,6 +2958,9 @@ export default function App() {
                 });
                 const dDone = dSetsAll.filter(s => s.prog?.done).length;
                 const dAttempted = dSetsAll.filter(s => s.prog?.done);
+                const gTopics = GRAMMAR_TOPICS.filter(t => t.level === (currentProfile?.level || "5"));
+                const gPartsDone = gTopics.length ? PRONOUN_PARTS.filter(p => getGrammarPartDone(p.id)).length : 0;
+                const gFinal = gTopics[0] ? getGrammarFinalProgress(gTopics[0].id) : null;
                 return (
                   <>
                     <div className="sidebar-title">Progress Report</div>
@@ -2753,10 +3003,28 @@ export default function App() {
                       </div>
                     )}
 
-                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#a0aec0",marginBottom:6}}>
-                      ✏️ Grammar
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#7c3aed",marginBottom:6}}>
+                      ✏️ Grammar{gTopics.length ? ` — ${gPartsDone}/${PRONOUN_PARTS.length} parts` : ""}
                     </div>
-                    <div style={{fontSize:12,color:"#a0aec0"}}>Coming soon</div>
+                    {gTopics.length === 0 ? (
+                      <div style={{fontSize:12,color:"#a0aec0"}}>No topics yet for this level.</div>
+                    ) : gPartsDone === 0 && !gFinal ? (
+                      <div style={{fontSize:12,color:"#a0aec0"}}>No parts started yet.</div>
+                    ) : (
+                      <div>
+                        {gPartsDone > 0 && (
+                          <div style={{fontSize:12,color:"#4a5568",padding:"4px 0"}}>{gPartsDone}/{PRONOUN_PARTS.length} pronoun parts done</div>
+                        )}
+                        {gFinal && (
+                          <div style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
+                            <span style={{fontSize:11,fontWeight:800,color:"#15803d",background:"#dcfce7",border:"1.5px solid #22c55e",borderRadius:20,padding:"1px 7px",flexShrink:0}}>
+                              {gFinal.score}/{gFinal.total}
+                            </span>
+                            <span style={{fontSize:12,color:"#4a5568",flex:1}}>Final test best score</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </>
                 );
               })()}
@@ -2835,6 +3103,7 @@ export default function App() {
               {screen === "dashboard" && (
                 <DashboardScreen profile={currentProfile} onVocab={() => setScreen("vocab_list")}
                   onDialogue={() => setScreen("dialogue_home")}
+                  onGrammar={() => setScreen("grammar_home")}
                   categories={categories} getCatProgress={getCatProgress}
                   onLevelChange={changeLevel} />
               )}
@@ -2948,7 +3217,7 @@ function LoginScreen({ profiles, onLogin, onNewProfile }) {
 }
 
 /* ── Dashboard ── */
-function DashboardScreen({ profile, onVocab, onDialogue, categories, getCatProgress, onLevelChange }) {
+function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, getCatProgress, onLevelChange }) {
   const initials  = profile.name.slice(0,2).toUpperCase();
   const done      = categories.filter(c => getCatProgress(c.id) >= 70).length;
   const levels    = [
@@ -3017,13 +3286,13 @@ function DashboardScreen({ profile, onVocab, onDialogue, categories, getCatProgr
           </div>
           <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
         </button>
-        <button key="Grammar" type="button" className="mod-card locked" disabled>
+        <button type="button" className="mod-card" onClick={onGrammar}>
           <div className="mod-icon" style={{background:"#f0f4f8"}}>✏️</div>
           <div>
-            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#a0aec0"}}>Grammar</div>
-            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>Coming soon</div>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#02020b"}}>Grammar</div>
+            <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>{GRAMMAR_TOPICS.filter(t=>t.level===profile.level).length} topic · lessons & practice</div>
           </div>
-          <span style={{marginLeft:"auto",fontSize:20}}>🔒</span>
+          <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
         </button>
       </div>
     </div>
@@ -4638,6 +4907,426 @@ function DialogueQuizResults({ score, total, answers, onBack, onRetry }) {
       </button>
       <button type="button" className="btn btn-gray" onClick={onBack}>
         Back to topic list
+      </button>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════
+   GRAMMAR SCREENS
+══════════════════════════════════════════════ */
+
+const GRAMMAR_CHIP_COLORS = { blue:{bg:"#dbeafe",text:"#1e40af"}, yellow:{bg:"#fef9c3",text:"#854d0e"}, green:{bg:"#dcfce7",text:"#15803d"}, orange:{bg:"#ffedd5",text:"#c2410c"} };
+function GrammarChip({ color, children }) {
+  const c = GRAMMAR_CHIP_COLORS[color] || { bg:"#f1f5f9", text:"#334155" };
+  return <span style={{background:c.bg,color:c.text,fontWeight:800,fontSize:12,padding:"4px 9px",borderRadius:8,display:"inline-block"}}>{children}</span>;
+}
+function GrammarEnLine({ tokens }) {
+  return (
+    <div style={{display:"flex",flexWrap:"wrap",alignItems:"center",gap:5}}>
+      {tokens.map((tok, i) => tok.c
+        ? <GrammarChip key={i} color={tok.c}>{tok.t}</GrammarChip>
+        : <span key={i} style={{fontSize:13,color:"#374151",fontWeight:600}}>{tok.t}</span>)}
+    </div>
+  );
+}
+
+function GrammarHomeScreen({ level, onSelect, onBack }) {
+  const topics = GRAMMAR_TOPICS.filter(t => t.level === level);
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{textAlign:"center",marginBottom:24,paddingTop:8}}>
+        <div style={{fontSize:40,marginBottom:6}}>✏️</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:22,color:"#02020b"}}>Grammar</div>
+        <div style={{fontSize:13,color:"#718096",marginTop:4}}>Choose a topic to learn</div>
+      </div>
+      {topics.length === 0 ? (
+        <div style={{textAlign:"center",padding:"40px 20px",color:"#a0aec0"}}>
+          <div style={{fontSize:36,marginBottom:10}}>🚧</div>
+          <div style={{fontSize:14}}>No topics yet for this level.<br/>Check back soon!</div>
+        </div>
+      ) : (
+        <div style={{borderRadius:18,overflow:"hidden",boxShadow:"0 2px 14px rgba(0,0,0,.09)"}}>
+          <div style={{background:"#7c3aed",padding:"10px 16px",fontSize:12,fontWeight:700,color:"#e9d5ff",letterSpacing:1}}>TOPICS</div>
+          {topics.map((topic, i) => (
+            <button key={topic.id} type="button" onClick={() => onSelect(topic)}
+              style={{width:"100%",display:"flex",alignItems:"center",gap:14,padding:"16px 18px",background:"#fff",border:"none",
+                borderTop: i===0 ? "none" : "1px solid #f0f0f0", cursor:"pointer",textAlign:"left"}}
+              onMouseEnter={e => e.currentTarget.style.background="#f9f5ff"}
+              onMouseLeave={e => e.currentTarget.style.background="#fff"}>
+              <div style={{width:48,height:48,borderRadius:14,background:"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:26,flexShrink:0}}>{topic.emoji}</div>
+              <div style={{flex:1}}>
+                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>{topic.title}</div>
+                <div style={{fontSize:12,color:"#a78bfa",marginTop:2}}>4 parts · overview · final test</div>
+              </div>
+              <span style={{fontSize:18,color:"#c4b5fd"}}>→</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GrammarTopicScreen({ topic, onSelectPart, onSelectOverview, onSelectFinal, getPartDone, getFinalProgress }) {
+  const partsDone = PRONOUN_PARTS.filter(p => getPartDone(p.id)).length;
+  const finalProg = getFinalProgress();
+  const rows = [
+    ...PRONOUN_PARTS.map(p => ({ key:p.id, kind:"part", label:`${p.short} ${p.title}`, sub:p.subtitle, emoji:"📘", onClick:() => onSelectPart(p), done:getPartDone(p.id) })),
+    { key:"overview", kind:"overview", label:"Overview", sub:"まとめページ", emoji:"📋", onClick:onSelectOverview, done:partsDone===PRONOUN_PARTS.length },
+    { key:"final", kind:"final", label:"Final Practice Test", sub:"10 questions · no hints", emoji:"🏆", onClick:onSelectFinal, done:!!finalProg },
+  ];
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:22}}>
+        <div style={{fontSize:36}}>{topic.emoji}</div>
+        <div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:20,color:"#3b0764"}}>{topic.title}</div>
+          <div style={{fontSize:13,color:"#a78bfa"}}>{partsDone}/{PRONOUN_PARTS.length} parts done{finalProg ? ` · Final: ${finalProg.score}/${finalProg.total}` : ""}</div>
+        </div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {rows.map(r => (
+          <button key={r.key} type="button" onClick={r.onClick}
+            style={{display:"flex",alignItems:"center",gap:12,padding:"14px 16px",borderRadius:14,
+              border:`2px solid ${r.done?"#86efac":"#ede9fe"}`,background:r.done?"#f0fdf4":"#fff",
+              cursor:"pointer",textAlign:"left",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+            <div style={{width:42,height:42,borderRadius:12,background:r.done?"#dcfce7":"#ede9fe",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{r.emoji}</div>
+            <div style={{flex:1}}>
+              <div style={{display:"flex",alignItems:"center",gap:6}}>
+                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:14,color:"#3b0764"}}>{r.label}</div>
+                {r.done && <span style={{fontSize:13}}>✅</span>}
+              </div>
+              <div style={{fontSize:11,color:"#a0aec0",marginTop:2}}>{r.sub}</div>
+            </div>
+            <span style={{fontSize:18,color:r.done?"#4ade80":"#c4b5fd"}}>→</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* Tap-to-pair matching game */
+function PairMatchGame({ pairs, onDone }) {
+  const jpShuffled = useMemo(() => shuffle(pairs.map(p => p.jp)), [pairs]);
+  const [selectedEn, setSelectedEn] = useState(null);
+  const [matched, setMatched] = useState([]);
+  const [wrongPair, setWrongPair] = useState(null);
+
+  const pickEn = (en) => { if (!matched.includes(en)) setSelectedEn(en); };
+  const pickJp = (jp) => {
+    if (!selectedEn) return;
+    const pair = pairs.find(p => p.en === selectedEn);
+    if (pair.jp === jp) {
+      setMatched(m => [...m, selectedEn]);
+      setSelectedEn(null);
+      if (matched.length + 1 === pairs.length) setTimeout(onDone, 500);
+    } else {
+      setWrongPair(jp);
+      setTimeout(() => setWrongPair(null), 400);
+      setSelectedEn(null);
+    }
+  };
+
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{textAlign:"center",fontSize:13,color:"#718096",marginBottom:16}}>左のえいごと右の日本語をむすぼう！</div>
+      <div style={{display:"flex",gap:16}}>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:8}}>
+          {pairs.map(p => (
+            <button key={p.en} type="button" disabled={matched.includes(p.en)} onClick={() => pickEn(p.en)}
+              style={{padding:"12px",borderRadius:12,border:`2px solid ${matched.includes(p.en)?"#86efac":selectedEn===p.en?"#7c3aed":"#e2e8f0"}`,
+                background:matched.includes(p.en)?"#f0fdf4":selectedEn===p.en?"#f5f3ff":"#fff",
+                fontWeight:800,fontSize:14,color:matched.includes(p.en)?"#15803d":"#3b0764",cursor:matched.includes(p.en)?"default":"pointer"}}>
+              {p.en}{matched.includes(p.en)?" ✓":""}
+            </button>
+          ))}
+        </div>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:8}}>
+          {jpShuffled.map(jp => {
+            const isMatched = matched.some(en => pairs.find(p=>p.en===en).jp === jp);
+            return (
+              <button key={jp} type="button" disabled={isMatched} onClick={() => pickJp(jp)}
+                style={{padding:"12px",borderRadius:12,border:`2px solid ${isMatched?"#86efac":wrongPair===jp?"#f87171":"#e2e8f0"}`,
+                  background:isMatched?"#f0fdf4":wrongPair===jp?"#fee2e2":"#fff",
+                  fontWeight:700,fontSize:13,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
+                {jp}{isMatched?" ✓":""}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function GrammarPartScreen({ part, onDone, onBack }) {
+  const [step, setStep] = useState("intro"); // intro | match | lesson | quiz
+  const [qIdx, setQIdx] = useState(0);
+  const [phase, setPhase] = useState("question"); // question | correct | wrong
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+
+  const q = part.questions[qIdx];
+
+  const handleSelect = (idx) => {
+    if (phase !== "question") return;
+    setSelected(idx);
+    if (idx === q.correct) { setScore(s=>s+1); setPhase("correct"); }
+    else setPhase("wrong");
+  };
+  const handleNext = () => {
+    if (qIdx + 1 >= part.questions.length) { onDone(); }
+    else { setQIdx(i=>i+1); setPhase("question"); setSelected(null); }
+  };
+
+  if (step === "intro") {
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:16}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#3b0764"}}>{part.short} — {part.title}</div>
+          <div style={{fontSize:12,color:"#a78bfa"}}>{part.subtitle}</div>
+          <div style={{fontSize:12,color:"#718096",marginTop:8}}>Tap to hear! 🔊</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+          {part.cards.map(c => (
+            <div key={c.en} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#fff",border:"1.5px solid #ede9fe",borderRadius:12}}>
+              <span style={{fontSize:14}}>🔵</span>
+              <div style={{flex:1,fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:15,color:"#3b0764"}}>{c.en}</div>
+              <div style={{fontSize:13,color:"#718096"}}>{c.kana}</div>
+              <SpeakBtn text={c.en} size={30} />
+            </div>
+          ))}
+        </div>
+        <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}} onClick={() => setStep("match")}>
+          Next: Matching quiz →
+        </button>
+      </div>
+    );
+  }
+
+  if (step === "match") {
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <PairMatchGame pairs={part.matchPairs} onDone={() => setStep("lesson")} />
+      </div>
+    );
+  }
+
+  if (step === "lesson") {
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:14}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:16,color:"#3b0764"}}>Lesson</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+          {part.lessonRows.map((row, i) => (
+            <div key={i} style={{background:"#fff",border:"1.5px solid #ede9fe",borderRadius:12,padding:"10px 12px"}}>
+              <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:6}}>
+                {row.jp.map((w,j) => <GrammarChip key={j} color="yellow">{w}</GrammarChip>)}
+              </div>
+              <GrammarEnLine tokens={row.en} />
+            </div>
+          ))}
+        </div>
+        {part.compareRows && (
+          <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
+            {part.compareRows.map((row,i) => (
+              <div key={i} style={{background:"#f8fafc",border:"1px solid #e2e8f0",borderRadius:12,padding:"10px 12px"}}>
+                <div style={{fontSize:12,color:"#718096",marginBottom:6}}>{row.jp}</div>
+                <GrammarEnLine tokens={row.en} />
+              </div>
+            ))}
+          </div>
+        )}
+        <div style={{background:"#fffbeb",border:"1.5px solid #fde68a",borderRadius:12,padding:"10px 14px",marginBottom:10,fontSize:13,color:"#92400e"}}>
+          💡 {part.lessonNote}
+        </div>
+        {part.lessonExtra && (
+          <div style={{background:"#f0fdf4",border:"1.5px solid #86efac",borderRadius:12,padding:"10px 14px",marginBottom:14,fontSize:13,color:"#15803d"}}>
+            <div>{part.lessonExtra.good}</div>
+            <div style={{color:"#b91c1c",marginTop:2}}>{part.lessonExtra.bad}</div>
+          </div>
+        )}
+        <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}} onClick={() => setStep("quiz")}>
+          Next: 3 questions →
+        </button>
+      </div>
+    );
+  }
+
+  // step === "quiz"
+  const optColor = (idx) => {
+    if (phase === "question") return { bg:"#f9f5ff", border:"#ddd6fe", color:"#3b0764" };
+    if (idx === q.correct) return { bg:"#d1fae5", border:"#34d399", color:"#065f46" };
+    if (idx === selected && idx !== q.correct) return { bg:"#fee2e2", border:"#f87171", color:"#991b1b" };
+    return { bg:"#f3f4f6", border:"#e5e7eb", color:"#9ca3af" };
+  };
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>{part.short} Questions</div>
+        <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>{qIdx+1} / {part.questions.length}</div>
+      </div>
+      <div style={{background:"#f0ebff",borderRadius:14,padding:"18px 16px",marginBottom:12}}>
+        <div style={{fontSize:15,color:"#1f2937",lineHeight:1.6,fontWeight:600,whiteSpace:"pre-line"}}>
+          {q.before}{q.before?" ":""}{q.blank}{q.after?" "+q.after:""}
+        </div>
+        {q.context && <div style={{fontSize:12,color:"#7c6a9c",marginTop:8}}>→ {q.context}</div>}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
+        {q.opts.map((opt, idx) => {
+          const c = optColor(idx);
+          return (
+            <button key={idx} type="button" onClick={() => handleSelect(idx)} disabled={phase!=="question"}
+              style={{padding:"10px 14px",borderRadius:12,border:`2px solid ${c.border}`,background:c.bg,color:c.color,
+                fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:14,textAlign:"left",cursor:phase==="question"?"pointer":"default"}}>
+              {idx+1}. {opt}{phase!=="question" && idx===q.correct?" ✓":""}
+            </button>
+          );
+        })}
+      </div>
+      {phase !== "question" && (
+        <button type="button" className="btn" onClick={handleNext} autoFocus style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
+          {qIdx+1 >= part.questions.length ? "Finish part! 🎉" : "Next →"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function GrammarOverviewScreen({ onContinue }) {
+  return (
+    <div className="fade" style={{maxWidth:520,margin:"0 auto"}}>
+      <div style={{textAlign:"center",marginBottom:16}}>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#3b0764"}}>だいめいし まとめ</div>
+      </div>
+      <div style={{overflowX:"auto",marginBottom:16}}>
+        <table style={{width:"100%",borderCollapse:"collapse",background:"#fff",borderRadius:12,overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,.06)"}}>
+          <thead>
+            <tr style={{background:"#7c3aed"}}>
+              {["人","だれが","だれを","〜の","〜のもの"].map(h => (
+                <th key={h} style={{padding:"8px 10px",fontSize:12,color:"#fff",fontFamily:"'Nunito',sans-serif",fontWeight:800,whiteSpace:"nowrap"}}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {PRONOUN_OVERVIEW_ROWS.map((r,i) => (
+              <tr key={r.person} style={{background:i%2===0?"#faf5ff":"#fff"}}>
+                <td style={{padding:"7px 10px",fontSize:12,color:"#3b0764",fontWeight:700}}>{r.person}</td>
+                <td style={{padding:"7px 10px",fontSize:13,color:"#1f2937",fontWeight:700}}>{r.subj}</td>
+                <td style={{padding:"7px 10px",fontSize:13,color:"#1f2937"}}>{r.obj}</td>
+                <td style={{padding:"7px 10px",fontSize:13,color:"#1f2937"}}>{r.poss}</td>
+                <td style={{padding:"7px 10px",fontSize:13,color:"#1f2937"}}>{r.possP}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div style={{background:"#fffbeb",border:"1.5px solid #fde68a",borderRadius:12,padding:"12px 14px",marginBottom:16,fontSize:13,color:"#92400e",lineHeight:1.7}}>
+        <div>💡 名詞のまえ → 〜の（my, his, her...）</div>
+        <div>💡 名詞のあと → 〜のもの（mine, his, hers...）</div>
+      </div>
+      <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}} onClick={onContinue}>
+        Continue →
+      </button>
+    </div>
+  );
+}
+
+function GrammarFinalTestScreen({ onComplete, onBack }) {
+  const [qIdx, setQIdx] = useState(0);
+  const [phase, setPhase] = useState("question");
+  const [selected, setSelected] = useState(null);
+  const [score, setScore] = useState(0);
+  const [answers, setAnswers] = useState([]);
+  const q = PRONOUN_FINAL_TEST[qIdx];
+
+  const handleSelect = (idx) => {
+    if (phase !== "question") return;
+    setSelected(idx);
+    const correct = idx === q.correct;
+    if (correct) setScore(s=>s+1);
+    setPhase(correct ? "correct" : "wrong");
+    setAnswers(prev => [...prev, { q, chosen:idx, correct:q.correct }]);
+  };
+  const handleNext = () => {
+    if (qIdx+1 >= PRONOUN_FINAL_TEST.length) {
+      onComplete(score, PRONOUN_FINAL_TEST.length, answers);
+    } else {
+      setQIdx(i=>i+1); setPhase("question"); setSelected(null);
+    }
+  };
+
+  const optColor = (idx) => {
+    if (phase === "question") return { bg:"#f9f5ff", border:"#ddd6fe", color:"#3b0764" };
+    if (idx === q.correct) return { bg:"#d1fae5", border:"#34d399", color:"#065f46" };
+    if (idx === selected && idx !== q.correct) return { bg:"#fee2e2", border:"#f87171", color:"#991b1b" };
+    return { bg:"#f3f4f6", border:"#e5e7eb", color:"#9ca3af" };
+  };
+
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>🏆 Final Practice Test</div>
+        <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>{qIdx+1} / {PRONOUN_FINAL_TEST.length}</div>
+      </div>
+      <div style={{background:"#f0ebff",borderRadius:14,padding:"18px 16px",marginBottom:12}}>
+        <div style={{fontSize:15,color:"#1f2937",lineHeight:1.6,fontWeight:600}}>
+          {q.before}{q.before?" ":""}{q.blank}{q.after?" "+q.after:""}
+        </div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:10}}>
+        {q.opts.map((opt, idx) => {
+          const c = optColor(idx);
+          return (
+            <button key={idx} type="button" onClick={() => handleSelect(idx)} disabled={phase!=="question"}
+              style={{padding:"10px 14px",borderRadius:12,border:`2px solid ${c.border}`,background:c.bg,color:c.color,
+                fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:14,textAlign:"left",cursor:phase==="question"?"pointer":"default"}}>
+              {idx+1}. {opt}{phase!=="question" && idx===q.correct?" ✓":""}
+            </button>
+          );
+        })}
+      </div>
+      {phase !== "question" && (
+        <button type="button" className="btn" onClick={handleNext} autoFocus style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95"}}>
+          {qIdx+1 >= PRONOUN_FINAL_TEST.length ? "See results 🏆" : "Next →"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function GrammarFinalResultsScreen({ score, total, answers, onBack, onRetry }) {
+  const msg = score === total ? { txt:"かんぺき！すごい！", emoji:"🏆" }
+    : score >= total*0.7 ? { txt:"よくできました！", emoji:"⭐⭐" }
+    : score >= total*0.4 ? { txt:"がんばったね！", emoji:"⭐" }
+    : { txt:"もう一度れんしゅうしよう！", emoji:"📖" };
+  return (
+    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div style={{textAlign:"center",padding:"28px 0 20px"}}>
+        <div style={{fontSize:56}}>{msg.emoji}</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:28,color:"#3b0764",margin:"10px 0 4px"}}>{score} / {total}</div>
+        <div style={{fontSize:15,color:"#374151",background:"#ede9fe",borderRadius:12,padding:"10px 18px",display:"inline-block"}}>{msg.txt}</div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:20}}>
+        {answers.map(({q, chosen, correct}, i) => (
+          <div key={i} style={{borderRadius:14,border:`2px solid ${chosen===correct?"#a7f3d0":"#fca5a5"}`,background:chosen===correct?"#f0fdf4":"#fff5f5",padding:"12px 14px"}}>
+            <div style={{fontSize:12,fontWeight:700,color:"#6b7280",marginBottom:4}}>Q{i+1}</div>
+            <div style={{fontSize:13,color:"#374151",marginBottom:6}}>{q.before} {q.blank} {q.after}</div>
+            <div style={{fontSize:13,color:chosen===correct?"#065f46":"#991b1b",fontWeight:700}}>
+              {chosen===correct ? "✓" : "✗"} {q.opts[chosen]}
+            </div>
+            {chosen !== correct && <div style={{fontSize:12,color:"#059669",marginTop:4}}>正解: {q.opts[correct]}</div>}
+          </div>
+        ))}
+      </div>
+      <button type="button" className="btn" style={{background:"#7c3aed",boxShadow:"0 4px 0 #4c1d95",marginBottom:10}} onClick={onRetry}>
+        Try again 🔄
+      </button>
+      <button type="button" className="btn btn-gray" onClick={onBack}>
+        Back to topic
       </button>
     </div>
   );
