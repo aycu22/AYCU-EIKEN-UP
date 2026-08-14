@@ -1274,9 +1274,10 @@ const GRAMMAR_TOPICS = [
   { id:"pronouns", title:"Pronouns / だいめいし", emoji:"🔤", color:"#7c3aed", shadow:"#4c1d95", level:"5" },
 ];
 
+const BLANK = "(             )"; // non-breaking spaces so the wide blank doesn't collapse in HTML
 const PRONOUN_PARTS = [
   {
-    id:"part1", short:"P1", title:"だれが", subtitle:"Subject Pronouns", emoji:"🟦",
+    id:"part1", short:"1", title:"だれが", subtitle:"Subject Pronouns", emoji:"🟦",
     cards: [
       { en:"I",    kana:"わたし" },
       { en:"You",  kana:"あなた" },
@@ -1294,22 +1295,26 @@ const PRONOUN_PARTS = [
       { en:"We",   jp:"わたしたち" },
     ],
     lessonRows: [
-      { jp:["わたしは","サッカーが","好きです。"], en:[{t:"I",c:"blue"},{t:"like soccer."}] },
-      { jp:["かれは","わたしの","先生です。"],     en:[{t:"He",c:"blue"},{t:"is my teacher."}] },
-      { jp:["かのじょは","毎日","走ります。"],     en:[{t:"She",c:"blue"},{t:"runs every day."}] },
+      { jp:[{t:"わたしは",c:"blue"},{t:"サッカーが"},{t:"好きです。"}], en:[{t:"I",c:"blue"},{t:"like soccer."}] },
+      { jp:[{t:"あなたは",c:"blue"},{t:"えいごが"},{t:"じょうずです。"}], en:[{t:"You",c:"blue"},{t:"are good at English."}] },
+      { jp:[{t:"かれは",c:"blue"},{t:"わたしの"},{t:"先生です。"}], en:[{t:"He",c:"blue"},{t:"is my teacher."}] },
+      { jp:[{t:"かのじょは",c:"blue"},{t:"毎日"},{t:"走ります。"}], en:[{t:"She",c:"blue"},{t:"runs every day."}] },
+      { jp:[{t:"それは",c:"blue"},{t:"わたしの"},{t:"ねこです。"}], en:[{t:"It",c:"blue"},{t:"is my cat."}] },
+      { jp:[{t:"わたしたちは",c:"blue"},{t:"ともだちです。"}], en:[{t:"We",c:"blue"},{t:"are friends."}] },
+      { jp:[{t:"かれらは",c:"blue"},{t:"がっこうに"},{t:"います。"}], en:[{t:"They",c:"blue"},{t:"are at school."}] },
     ],
     lessonNote: "英語では「だれが」がいちばん最初にくるよ！",
     questions: [
-      { before:"", blank:"( )", after:"is my friend. He plays tennis.", context:"talking about a boy",
+      { before:"", blank:BLANK, after:"is my friend. He plays tennis.", context:"talking about a boy",
         opts:["He","She","It","They"], correct:0 },
-      { before:"", blank:"( )", after:"are in my class. We study together.", context:"talking about a group",
+      { before:"", blank:BLANK, after:"are in my class. We study together.", context:"talking about a group",
         opts:["They","She","It","He"], correct:0 },
-      { before:"", blank:"( )", after:"is a cute dog. It lives next door.", context:"talking about an animal",
+      { before:"", blank:BLANK, after:"is a cute dog. It lives next door.", context:"talking about an animal",
         opts:["It","He","She","They"], correct:0 },
     ],
   },
   {
-    id:"part2", short:"P2", title:"だれを・だれに", subtitle:"Object Pronouns", emoji:"🟦",
+    id:"part2", short:"2", title:"だれを・だれに", subtitle:"Object Pronouns", emoji:"🟦",
     cards: [
       { en:"me",   kana:"わたしを・わたしに" },
       { en:"you",  kana:"あなたを・あなたに" },
@@ -1327,22 +1332,25 @@ const PRONOUN_PARTS = [
       { en:"us",   jp:"わたしたちを" },
     ],
     lessonRows: [
-      { jp:["わたしを","てつだってください。"],        en:[{t:"Please"},{t:"help",c:"green"},{t:"me.",c:"blue"}] },
-      { jp:["かれに","ほんを","わたした。"],            en:[{t:"I"},{t:"gave",c:"green"},{t:"him",c:"blue"},{t:"a book."}] },
-      { jp:["わたしたちに","プレゼントを","くれた。"],  en:[{t:"She"},{t:"gave",c:"green"},{t:"us",c:"blue"},{t:"a present."}] },
+      { jp:[{t:"わたしを",c:"blue"},{t:"てつだってください。"}],        en:[{t:"Please"},{t:"help",c:"green"},{t:"me.",c:"blue"}] },
+      { jp:[{t:"かれに",c:"blue"},{t:"ほんを"},{t:"わたした。"}],            en:[{t:"I"},{t:"gave",c:"green"},{t:"him",c:"blue"},{t:"a book."}] },
+      { jp:[{t:"わたしたちに",c:"blue"},{t:"プレゼントを"},{t:"くれた。"}],  en:[{t:"She"},{t:"gave",c:"green"},{t:"us",c:"blue"},{t:"a present."}] },
+      { jp:[{t:"あなたを",c:"blue"},{t:"さがしていたよ。"}],                en:[{t:"I was looking for"},{t:"you.",c:"blue"}] },
+      { jp:[{t:"それを",c:"blue"},{t:"見て！"}],                           en:[{t:"Look at"},{t:"it!",c:"blue"}] },
+      { jp:[{t:"かれらを",c:"blue"},{t:"パーティーに"},{t:"よんだ。"}],     en:[{t:"I invited"},{t:"them",c:"blue"},{t:"to the party."}] },
     ],
     lessonNote: "「だれを・だれに」は動詞のあとにくるよ！",
     questions: [
-      { before:"Please help", blank:"( )", after:". I can't carry this box!", context:"わたしを",
+      { before:"Please help", blank:BLANK, after:". I can't carry this box!", context:"わたしを",
         opts:["me","him","her","them"], correct:0 },
-      { before:"I gave", blank:"( )", after:"a birthday card. She was very happy!", context:"かのじょに",
+      { before:"I gave", blank:BLANK, after:"a birthday card. She was very happy!", context:"かのじょに",
         opts:["her","him","them","us"], correct:0 },
-      { before:"Can you call", blank:"( )", after:"tonight? We want to talk to you!", context:"わたしたちに",
+      { before:"Can you call", blank:BLANK, after:"tonight? We want to talk to you!", context:"わたしたちに",
         opts:["us","them","him","her"], correct:0 },
     ],
   },
   {
-    id:"part3", short:"P3", title:"〜の", subtitle:"Possessive Adjectives", emoji:"🟦",
+    id:"part3", short:"3", title:"〜の", subtitle:"Possessive Adjectives", emoji:"🟦",
     cards: [
       { en:"my",    kana:"わたしの" },
       { en:"your",  kana:"あなたの" },
@@ -1360,23 +1368,27 @@ const PRONOUN_PARTS = [
       { en:"their", jp:"かれらの" },
     ],
     lessonRows: [
-      { jp:["わたしの","かばん"],       en:[{t:"My",c:"blue"},{t:"bag",c:"orange"}] },
-      { jp:["かれの","じてんしゃ"],     en:[{t:"His",c:"blue"},{t:"bicycle",c:"orange"}] },
-      { jp:["わたしたちの","きょうしつ"],en:[{t:"Our",c:"blue"},{t:"classroom",c:"orange"}] },
+      { jp:[{t:"わたしの",c:"blue"},{t:"かばん",c:"orange"}],       en:[{t:"My",c:"blue"},{t:"bag",c:"orange"}] },
+      { jp:[{t:"あなたの",c:"blue"},{t:"ぼうし",c:"orange"}],       en:[{t:"Your",c:"blue"},{t:"hat",c:"orange"}] },
+      { jp:[{t:"かれの",c:"blue"},{t:"じてんしゃ",c:"orange"}],     en:[{t:"His",c:"blue"},{t:"bicycle",c:"orange"}] },
+      { jp:[{t:"かのじょの",c:"blue"},{t:"ほん",c:"orange"}],       en:[{t:"Her",c:"blue"},{t:"book",c:"orange"}] },
+      { jp:[{t:"それの",c:"blue"},{t:"しっぽ",c:"orange"}],         en:[{t:"Its",c:"blue"},{t:"tail",c:"orange"}] },
+      { jp:[{t:"わたしたちの",c:"blue"},{t:"きょうしつ",c:"orange"}],en:[{t:"Our",c:"blue"},{t:"classroom",c:"orange"}] },
+      { jp:[{t:"かれらの",c:"blue"},{t:"いえ",c:"orange"}],         en:[{t:"Their",c:"blue"},{t:"house",c:"orange"}] },
     ],
     lessonNote: "「〜の」のあとにはかならず名詞がくるよ！",
     lessonExtra: { good:"My bag ✓", bad:"My ✗　← 名詞がないとダメ！" },
     questions: [
-      { before:"This is", blank:"( )", after:"dog. His name is Koko.", context:"talking about MY dog",
+      { before:"This is", blank:BLANK, after:"dog. His name is Koko.", context:"talking about MY dog",
         opts:["my","his","her","our"], correct:0 },
-      { before:"Let's clean", blank:"( )", after:"classroom.", context:"talking about OUR classroom",
+      { before:"Let's clean", blank:BLANK, after:"classroom.", context:"talking about OUR classroom",
         opts:["our","my","their","its"], correct:0 },
-      { before:"I like", blank:"( )", after:"English class. She is a great teacher!", context:"talking about HER class",
+      { before:"I like", blank:BLANK, after:"English class. She is a great teacher!", context:"talking about HER class",
         opts:["her","his","their","our"], correct:0 },
     ],
   },
   {
-    id:"part4", short:"P4", title:"〜のもの", subtitle:"Possessive Pronouns", emoji:"🟦",
+    id:"part4", short:"4", title:"〜のもの", subtitle:"Possessive Pronouns", emoji:"🟦",
     cards: [
       { en:"mine",   kana:"わたしのもの" },
       { en:"yours",  kana:"あなたのもの" },
@@ -1393,9 +1405,11 @@ const PRONOUN_PARTS = [
       { en:"theirs", jp:"かれらのもの" },
     ],
     lessonRows: [
-      { jp:["これはわたしのものです。"],     en:[{t:"This bag is"},{t:"mine.",c:"blue"}] },
-      { jp:["あのかさはかのじょのものです。"],en:[{t:"That umbrella is"},{t:"hers.",c:"blue"}] },
-      { jp:["このほんはかれらのものです。"],  en:[{t:"This book is"},{t:"theirs.",c:"blue"}] },
+      { jp:[{t:"これは"},{t:"わたしのもの",c:"blue"},{t:"です。"}],     en:[{t:"This bag is"},{t:"mine.",c:"blue"}] },
+      { jp:[{t:"それは"},{t:"あなたのもの",c:"blue"},{t:"です。"}],     en:[{t:"That is"},{t:"yours.",c:"blue"}] },
+      { jp:[{t:"あのかさは"},{t:"かのじょのもの",c:"blue"},{t:"です。"}],en:[{t:"That umbrella is"},{t:"hers.",c:"blue"}] },
+      { jp:[{t:"このほんは"},{t:"かれらのもの",c:"blue"},{t:"です。"}],  en:[{t:"This book is"},{t:"theirs.",c:"blue"}] },
+      { jp:[{t:"あのつくえは"},{t:"わたしたちのもの",c:"blue"},{t:"です。"}],en:[{t:"That desk is"},{t:"ours.",c:"blue"}] },
     ],
     lessonNote: "「〜のもの」のあとには名詞がこないよ！",
     lessonExtra: { good:"This is mine. ✓", bad:"This is mine bag. ✗" },
@@ -1404,11 +1418,11 @@ const PRONOUN_PARTS = [
       { jp:"「mine」のあとに名詞がない！",     en:[{t:"This bag is"},{t:"mine.",c:"blue"}] },
     ],
     questions: [
-      { before:"A: Whose pencil is this?\nB: It's", blank:"( )", after:".", context:"わたしのもの",
+      { before:"A: Whose pencil is this?\nB: It's", blank:BLANK, after:".", context:"わたしのもの",
         opts:["mine","yours","his","hers"], correct:0 },
-      { before:"A: Is this Ken's umbrella?\nB: No, it's", blank:"( )", after:".", context:"かのじょのもの（女の子の話）",
+      { before:"A: Is this Ken's umbrella?\nB: No, it's", blank:BLANK, after:".", context:"かのじょのもの（女の子の話）",
         opts:["hers","his","mine","ours"], correct:0 },
-      { before:"A: Whose classroom is this?\nB: It's", blank:"( )", after:".", context:"わたしたちのもの",
+      { before:"A: Whose classroom is this?\nB: It's", blank:BLANK, after:".", context:"わたしたちのもの",
         opts:["ours","yours","theirs","mine"], correct:0 },
     ],
   },
@@ -1425,16 +1439,16 @@ const PRONOUN_OVERVIEW_ROWS = [
 ];
 
 const PRONOUN_FINAL_TEST = [
-  { before:"", blank:"( )", after:"is my brother. He is 10 years old.", opts:["He","She","It","They"], correct:0 },
-  { before:"Mom made a cake and gave", blank:"( )", after:"to me.", opts:["it","him","her","them"], correct:0 },
-  { before:"Is this", blank:"( )", after:"book?", opts:["your","you","yours","his"], correct:0 },
-  { before:"This umbrella is not mine. It's", blank:"( )", after:".", opts:["his","him","he","its"], correct:0 },
-  { before:"", blank:"( )", after:"are my classmates. They are very kind.", opts:["They","She","It","We"], correct:0 },
-  { before:"I can't find", blank:"( )", after:"keys.", opts:["my","mine","me","I"], correct:0 },
-  { before:"Please wait for", blank:"( )", after:". We will be there soon.", opts:["us","we","our","ours"], correct:0 },
-  { before:"Whose bag is this? It's", blank:"( )", after:".", opts:["yours","your","you","yes"], correct:0 },
-  { before:"Look at Yui!", blank:"( ) is walking ( ) dog.", after:"", opts:["She / her","He / his","They / their","We / our"], correct:0 },
-  { before:"Emma and Tom are here.", blank:"( ) are ( ) friends.", after:"", opts:["They / our","He / his","She / her","It / its"], correct:0, tricky:true },
+  { before:"", blank:BLANK, after:"is my brother. He is 10 years old.", opts:["He","She","It","They"], correct:0 },
+  { before:"Mom made a cake and gave", blank:BLANK, after:"to me.", opts:["it","him","her","them"], correct:0 },
+  { before:"Is this", blank:BLANK, after:"book?", opts:["your","you","yours","his"], correct:0 },
+  { before:"This umbrella is not mine. It's", blank:BLANK, after:".", opts:["his","him","he","its"], correct:0 },
+  { before:"", blank:BLANK, after:"are my classmates. They are very kind.", opts:["They","She","It","We"], correct:0 },
+  { before:"I can't find", blank:BLANK, after:"keys.", opts:["my","mine","me","I"], correct:0 },
+  { before:"Please wait for", blank:BLANK, after:". We will be there soon.", opts:["us","we","our","ours"], correct:0 },
+  { before:"Whose bag is this? It's", blank:BLANK, after:".", opts:["yours","your","you","yes"], correct:0 },
+  { before:"Look at Yui!", blank:`${BLANK} is walking ${BLANK} dog.`, after:"", opts:["She / her","He / his","They / their","We / our"], correct:0 },
+  { before:"Emma and Tom are here.", blank:`${BLANK} are ${BLANK} friends.`, after:"", opts:["They / our","He / his","She / her","It / its"], correct:0, tricky:true },
 ];
 
 const EIKEN_LEVELS = [
@@ -2834,7 +2848,7 @@ export default function App() {
     dialogue_practice: dialogueTopic?.title || "Dialogue Tests",
     grammar_home: "Grammar",
     grammar_topic: grammarTopic?.title || "Grammar",
-    grammar_part: grammarPart ? `${grammarPart.short} ${grammarPart.title}` : "Grammar",
+    grammar_part: grammarPart ? `${grammarPart.short}. ${grammarPart.title}` : "Grammar",
     grammar_overview: "Overview",
     grammar_final: "Final Practice Test",
     grammar_final_results: "Results",
@@ -4930,6 +4944,14 @@ function GrammarEnLine({ tokens }) {
     </div>
   );
 }
+/* Japanese line — every word is a chip, yellow by default so only the highlighted (blue) word stands out */
+function GrammarJpLine({ tokens }) {
+  return (
+    <div style={{display:"flex",flexWrap:"wrap",gap:5}}>
+      {tokens.map((tok, i) => <GrammarChip key={i} color={tok.c || "yellow"}>{tok.t}</GrammarChip>)}
+    </div>
+  );
+}
 
 function GrammarHomeScreen({ level, onSelect, onBack }) {
   const topics = GRAMMAR_TOPICS.filter(t => t.level === level);
@@ -4972,7 +4994,7 @@ function GrammarTopicScreen({ topic, onSelectPart, onSelectOverview, onSelectFin
   const partsDone = PRONOUN_PARTS.filter(p => getPartDone(p.id)).length;
   const finalProg = getFinalProgress();
   const rows = [
-    ...PRONOUN_PARTS.map(p => ({ key:p.id, kind:"part", label:`${p.short} ${p.title}`, sub:p.subtitle, emoji:"📘", onClick:() => onSelectPart(p), done:getPartDone(p.id) })),
+    ...PRONOUN_PARTS.map(p => ({ key:p.id, kind:"part", label:`${p.short}. ${p.title}`, sub:p.subtitle, emoji:"📘", onClick:() => onSelectPart(p), done:getPartDone(p.id) })),
     { key:"overview", kind:"overview", label:"Overview", sub:"まとめページ", emoji:"📋", onClick:onSelectOverview, done:partsDone===PRONOUN_PARTS.length },
     { key:"final", kind:"final", label:"Final Practice Test", sub:"10 questions · no hints", emoji:"🏆", onClick:onSelectFinal, done:!!finalProg },
   ];
@@ -5030,27 +5052,27 @@ function PairMatchGame({ pairs, onDone }) {
   };
 
   return (
-    <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
-      <div style={{textAlign:"center",fontSize:13,color:"#718096",marginBottom:16}}>左のえいごと右の日本語をむすぼう！</div>
-      <div style={{display:"flex",gap:16}}>
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:8}}>
+    <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
+      <div style={{textAlign:"center",fontSize:16,color:"#718096",marginBottom:24}}>左のえいごと右の日本語をむすぼう！</div>
+      <div style={{display:"flex",gap:20}}>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
           {pairs.map(p => (
             <button key={p.en} type="button" disabled={matched.includes(p.en)} onClick={() => pickEn(p.en)}
-              style={{padding:"12px",borderRadius:12,border:`2px solid ${matched.includes(p.en)?"#86efac":selectedEn===p.en?"#7c3aed":"#e2e8f0"}`,
+              style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${matched.includes(p.en)?"#86efac":selectedEn===p.en?"#7c3aed":"#e2e8f0"}`,
                 background:matched.includes(p.en)?"#f0fdf4":selectedEn===p.en?"#f5f3ff":"#fff",
-                fontWeight:800,fontSize:14,color:matched.includes(p.en)?"#15803d":"#3b0764",cursor:matched.includes(p.en)?"default":"pointer"}}>
+                fontWeight:800,fontSize:22,color:matched.includes(p.en)?"#15803d":"#3b0764",cursor:matched.includes(p.en)?"default":"pointer"}}>
               {p.en}{matched.includes(p.en)?" ✓":""}
             </button>
           ))}
         </div>
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
           {jpShuffled.map(jp => {
             const isMatched = matched.some(en => pairs.find(p=>p.en===en).jp === jp);
             return (
               <button key={jp} type="button" disabled={isMatched} onClick={() => pickJp(jp)}
-                style={{padding:"12px",borderRadius:12,border:`2px solid ${isMatched?"#86efac":wrongPair===jp?"#f87171":"#e2e8f0"}`,
+                style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongPair===jp?"#f87171":"#e2e8f0"}`,
                   background:isMatched?"#f0fdf4":wrongPair===jp?"#fee2e2":"#fff",
-                  fontWeight:700,fontSize:13,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
+                  fontWeight:700,fontSize:20,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
                 {jp}{isMatched?" ✓":""}
               </button>
             );
@@ -5085,17 +5107,24 @@ function GrammarPartScreen({ part, onDone, onBack }) {
     return (
       <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:16}}>
-          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#3b0764"}}>{part.short} — {part.title}</div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#3b0764"}}>{part.short}. {part.title}</div>
           <div style={{fontSize:12,color:"#a78bfa"}}>{part.subtitle}</div>
           <div style={{fontSize:12,color:"#718096",marginTop:8}}>Tap to hear! 🔊</div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
-          {part.cards.map(c => (
-            <div key={c.en} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 14px",background:"#fff",border:"1.5px solid #ede9fe",borderRadius:12}}>
-              <span style={{fontSize:14}}>🔵</span>
-              <div style={{flex:1,fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:15,color:"#3b0764"}}>{c.en}</div>
-              <div style={{fontSize:13,color:"#718096"}}>{c.kana}</div>
-              <SpeakBtn text={c.en} size={30} />
+        <div style={{background:"#fff",border:"1.5px solid #ede9fe",borderRadius:14,overflow:"hidden",marginBottom:16}}>
+          <div style={{display:"grid",gridTemplateColumns:"36px 1fr 1.3fr 40px",background:"#f5f3ff",padding:"8px 10px",gap:6}}>
+            <div />
+            <div style={{fontSize:11,fontWeight:800,color:"#7c6a9c",textAlign:"center"}}>ENGLISH</div>
+            <div style={{fontSize:11,fontWeight:800,color:"#7c6a9c",textAlign:"center"}}>日本語</div>
+            <div />
+          </div>
+          {part.cards.map((c, i) => (
+            <div key={c.en} style={{display:"grid",gridTemplateColumns:"36px 1fr 1.3fr 40px",alignItems:"center",gap:6,
+              padding:"12px 10px",borderTop: i===0?"none":"1px solid #f1f5f9"}}>
+              <span style={{fontSize:14,textAlign:"center"}}>🔵</span>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:16,color:"#3b0764",textAlign:"center"}}>{c.en}</div>
+              <div style={{fontSize:16,color:"#374151",textAlign:"center"}}>{c.kana}</div>
+              <div style={{display:"flex",justifyContent:"center"}}><SpeakBtn text={c.en} size={30} /></div>
             </div>
           ))}
         </div>
@@ -5123,10 +5152,13 @@ function GrammarPartScreen({ part, onDone, onBack }) {
         <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:14}}>
           {part.lessonRows.map((row, i) => (
             <div key={i} style={{background:"#fff",border:"1.5px solid #ede9fe",borderRadius:12,padding:"10px 12px"}}>
-              <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:6}}>
-                {row.jp.map((w,j) => <GrammarChip key={j} color="yellow">{w}</GrammarChip>)}
+              <div style={{marginBottom:6}}>
+                <GrammarJpLine tokens={row.jp} />
               </div>
-              <GrammarEnLine tokens={row.en} />
+              <div style={{display:"flex",alignItems:"center",gap:8}}>
+                <div style={{flex:1}}><GrammarEnLine tokens={row.en} /></div>
+                <SpeakBtn text={row.en.map(t=>t.t).join(" ")} size={26} />
+              </div>
             </div>
           ))}
         </div>
@@ -5166,7 +5198,7 @@ function GrammarPartScreen({ part, onDone, onBack }) {
   return (
     <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
-        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>{part.short} Questions</div>
+        <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:"#3b0764"}}>{part.short}. Questions</div>
         <div style={{fontSize:11,fontWeight:700,color:"#a78bfa",background:"#ede9fe",padding:"3px 9px",borderRadius:20}}>{qIdx+1} / {part.questions.length}</div>
       </div>
       <div style={{background:"#f0ebff",borderRadius:14,padding:"18px 16px",marginBottom:12}}>
