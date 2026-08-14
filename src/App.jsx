@@ -5280,9 +5280,33 @@ function GrammarOverviewScreen({ onContinue }) {
 }
 
 /* A pronoun word colored to stand out, with an example-sentence tooltip on hover */
-function HoverPronoun({ word }) {
+/* Renders an example sentence with its target pronoun highlighted (case-insensitive whole-word match) */
+function HighlightedExample({ example, word }) {
+  const re = new RegExp(`\\b(${word})\\b`, "i");
+  const match = example.match(re);
+  if (!match) return <>{example}</>;
+  const idx = match.index;
+  const before = example.slice(0, idx);
+  const hit = example.slice(idx, idx + match[0].length);
+  const after = example.slice(idx + match[0].length);
+  return (
+    <>
+      {before}
+      <span style={{color:"#4ade80",fontWeight:800}}>{hit}</span>
+      {after}
+    </>
+  );
+}
+
+function HoverPronoun({ word, align = "center" }) {
   const [hover, setHover] = useState(false);
   const example = PRONOUN_EXAMPLES[word.toLowerCase()];
+  const posStyle = align === "left"
+    ? { right:0 }                                  // tooltip's right edge sits at the word's right edge, grows leftward
+    : { left:"50%", transform:"translateX(-50%)" }; // centered above the word
+  const arrowStyle = align === "left"
+    ? { right:10 }
+    : { left:"50%", transform:"translateX(-50%)" };
   return (
     <span style={{position:"relative",display:"inline-block"}}
       onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
@@ -5291,11 +5315,11 @@ function HoverPronoun({ word }) {
         {word}
       </span>
       {hover && example && (
-        <div style={{position:"absolute",bottom:"120%",left:"50%",transform:"translateX(-50%)",
-          background:"#1e293b",color:"#fff",fontSize:11,fontWeight:600,padding:"6px 10px",borderRadius:8,
-          whiteSpace:"nowrap",zIndex:20,boxShadow:"0 4px 10px rgba(0,0,0,.25)"}}>
-          {example}
-          <div style={{position:"absolute",top:"100%",left:"50%",transform:"translateX(-50%)",
+        <div style={{position:"absolute",bottom:"120%",...posStyle,
+          background:"#1e293b",color:"#fff",fontSize:11,fontWeight:600,padding:"8px 11px",borderRadius:8,
+          width:170,whiteSpace:"normal",lineHeight:1.5,zIndex:20,boxShadow:"0 4px 10px rgba(0,0,0,.25)"}}>
+          <HighlightedExample example={example} word={word} />
+          <div style={{position:"absolute",top:"100%",...arrowStyle,
             borderWidth:"5px 5px 0 5px",borderStyle:"solid",borderColor:"#1e293b transparent transparent transparent"}} />
         </div>
       )}
@@ -5332,7 +5356,7 @@ function HintsPanel({ open, onClose }) {
                   <td style={{padding:"7px 6px"}}><HoverPronoun word={r.subj} /></td>
                   <td style={{padding:"7px 6px"}}><HoverPronoun word={r.obj} /></td>
                   <td style={{padding:"7px 6px"}}><HoverPronoun word={r.poss} /></td>
-                  <td style={{padding:"7px 6px"}}>{r.possP === "—" ? "—" : <HoverPronoun word={r.possP} />}</td>
+                  <td style={{padding:"7px 6px"}}>{r.possP === "—" ? "—" : <HoverPronoun word={r.possP} align="left" />}</td>
                 </tr>
               ))}
             </tbody>
