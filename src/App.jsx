@@ -2983,73 +2983,120 @@ export default function App() {
                   return keys.map(k => ({ topic:t, key:k, prog:getDialogueSetProgress(t.id, k) }));
                 });
                 const dDone = dSetsAll.filter(s => s.prog?.done).length;
-                const dAttempted = dSetsAll.filter(s => s.prog?.done);
                 const gTopics = GRAMMAR_TOPICS.filter(t => t.level === (currentProfile?.level || "5"));
                 const gPartsDone = gTopics.length ? PRONOUN_PARTS.filter(p => getGrammarPartDone(p.id)).length : 0;
-                const gFinal = gTopics[0] ? getGrammarFinalProgress(gTopics[0].id) : null;
+
+                const cellStyle = { padding:"4px 5px", fontSize:10, textAlign:"center", borderTop:"1px solid #f1f5f9" };
+                const headStyle = { padding:"5px", fontSize:9, fontWeight:800, color:"#fff", textAlign:"center", textTransform:"uppercase" };
+
                 return (
                   <>
                     <div className="sidebar-title">Progress Report</div>
 
-                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#D36135",marginBottom:6}}>
+                    {/* ── Vocabulary table ── */}
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:13,color:"#D36135",marginBottom:6}}>
                       📖 Vocabulary — {vocabDone}/{categories.length}
                     </div>
                     {vocabStarted.length === 0 ? (
-                      <div style={{fontSize:12,color:"#a0aec0",marginBottom:16}}>No categories started yet.</div>
+                      <div style={{fontSize:11,color:"#a0aec0",marginBottom:16}}>No categories started yet.</div>
                     ) : (
-                      <div style={{marginBottom:16}}>
-                        {vocabStarted.map(cat => {
-                          const pct = getCatProgress(cat.id);
-                          const sc = scoreColor(pct);
-                          return (
-                            <div key={cat.id} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
-                              <span style={{fontSize:11,fontWeight:800,color:sc.text,background:sc.bg,border:`1.5px solid ${sc.ring}`,borderRadius:20,padding:"1px 7px",flexShrink:0}}>{pct}%</span>
-                              <span style={{fontSize:12,color:"#4a5568",flex:1}}>{cat.title}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
+                      <table style={{width:"100%",borderCollapse:"collapse",marginBottom:16,tableLayout:"fixed"}}>
+                        <thead>
+                          <tr style={{background:"#D36135"}}>
+                            <th style={{...headStyle,textAlign:"left",width:"66%"}}>Category</th>
+                            <th style={headStyle}>Score</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {vocabStarted.map(cat => {
+                            const pct = getCatProgress(cat.id);
+                            const sc = scoreColor(pct);
+                            return (
+                              <tr key={cat.id} style={{background:sc.bg}}>
+                                <td style={{...cellStyle,textAlign:"left",color:"#4a5568",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{cat.title}</td>
+                                <td style={{...cellStyle,color:sc.text,fontWeight:800}}>{pct}%</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     )}
 
-                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#7c3aed",marginBottom:6}}>
+                    {/* ── Dialogue table ── */}
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:13,color:"#7c3aed",marginBottom:6}}>
                       💬 Dialogue — {dDone}/{dSetsAll.length}
                     </div>
-                    {dAttempted.length === 0 ? (
-                      <div style={{fontSize:12,color:"#a0aec0",marginBottom:16}}>No sets started yet.</div>
+                    {dTopics.length === 0 ? (
+                      <div style={{fontSize:11,color:"#a0aec0",marginBottom:16}}>No topics yet for this level.</div>
                     ) : (
-                      <div style={{marginBottom:16}}>
-                        {dAttempted.map(({topic, key, prog}) => (
-                          <div key={topic.id+key} style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
-                            <span style={{fontSize:11,fontWeight:800,color:"#15803d",background:"#dcfce7",border:"1.5px solid #22c55e",borderRadius:20,padding:"1px 7px",flexShrink:0}}>
-                              {key==="quiz" && prog.score!=null ? `${prog.score}/${prog.total}` : "✓"}
-                            </span>
-                            <span style={{fontSize:12,color:"#4a5568",flex:1}}>{topic.title} · {SET_LABELS[key]}</span>
-                          </div>
-                        ))}
-                      </div>
+                      <table style={{width:"100%",borderCollapse:"collapse",marginBottom:16,tableLayout:"fixed"}}>
+                        <thead>
+                          <tr style={{background:"#7c3aed"}}>
+                            <th style={{...headStyle,textAlign:"left",width:"40%"}}>Topic</th>
+                            <th style={headStyle}>P1</th>
+                            <th style={headStyle}>P2</th>
+                            <th style={headStyle}>P3</th>
+                            <th style={headStyle}>Q</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {dTopics.map(topic => {
+                            const hasQuiz = !!DIALOGUE_TESTS[topic.id]?.quiz;
+                            const p1 = getDialogueSetProgress(topic.id,"practice1");
+                            const p2 = getDialogueSetProgress(topic.id,"practice2");
+                            const p3 = getDialogueSetProgress(topic.id,"practice3");
+                            const qz = hasQuiz ? getDialogueSetProgress(topic.id,"quiz") : null;
+                            const allDone = p1?.done && p2?.done && p3?.done && (!hasQuiz || qz?.done);
+                            return (
+                              <tr key={topic.id} style={{background:allDone?"#dcfce7":"#fff"}}>
+                                <td style={{...cellStyle,textAlign:"left",color:"#4a5568",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{topic.title}</td>
+                                <td style={{...cellStyle,color:p1?.done?"#15803d":"#cbd5e0"}}>{p1?.done?"✓":"—"}</td>
+                                <td style={{...cellStyle,color:p2?.done?"#15803d":"#cbd5e0"}}>{p2?.done?"✓":"—"}</td>
+                                <td style={{...cellStyle,color:p3?.done?"#15803d":"#cbd5e0"}}>{p3?.done?"✓":"—"}</td>
+                                <td style={{...cellStyle,color:qz?.done?"#15803d":"#cbd5e0",fontWeight:qz?.done?800:400}}>
+                                  {!hasQuiz ? "—" : qz?.done ? `${qz.score}/${qz.total}` : "—"}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     )}
 
-                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:14,color:"#7c3aed",marginBottom:6}}>
+                    {/* ── Grammar table ── */}
+                    <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:13,color:"#7c3aed",marginBottom:6}}>
                       ✏️ Grammar{gTopics.length ? ` — ${gPartsDone}/${PRONOUN_PARTS.length} parts` : ""}
                     </div>
                     {gTopics.length === 0 ? (
-                      <div style={{fontSize:12,color:"#a0aec0"}}>No topics yet for this level.</div>
-                    ) : gPartsDone === 0 && !gFinal ? (
-                      <div style={{fontSize:12,color:"#a0aec0"}}>No parts started yet.</div>
+                      <div style={{fontSize:11,color:"#a0aec0"}}>No topics yet for this level.</div>
                     ) : (
-                      <div>
-                        {gPartsDone > 0 && (
-                          <div style={{fontSize:12,color:"#4a5568",padding:"4px 0"}}>{gPartsDone}/{PRONOUN_PARTS.length} pronoun parts done</div>
-                        )}
-                        {gFinal && (
-                          <div style={{display:"flex",alignItems:"center",gap:8,padding:"4px 0"}}>
-                            <span style={{fontSize:11,fontWeight:800,color:"#15803d",background:"#dcfce7",border:"1.5px solid #22c55e",borderRadius:20,padding:"1px 7px",flexShrink:0}}>
-                              {gFinal.score}/{gFinal.total}
-                            </span>
-                            <span style={{fontSize:12,color:"#4a5568",flex:1}}>Final test best score</span>
-                          </div>
-                        )}
-                      </div>
+                      <table style={{width:"100%",borderCollapse:"collapse",tableLayout:"fixed"}}>
+                        <thead>
+                          <tr style={{background:"#7c3aed"}}>
+                            <th style={{...headStyle,textAlign:"left",width:"34%"}}>Topic</th>
+                            {PRONOUN_PARTS.map(p => <th key={p.id} style={headStyle}>{p.short}</th>)}
+                            <th style={headStyle}>Final</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {gTopics.map(topic => {
+                            const gFinal = getGrammarFinalProgress(topic.id);
+                            const allDone = gPartsDone === PRONOUN_PARTS.length;
+                            return (
+                              <tr key={topic.id} style={{background:allDone?"#dcfce7":"#fff"}}>
+                                <td style={{...cellStyle,textAlign:"left",color:"#4a5568",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{topic.title.split(" /")[0]}</td>
+                                {PRONOUN_PARTS.map(p => {
+                                  const done = getGrammarPartDone(p.id);
+                                  return <td key={p.id} style={{...cellStyle,color:done?"#15803d":"#cbd5e0"}}>{done?"✓":"—"}</td>;
+                                })}
+                                <td style={{...cellStyle,color:gFinal?"#15803d":"#cbd5e0",fontWeight:gFinal?800:400}}>
+                                  {gFinal ? `${gFinal.score}/${gFinal.total}` : "—"}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
                     )}
                   </>
                 );
