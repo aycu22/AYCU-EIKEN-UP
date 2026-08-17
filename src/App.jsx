@@ -2549,8 +2549,8 @@ const VOCAB_CATEGORIES_PRE2 = [
     color: "#6366f1", shadow: "#4338ca",
     words: [
       { en:"increase",  kanji:"増やす",     kana:"ふやす",       hint:"The company hopes to _____ its sales this year." },
-      { en:"decrease",  kanji:"減らす",     kana:"へらす",       hint:"The population of the town began to _____ after the factory closed." },
-      { en:"reduce",    kanji:"減らす",     kana:"へらす",       hint:"We should _____ the amount of plastic we use." },
+      { en:"decrease",  kanji:"減る",       kana:"へる",         hint:"The number of visitors tends to _____ every winter." },
+      { en:"reduce",    kanji:"減らす（〜を）",kana:"へらす",     hint:"We should _____ the amount of plastic we use." },
       { en:"gain",      kanji:"得る",       kana:"える",         hint:"She hopes to _____ more experience by working abroad." },
       { en:"improve",   kanji:"改良する",   kana:"かいりょうする", hint:"He practices every day to _____ his English." },
       { en:"remain",    kanji:"残る",       kana:"のこる",       hint:"Please _____ seated until the plane stops." },
