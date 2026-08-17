@@ -4479,11 +4479,11 @@ function NotesGrade5Page2() {
         <div style={{ marginBottom:6, fontWeight:700 }}>この返事をおぼえよう！</div>
         <MiniTable cols={2} rows={[
           ["このとき","答え方"],
-          ["Let's ~!","Yes, let's! / That's a good idea!"],
-          ["Can I ~?","Of course."],
-          ["〜してください","All right! / I'm sorry."],
-          ["ほめられた","Thanks, ○○!"],
-          ["今何してる？","I'm + ~ing."],
+          ["Let's ~! （〜しよう！）","Yes, let's! / That's a good idea!"],
+          ["Can I ~? （〜してもいい？）","Of course."],
+          ["Please ~. （〜してください）","All right! / I'm sorry."],
+          ["ほめられたとき （When praised）","Thanks, ○○!"],
+          ["What are you doing? （今何してる？）","I'm + ~ing."],
         ]} />
         <div style={{ marginTop:8, fontSize:12, color:"#92400e" }}>⚠️「I'm + ~ing」に気をつけよう！</div>
         <ExampleWarning q="What are you doing?" wrong="I do homework." right="I'm doing my homework." />
