@@ -1467,6 +1467,7 @@ const EIKEN_LEVELS = [
   { id: "5", label: "Grade 5", emoji: "⭐",      color: "#ff6b9d", desc: "Elementary level — everyday English" },
   { id: "4", label: "Grade 4", emoji: "⭐⭐",   color: "#ff9500", desc: "Junior high entry level" },
   { id: "3", label: "Grade 3", emoji: "⭐⭐⭐", color: "#7fb069", desc: "Junior high intermediate" },
+  { id: "p2", label: "Pre-2", emoji: "🎓",       color: "#6366f1", desc: "Upper intermediate — 準2級" },
 ];
 
 /* ── Ordinal data ── */
@@ -2541,9 +2542,29 @@ const VOCAB_CATEGORIES_5 = [
   },
 ];
 
+/* ── Pre-2 (準2級) categories — fill-in-the-blank instead of unscramble, isPre2 routes to the custom quiz flow ── */
+const VOCAB_CATEGORIES_PRE2 = [
+  {
+    id: "p2_v1", title: "V1 · Increase, Decrease & Change", emoji: "📈", isPre2: true,
+    color: "#6366f1", shadow: "#4338ca",
+    words: [
+      { en:"increase",  kanji:"増やす",     kana:"ふやす",       hint:"The company hopes to _____ its sales this year." },
+      { en:"decrease",  kanji:"減らす",     kana:"へらす",       hint:"The population of the town began to _____ after the factory closed." },
+      { en:"reduce",    kanji:"減らす",     kana:"へらす",       hint:"We should _____ the amount of plastic we use." },
+      { en:"gain",      kanji:"得る",       kana:"える",         hint:"She hopes to _____ more experience by working abroad." },
+      { en:"improve",   kanji:"改良する",   kana:"かいりょうする", hint:"He practices every day to _____ his English." },
+      { en:"remain",    kanji:"残る",       kana:"のこる",       hint:"Please _____ seated until the plane stops." },
+      { en:"spread",    kanji:"広がる",     kana:"ひろがる",     hint:"The news quickly _____ around the school." },
+      { en:"affect",    kanji:"影響を与える",kana:"えいきょうをあたえる", hint:"The rainy weather will _____ our plans for the picnic." },
+      { en:"replace",   kanji:"取り替える", kana:"とりかえる",   hint:"We need to _____ the old computer with a new one." },
+      { en:"recover",   kanji:"回復する",   kana:"かいふくする", hint:"It took him two weeks to _____ from his cold." },
+    ],
+  },
+];
+
 /* ── Helper: get categories by Eiken level ── */
 const getCategoriesByLevel = (level) =>
-  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : VOCAB_CATEGORIES_5;
+  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : level === "p2" ? VOCAB_CATEGORIES_PRE2 : VOCAB_CATEGORIES_5;
 
 /* ── CSS ── */
 const css = `
@@ -2884,7 +2905,7 @@ export default function App() {
           <div style={{flex:1}}>
             <div className="hdr-title">{headerTitle}</div>
             <div className="hdr-sub">
-              {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : "Grade 5 · えいけん5きゅう"}
+              {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : currentProfile?.level === "p2" ? "Pre-2 · えいけん準2きゅう" : "Grade 5 · えいけん5きゅう"}
             </div>
           </div>
           <button type="button" className="hdr-fullscreen" onClick={toggleFullscreen} title={isFullscreen ? "Exit full screen" : "Full screen"}>
@@ -3187,7 +3208,16 @@ export default function App() {
               {screen === "vocab_study" && activeCategory && (
                 <StudyScreen category={activeCategory} onStart={() => setScreen("vocab_game")} />
               )}
-              {screen === "vocab_game" && activeCategory && (
+              {screen === "vocab_game" && activeCategory && activeCategory.isPre2 && (
+                <Pre2VocabGameScreen key={activeCategory.id} category={activeCategory}
+                  onComplete={results => {
+                    markCategoryDone(activeCategory.id, results.pct);
+                    updateMissedWords(activeCategory.id, results);
+                    setGameResults(results);
+                    setScreen("vocab_results"); // Pre-2 flow already reviews missed words internally
+                  }} />
+              )}
+              {screen === "vocab_game" && activeCategory && !activeCategory.isPre2 && (
                 <VocabGameScreen key={activeCategory.id} category={activeCategory}
                   onComplete={results => {
                     markCategoryDone(activeCategory.id, results.pct);
@@ -3305,7 +3335,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
         <div className="avatar">{initials}</div>
         <div style={{flex:1}}>
           <div className="av-name">Hi, {profile.name}! 👋</div>
-          <div className="av-lvl">Eiken Grade {profile.level} · {done}/{categories.length} categories done</div>
+          <div className="av-lvl">Eiken {EIKEN_LEVELS.find(l=>l.id===profile.level)?.label || `Grade ${profile.level}`} · {done}/{categories.length} categories done</div>
         </div>
       </div>
 
@@ -4132,6 +4162,191 @@ function PartC({ word, color, shadow, onNext }) {
       )}
     </div>
   );
+}
+
+/* ── Pre-2 vocab quiz flow: choose translation → match ×2 → review → Eiken-style fill-blank → review ── */
+function Pre2VocabGameScreen({ category, onComplete }) {
+  const words = category.words;
+  const half = Math.ceil(words.length / 2);
+  const [step, setStep] = useState("translate"); // translate | match1 | match2 | review1 | fill | review2
+  const [idx, setIdx] = useState(0);
+  const [phase, setPhase] = useState("question"); // question | correct | wrong
+  const [selected, setSelected] = useState(null);
+  const [scores, setScores] = useState({}); // { en: { translate:bool, fill:bool } }
+  const record = (en, key, correct) =>
+    setScores(prev => ({ ...prev, [en]: { ...(prev[en]||{}), [key]: correct } }));
+
+  const otherMeanings = (word, n) =>
+    shuffle(words.filter(w => w.en !== word.en).map(w => w.kanji)).slice(0, n);
+  const otherWords = (word, n) =>
+    shuffle(words.filter(w => w.en !== word.en).map(w => w.en)).slice(0, n);
+
+  // ── Step: translate (choose the correct Japanese meaning) ──
+  const [translateOpts] = useState(() => words.map(w => ({
+    en: w.en, correctMeaning: w.kanji,
+    opts: shuffle([w.kanji, ...otherMeanings(w, 3)]),
+  })));
+
+  const handleTranslateSelect = (optIdx) => {
+    if (phase !== "question") return;
+    const t = translateOpts[idx];
+    const correct = t.opts[optIdx] === t.correctMeaning;
+    setSelected(optIdx);
+    record(t.en, "translate", correct);
+    setPhase(correct ? "correct" : "wrong");
+  };
+  const nextTranslate = () => {
+    if (idx + 1 >= words.length) { setIdx(0); setPhase("question"); setSelected(null); setStep("match1"); }
+    else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
+  };
+
+  // ── Step: fill-in-the-blank (Eiken style — choose the correct English word) ──
+  const [fillOpts] = useState(() => words.map(w => ({
+    en: w.en, opts: shuffle([w.en, ...otherWords(w, 3)]),
+  })));
+
+  const handleFillSelect = (optIdx) => {
+    if (phase !== "question") return;
+    const f = fillOpts[idx];
+    const correct = f.opts[optIdx] === f.en;
+    setSelected(optIdx);
+    record(f.en, "fill", correct);
+    setPhase(correct ? "correct" : "wrong");
+  };
+  const nextFill = () => {
+    if (idx + 1 >= words.length) {
+      const missed = words.filter(w => !(scores[w.en]?.translate && scores[w.en]?.fill));
+      const right = words.length - missed.length;
+      onComplete({
+        pct: Math.round((right/words.length)*100), right, total: words.length,
+        missed: missed.map(w => ({ word:w, scores: scores[w.en]||{} })),
+        words,
+      });
+    } else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
+  };
+
+  const optColor = (idx2, correctCheck) => {
+    if (phase === "question") return { bg:"#f9f5ff", border:"#ddd6fe", color:"#3b0764" };
+    if (correctCheck(idx2)) return { bg:"#d1fae5", border:"#34d399", color:"#065f46" };
+    if (idx2 === selected) return { bg:"#fee2e2", border:"#f87171", color:"#991b1b" };
+    return { bg:"#f3f4f6", border:"#e5e7eb", color:"#9ca3af" };
+  };
+
+  if (step === "translate") {
+    const t = translateOpts[idx];
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>1️⃣ Choose the correct translation</div>
+          <div style={{fontSize:11,fontWeight:700,color:"#718096",background:"#f1f5f9",padding:"3px 9px",borderRadius:20}}>{idx+1}/{words.length}</div>
+        </div>
+        <div style={{background:"#f8fafc",borderRadius:14,padding:"22px 16px",textAlign:"center",marginBottom:14}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:24,color:"#02020b"}}>{t.en}</div>
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
+          {t.opts.map((opt, i) => {
+            const c = optColor(i, k => t.opts[k] === t.correctMeaning);
+            return (
+              <button key={i} type="button" disabled={phase!=="question"} onClick={() => handleTranslateSelect(i)}
+                style={{padding:"12px 14px",borderRadius:12,border:`2px solid ${c.border}`,background:c.bg,color:c.color,
+                  fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:15,textAlign:"left",cursor:phase==="question"?"pointer":"default"}}>
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+        {phase !== "question" && (
+          <button type="button" className="btn" onClick={nextTranslate} autoFocus style={{background:category.color,boxShadow:`0 4px 0 ${category.shadow}`}}>
+            {idx+1 >= words.length ? "Next: Matching →" : "Next →"}
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (step === "match1" || step === "match2") {
+    const setWords = step === "match1" ? words.slice(0, half) : words.slice(half);
+    const pairs = setWords.map(w => ({ en:w.en, jp:w.kanji }));
+    return (
+      <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:6}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>
+            2️⃣ Matching — Set {step==="match1"?"1":"2"} of 2
+          </div>
+        </div>
+        <PairMatchGame key={step} pairs={pairs} onDone={() => {
+          if (step === "match1") { setStep("match2"); }
+          else { setStep("review1"); }
+        }} />
+      </div>
+    );
+  }
+
+  if (step === "review1") {
+    const missed = words.filter(w => !scores[w.en]?.translate);
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:14}}>
+          <div style={{fontSize:34}}>📝</div>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#3b0764"}}>Words to review</div>
+        </div>
+        {missed.length === 0 ? (
+          <div style={{textAlign:"center",color:"#15803d",fontWeight:700,marginBottom:16}}>🎉 You got every translation right!</div>
+        ) : (
+          <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:16}}>
+            {missed.map(w => (
+              <div key={w.en} style={{display:"flex",alignItems:"center",gap:10,background:"#fff5f5",border:"1px solid #fca5a5",borderRadius:12,padding:"10px 14px"}}>
+                <div style={{flex:1}}>
+                  <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:15,color:"#02020b"}}>{w.en}</div>
+                  <div style={{fontSize:12,color:"#718096"}}>{w.kanji}（{w.kana}）</div>
+                </div>
+                <SpeakBtn text={w.en} size={28} />
+              </div>
+            ))}
+          </div>
+        )}
+        <button type="button" className="btn" onClick={() => setStep("fill")} style={{background:category.color,boxShadow:`0 4px 0 ${category.shadow}`}}>
+          Next: Fill in the blanks →
+        </button>
+      </div>
+    );
+  }
+
+  if (step === "fill") {
+    const w = words[idx];
+    const f = fillOpts[idx];
+    const parts = w.hint.split("_____");
+    return (
+      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+          <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>3️⃣ Fill in the blank</div>
+          <div style={{fontSize:11,fontWeight:700,color:"#718096",background:"#f1f5f9",padding:"3px 9px",borderRadius:20}}>{idx+1}/{words.length}</div>
+        </div>
+        <div style={{background:"#f8fafc",borderRadius:14,padding:"18px 16px",textAlign:"center",marginBottom:14,fontSize:15,color:"#02020b",lineHeight:1.6,fontWeight:600}}>
+          {parts[0]}<span style={{color:category.color,fontWeight:900}}>(　　　)</span>{parts[1]}
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
+          {f.opts.map((opt, i) => {
+            const c = optColor(i, k => f.opts[k] === f.en);
+            return (
+              <button key={i} type="button" disabled={phase!=="question"} onClick={() => handleFillSelect(i)}
+                style={{padding:"12px 14px",borderRadius:12,border:`2px solid ${c.border}`,background:c.bg,color:c.color,
+                  fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:15,textAlign:"left",cursor:phase==="question"?"pointer":"default"}}>
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+        {phase !== "question" && (
+          <button type="button" className="btn" onClick={nextFill} autoFocus style={{background:category.color,boxShadow:`0 4px 0 ${category.shadow}`}}>
+            {idx+1 >= words.length ? "See results 🏆" : "Next →"}
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  return null;
 }
 
 /* ── Mandatory Review ── */
@@ -5115,23 +5330,30 @@ function GrammarTopicScreen({ topic, onSelectPart, onSelectOverview, onSelectFin
 
 /* Tap-to-pair matching game */
 function PairMatchGame({ pairs, onDone }) {
-  const jpShuffled = useMemo(() => shuffle(pairs.map(p => p.jp)), [pairs]);
-  const [selectedEn, setSelectedEn] = useState(null);
-  const [matched, setMatched] = useState([]);
-  const [wrongPair, setWrongPair] = useState(null);
+  // English side is tracked by index (always unique). Japanese side is tracked by its own
+  // tile index too — some sets have duplicate jp values (e.g. "reduce" and "decrease" both
+  // meaning 減らす), so a tile is only consumed when THAT specific tile is clicked, but the
+  // correctness check compares text — any tile with the right meaning counts, so a duplicate
+  // pair doesn't get unfairly marked wrong for matching "the other one's" tile.
+  const jpShuffled = useMemo(() => shuffle(pairs.map((p, i) => ({ jp:p.jp, idx:i }))), [pairs]);
+  const [selectedIdx, setSelectedIdx] = useState(null);
+  const [matchedEn, setMatchedEn] = useState([]);   // en pair indices matched
+  const [matchedJp, setMatchedJp] = useState([]);   // jp tile indices consumed
+  const [wrongIdx, setWrongIdx] = useState(null);
 
-  const pickEn = (en) => { if (!matched.includes(en)) setSelectedEn(en); };
-  const pickJp = (jp) => {
-    if (!selectedEn) return;
-    const pair = pairs.find(p => p.en === selectedEn);
-    if (pair.jp === jp) {
-      setMatched(m => [...m, selectedEn]);
-      setSelectedEn(null);
-      if (matched.length + 1 === pairs.length) setTimeout(onDone, 500);
+  const pickEn = (idx) => { if (!matchedEn.includes(idx)) setSelectedIdx(idx); };
+  const pickJp = (jpIdx, jpText) => {
+    if (selectedIdx === null || matchedJp.includes(jpIdx)) return;
+    if (jpText === pairs[selectedIdx].jp) {
+      const nextEn = [...matchedEn, selectedIdx];
+      setMatchedEn(nextEn);
+      setMatchedJp(m => [...m, jpIdx]);
+      setSelectedIdx(null);
+      if (nextEn.length === pairs.length) setTimeout(onDone, 500);
     } else {
-      setWrongPair(jp);
-      setTimeout(() => setWrongPair(null), 400);
-      setSelectedEn(null);
+      setWrongIdx(jpIdx);
+      setTimeout(() => setWrongIdx(null), 400);
+      setSelectedIdx(null);
     }
   };
 
@@ -5140,22 +5362,22 @@ function PairMatchGame({ pairs, onDone }) {
       <div style={{textAlign:"center",fontSize:16,color:"#718096",marginBottom:24}}>左のえいごと右の日本語をむすぼう！</div>
       <div style={{display:"flex",gap:20}}>
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
-          {pairs.map(p => (
-            <button key={p.en} type="button" disabled={matched.includes(p.en)} onClick={() => pickEn(p.en)}
-              style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${matched.includes(p.en)?"#86efac":selectedEn===p.en?"#7c3aed":"#e2e8f0"}`,
-                background:matched.includes(p.en)?"#f0fdf4":selectedEn===p.en?"#f5f3ff":"#fff",
-                fontWeight:800,fontSize:22,color:matched.includes(p.en)?"#15803d":"#3b0764",cursor:matched.includes(p.en)?"default":"pointer"}}>
-              {p.en}{matched.includes(p.en)?" ✓":""}
+          {pairs.map((p, i) => (
+            <button key={i} type="button" disabled={matchedEn.includes(i)} onClick={() => pickEn(i)}
+              style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${matchedEn.includes(i)?"#86efac":selectedIdx===i?"#7c3aed":"#e2e8f0"}`,
+                background:matchedEn.includes(i)?"#f0fdf4":selectedIdx===i?"#f5f3ff":"#fff",
+                fontWeight:800,fontSize:22,color:matchedEn.includes(i)?"#15803d":"#3b0764",cursor:matchedEn.includes(i)?"default":"pointer"}}>
+              {p.en}{matchedEn.includes(i)?" ✓":""}
             </button>
           ))}
         </div>
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
-          {jpShuffled.map(jp => {
-            const isMatched = matched.some(en => pairs.find(p=>p.en===en).jp === jp);
+          {jpShuffled.map(({jp, idx}) => {
+            const isMatched = matchedJp.includes(idx);
             return (
-              <button key={jp} type="button" disabled={isMatched} onClick={() => pickJp(jp)}
-                style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongPair===jp?"#f87171":"#e2e8f0"}`,
-                  background:isMatched?"#f0fdf4":wrongPair===jp?"#fee2e2":"#fff",
+              <button key={idx} type="button" disabled={isMatched} onClick={() => pickJp(idx, jp)}
+                style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongIdx===idx?"#f87171":"#e2e8f0"}`,
+                  background:isMatched?"#f0fdf4":wrongIdx===idx?"#fee2e2":"#fff",
                   fontWeight:700,fontSize:20,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
                 {jp}{isMatched?" ✓":""}
               </button>
@@ -5222,7 +5444,7 @@ function GrammarPartScreen({ part, onDone, onBack }) {
   if (step === "match") {
     return (
       <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
-        <PairMatchGame pairs={part.matchPairs} onDone={() => setStep("lesson")} />
+        <PairMatchGame key={part.id} pairs={part.matchPairs} onDone={() => setStep("lesson")} />
       </div>
     );
   }
