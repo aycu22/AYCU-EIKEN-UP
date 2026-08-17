@@ -3327,6 +3327,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
     { id:"5", label:"Grade 5", sub:"えいけん5きゅう", color:"#D36135" },
     { id:"4", label:"Grade 4", sub:"えいけん4きゅう", color:"#6366f1" },
     { id:"3", label:"Grade 3", sub:"えいけん3きゅう", color:"#7fb069" },
+    { id:"p2", label:"Pre-2",  sub:"えいけん準2きゅう", color:"#9333ea" },
   ];
 
   return (
@@ -3342,7 +3343,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
       {/* Level switcher */}
       <div style={{marginBottom:20}}>
         <div className="slabel" style={{marginBottom:8}}>My Level</div>
-        <div style={{display:"flex",gap:10}}>
+        <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
           {levels.map(lvl => {
             const active = profile.level === lvl.id;
             const lvlDone = getCategoriesByLevel(lvl.id).filter(c => getCatProgress(c.id) >= 70).length;
@@ -3350,7 +3351,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
             return (
               <button type="button" key={lvl.id}
                 onClick={() => !active && onLevelChange(lvl.id)}
-                style={{flex:1,padding:"12px 14px",borderRadius:"14px",border:`2.5px solid ${active?lvl.color:"#e2e8f0"}`,
+                style={{flex:"1 1 130px",padding:"12px 14px",borderRadius:"14px",border:`2.5px solid ${active?lvl.color:"#e2e8f0"}`,
                   background:active?"#fff":active?"#fff":"#fafafa",cursor:active?"default":"pointer",
                   textAlign:"left",transition:"all .15s",boxShadow:active?`0 2px 0 ${lvl.color}44`:"none"}}>
                 <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:active?lvl.color:"#a0aec0"}}>
@@ -3466,7 +3467,23 @@ function StudyScreen({ category, onStart }) {
       {category.words.map((w, i) => (
         <div key={w.en} className="wl-row" style={{background:"#fff",border:"1.5px solid #e8edf3",padding:"13px 16px",marginBottom:8,borderRadius:13}}>
           <div className="wl-num" style={{color:category.color,fontSize:17,minWidth:28}}>{i+1}</div>
-          {w.isOrdinal ? (
+          {category.isPre2 ? (
+            <div style={{flex:1}}>
+              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#02020b"}}>{w.en}</div>
+                <SpeakBtn text={w.en} size={28} />
+                <div style={{flex:1,textAlign:"right",fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:18,color:category.color}}>
+                  {w.kanji}
+                  {w.kana && w.kana !== w.kanji && <span style={{fontSize:13,color:"#a0aec0",fontWeight:600,marginLeft:6}}>（{w.kana}）</span>}
+                </div>
+              </div>
+              {w.hint && (
+                <div style={{fontSize:15,color:"#4a5568",marginTop:6,textAlign:"left",lineHeight:1.5}}>
+                  {w.hint.replace("_____", w.en)}
+                </div>
+              )}
+            </div>
+          ) : w.isOrdinal ? (
             <div style={{flex:1,display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
               <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#02020b"}}>{w.en}</div>
               <div style={{display:"flex",alignItems:"center",gap:10}}>
