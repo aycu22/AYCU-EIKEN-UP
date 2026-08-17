@@ -2548,16 +2548,26 @@ const VOCAB_CATEGORIES_PRE2 = [
     id: "p2_v1", title: "V1 · Increase, Decrease & Change", emoji: "📈", isPre2: true,
     color: "#6366f1", shadow: "#4338ca",
     words: [
-      { en:"increase",  kanji:"増やす",     kana:"ふやす",       hint:"The company hopes to _____ its sales this year." },
-      { en:"decrease",  kanji:"減る",       kana:"へる",         hint:"The number of visitors tends to _____ every winter." },
-      { en:"reduce",    kanji:"減らす（〜を）",kana:"へらす",     hint:"We should _____ the amount of plastic we use." },
-      { en:"gain",      kanji:"得る",       kana:"える",         hint:"She hopes to _____ more experience by working abroad." },
-      { en:"improve",   kanji:"改良する",   kana:"かいりょうする", hint:"He practices every day to _____ his English." },
-      { en:"remain",    kanji:"残る",       kana:"のこる",       hint:"Please _____ seated until the plane stops." },
-      { en:"spread",    kanji:"広がる",     kana:"ひろがる",     hint:"The news quickly _____ around the school." },
-      { en:"affect",    kanji:"影響を与える",kana:"えいきょうをあたえる", hint:"The rainy weather will _____ our plans for the picnic." },
-      { en:"replace",   kanji:"取り替える", kana:"とりかえる",   hint:"We need to _____ the old computer with a new one." },
-      { en:"recover",   kanji:"回復する",   kana:"かいふくする", hint:"It took him two weeks to _____ from his cold." },
+      { en:"increase",  kanji:"増やす",     kana:"ふやす",       hint:"The company hopes to _____ its sales this year.",
+        definition:"to become or make something larger in amount or degree" },
+      { en:"decrease",  kanji:"減る",       kana:"へる",         hint:"The number of visitors tends to _____ every winter.",
+        definition:"to become smaller in amount or degree, often by itself" },
+      { en:"reduce",    kanji:"減らす（〜を）",kana:"へらす",     hint:"We should _____ the amount of plastic we use.",
+        definition:"to make something smaller in size, amount, or degree" },
+      { en:"gain",      kanji:"得る",       kana:"える",         hint:"She hopes to _____ more experience by working abroad.",
+        definition:"to obtain or get something useful or valuable" },
+      { en:"improve",   kanji:"改良する",   kana:"かいりょうする", hint:"He practices every day to _____ his English.",
+        definition:"to make or become better than before" },
+      { en:"remain",    kanji:"残る",       kana:"のこる",       hint:"Please _____ seated until the plane stops.",
+        definition:"to stay in the same place or condition; to continue to exist" },
+      { en:"spread",    kanji:"広がる",     kana:"ひろがる",     hint:"The news quickly _____ around the school.",
+        definition:"to become known or move over a wider area" },
+      { en:"affect",    kanji:"影響を与える",kana:"えいきょうをあたえる", hint:"The rainy weather will _____ our plans for the picnic.",
+        definition:"to have an influence or effect on someone or something" },
+      { en:"replace",   kanji:"取り替える", kana:"とりかえる",   hint:"We need to _____ the old computer with a new one.",
+        definition:"to put a new person or thing in the place of another" },
+      { en:"recover",   kanji:"回復する",   kana:"かいふくする", hint:"It took him two weeks to _____ from his cold.",
+        definition:"to return to a normal state after illness or difficulty" },
     ],
   },
 ];
@@ -4194,20 +4204,20 @@ function Pre2VocabGameScreen({ category, onComplete }) {
     setScores(prev => ({ ...prev, [en]: { ...(prev[en]||{}), [key]: correct } }));
 
   const otherMeanings = (word, n) =>
-    shuffle(words.filter(w => w.en !== word.en).map(w => w.kanji)).slice(0, n);
+    shuffle(words.filter(w => w.en !== word.en).map(w => ({ kanji:w.kanji, kana:w.kana }))).slice(0, n);
   const otherWords = (word, n) =>
     shuffle(words.filter(w => w.en !== word.en).map(w => w.en)).slice(0, n);
 
   // ── Step: translate (choose the correct Japanese meaning) ──
   const [translateOpts] = useState(() => words.map(w => ({
-    en: w.en, correctMeaning: w.kanji,
-    opts: shuffle([w.kanji, ...otherMeanings(w, 3)]),
+    en: w.en, definition: w.definition, correctMeaning: w.kanji,
+    opts: shuffle([{ kanji:w.kanji, kana:w.kana }, ...otherMeanings(w, 3)]),
   })));
 
   const handleTranslateSelect = (optIdx) => {
     if (phase !== "question") return;
     const t = translateOpts[idx];
-    const correct = t.opts[optIdx] === t.correctMeaning;
+    const correct = t.opts[optIdx].kanji === t.correctMeaning;
     setSelected(optIdx);
     record(t.en, "translate", correct);
     setPhase(correct ? "correct" : "wrong");
@@ -4259,15 +4269,18 @@ function Pre2VocabGameScreen({ category, onComplete }) {
         </div>
         <div style={{background:"#f8fafc",borderRadius:14,padding:"22px 16px",textAlign:"center",marginBottom:14}}>
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:24,color:"#02020b"}}>{t.en}</div>
+          {t.definition && (
+            <div style={{fontSize:13,color:"#718096",marginTop:8,fontStyle:"italic",lineHeight:1.5}}>{t.definition}</div>
+          )}
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
           {t.opts.map((opt, i) => {
-            const c = optColor(i, k => t.opts[k] === t.correctMeaning);
+            const c = optColor(i, k => t.opts[k].kanji === t.correctMeaning);
             return (
               <button key={i} type="button" disabled={phase!=="question"} onClick={() => handleTranslateSelect(i)}
                 style={{padding:"12px 14px",borderRadius:12,border:`2px solid ${c.border}`,background:c.bg,color:c.color,
                   fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:15,textAlign:"left",cursor:phase==="question"?"pointer":"default"}}>
-                {opt}
+                <Furigana kanji={opt.kanji} kana={opt.kana} size={17} />
               </button>
             );
           })}
@@ -4283,7 +4296,7 @@ function Pre2VocabGameScreen({ category, onComplete }) {
 
   if (step === "match1" || step === "match2") {
     const setWords = step === "match1" ? words.slice(0, half) : words.slice(half);
-    const pairs = setWords.map(w => ({ en:w.en, jp:w.kanji }));
+    const pairs = setWords.map(w => ({ en:w.en, jp:w.kanji, kana:w.kana }));
     return (
       <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:6}}>
@@ -5352,7 +5365,7 @@ function PairMatchGame({ pairs, onDone }) {
   // meaning 減らす), so a tile is only consumed when THAT specific tile is clicked, but the
   // correctness check compares text — any tile with the right meaning counts, so a duplicate
   // pair doesn't get unfairly marked wrong for matching "the other one's" tile.
-  const jpShuffled = useMemo(() => shuffle(pairs.map((p, i) => ({ jp:p.jp, idx:i }))), [pairs]);
+  const jpShuffled = useMemo(() => shuffle(pairs.map((p, i) => ({ jp:p.jp, kana:p.kana, idx:i }))), [pairs]);
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [matchedEn, setMatchedEn] = useState([]);   // en pair indices matched
   const [matchedJp, setMatchedJp] = useState([]);   // jp tile indices consumed
@@ -5384,19 +5397,19 @@ function PairMatchGame({ pairs, onDone }) {
               style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${matchedEn.includes(i)?"#86efac":selectedIdx===i?"#7c3aed":"#e2e8f0"}`,
                 background:matchedEn.includes(i)?"#f0fdf4":selectedIdx===i?"#f5f3ff":"#fff",
                 fontWeight:800,fontSize:22,color:matchedEn.includes(i)?"#15803d":"#3b0764",cursor:matchedEn.includes(i)?"default":"pointer"}}>
-              {p.en}{matchedEn.includes(i)?" ✓":""}
+              {p.en}
             </button>
           ))}
         </div>
         <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
-          {jpShuffled.map(({jp, idx}) => {
+          {jpShuffled.map(({jp, kana, idx}) => {
             const isMatched = matchedJp.includes(idx);
             return (
               <button key={idx} type="button" disabled={isMatched} onClick={() => pickJp(idx, jp)}
                 style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongIdx===idx?"#f87171":"#e2e8f0"}`,
                   background:isMatched?"#f0fdf4":wrongIdx===idx?"#fee2e2":"#fff",
-                  fontWeight:700,fontSize:20,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
-                {jp}{isMatched?" ✓":""}
+                  fontWeight:700,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
+                {kana ? <Furigana kanji={jp} kana={kana} size={20} /> : <span style={{fontSize:20}}>{jp}</span>}
               </button>
             );
           })}
