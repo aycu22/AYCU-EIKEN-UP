@@ -4451,10 +4451,10 @@ function ExampleWarning({ q, wrong, right }) {
   );
 }
 
-function NotesGrade5() {
+function NotesGrade5Page1() {
   return (
     <>
-      <NoteSection label="Page 1 — きく会話 🎧" isNew>
+      <NoteSection label="🔍 しつもんの言葉" isNew>
         <div style={{ marginBottom:6, fontWeight:700 }}>最初の言葉を見よう！</div>
         <MiniTable cols={3} rows={[
           ["言葉","答え方","例"],
@@ -4468,7 +4468,14 @@ function NotesGrade5() {
         <div style={{ marginTop:8, fontSize:12, color:"#92400e" }}>⚠️ 同じ言葉があってもだまされないで！</div>
         <ExampleWarning q="Where are my shoes?" wrong="I like shoes." right="They're by the door." />
       </NoteSection>
-      <NoteSection label="Page 2 — 答える会話 💬" isNew>
+    </>
+  );
+}
+
+function NotesGrade5Page2() {
+  return (
+    <>
+      <NoteSection label="💬 答え方" isNew>
         <div style={{ marginBottom:6, fontWeight:700 }}>この返事をおぼえよう！</div>
         <MiniTable cols={2} rows={[
           ["このとき","答え方"],
@@ -4487,6 +4494,7 @@ function NotesGrade5() {
     </>
   );
 }
+const NotesGrade5Pages = [NotesGrade5Page1, NotesGrade5Page2];
 
 function NotesG3Travel() {
   const c = NOTE_COLORS;
@@ -4570,11 +4578,17 @@ function NotesG3Family() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5, at_school: NotesGrade5, with_friends: NotesGrade5, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
+const DIALOGUE_NOTES = { at_home: NotesGrade5Pages, at_school: NotesGrade5Pages, with_friends: NotesGrade5Pages, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
 
 function DialogueNotesScreen({ topic, onContinue }) {
-  const NoteBody = DIALOGUE_NOTES[topic.id];
-  if (!NoteBody) return null;
+  const notesEntry = DIALOGUE_NOTES[topic.id];
+  const [pageIdx, setPageIdx] = useState(0);
+  if (!notesEntry) return null;
+
+  const pages = Array.isArray(notesEntry) ? notesEntry : [notesEntry];
+  const isLastPage = pageIdx === pages.length - 1;
+  const NoteBody = pages[pageIdx];
+
   return (
     <div className="fade" style={{ maxWidth:480, margin:"0 auto" }}>
       <div style={{ textAlign:"center", marginBottom:18, paddingTop:4 }}>
@@ -4583,12 +4597,23 @@ function DialogueNotesScreen({ topic, onContinue }) {
           まなびポイント — {topic.emoji} {topic.title}
         </div>
         <div style={{ fontSize:12, color:"#a0aec0", marginTop:2 }}>れんしゅうの前に読もう！</div>
+        {pages.length > 1 && (
+          <div style={{ fontSize:11, fontWeight:700, color:"#a78bfa", marginTop:6 }}>{pageIdx+1} / {pages.length}</div>
+        )}
       </div>
       <NoteBody />
-      <button type="button" className="btn" onClick={onContinue}
-        style={{ marginTop:6, background:topic.color, boxShadow:`0 4px 0 ${topic.shadow}` }}>
-        わかった！れんしゅうを始める →
-      </button>
+      <div style={{ display:"flex", gap:8, marginTop:6 }}>
+        {pageIdx > 0 && (
+          <button type="button" className="btn btn-gray" style={{ flex:"0 0 auto", width:"auto", padding:"15px 20px" }}
+            onClick={() => setPageIdx(i => i - 1)}>
+            ← Back
+          </button>
+        )}
+        <button type="button" className="btn" style={{ flex:1, background:topic.color, boxShadow:`0 4px 0 ${topic.shadow}` }}
+          onClick={() => isLastPage ? onContinue() : setPageIdx(i => i + 1)}>
+          {isLastPage ? "わかった！れんしゅうを始める →" : "つぎへ →"}
+        </button>
+      </div>
     </div>
   );
 }
