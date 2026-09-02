@@ -2570,6 +2570,32 @@ const VOCAB_CATEGORIES_PRE2 = [
         definition:"to return to a normal state after illness or difficulty" },
     ],
   },
+  {
+    id: "p2_n1", title: "N1 · Nature & Environment", emoji: "🌿", isPre2: true,
+    color: "#16a34a", shadow: "#166534",
+    words: [
+      { en:"environment", kanji:"環境",       kana:"かんきょう",   hint:"We must work together to protect the _____.",
+        definition:"the natural world in which people, animals, and plants live" },
+      { en:"pollution",   kanji:"汚染",       kana:"おせん",       hint:"Air _____ is a serious problem in big cities.",
+        definition:"the presence of harmful substances in the air, water, or soil" },
+      { en:"resource",    kanji:"資源",       kana:"しげん",       hint:"Water is a natural _____ that must be used carefully.",
+        definition:"a material from nature that is useful or valuable to people" },
+      { en:"protect",     kanji:"保護する",   kana:"ほごする",     hint:"It is important to _____ endangered animals.",
+        definition:"to keep something or someone safe from harm" },
+      { en:"destroy",     kanji:"破壊する",   kana:"はかいする",   hint:"Cutting down forests can _____ animal habitats.",
+        definition:"to damage something so badly that it no longer exists or works" },
+      { en:"disappear",   kanji:"消える",     kana:"きえる",       hint:"Many species may _____ if we don't act soon.",
+        definition:"to no longer be seen or exist" },
+      { en:"endangered",  kanji:"絶滅危惧の", kana:"ぜつめつきぐの", hint:"Pandas are an _____ species.",
+        definition:"at risk of no longer existing" },
+      { en:"recycle",     kanji:"再利用する", kana:"さいりようする", hint:"We should _____ plastic bottles instead of throwing them away.",
+        definition:"to process used materials so they can be used again" },
+      { en:"climate",     kanji:"気候",       kana:"きこう",       hint:"_____ change is affecting weather patterns around the world.",
+        definition:"the general weather conditions of an area over a long period" },
+      { en:"wildlife",    kanji:"野生生物",   kana:"やせいせいぶつ", hint:"The national park protects a wide variety of _____.",
+        definition:"animals and plants living in their natural environment" },
+    ],
+  },
 ];
 
 /* ── Helper: get categories by Eiken level ── */
@@ -4221,10 +4247,13 @@ function Pre2VocabGameScreen({ category, onComplete }) {
     setSelected(optIdx);
     record(t.en, "translate", correct);
     setPhase(correct ? "correct" : "wrong");
+    if (correct) setTimeout(nextTranslate, 900);
   };
   const nextTranslate = () => {
-    if (idx + 1 >= words.length) { setIdx(0); setPhase("question"); setSelected(null); setStep("match1"); }
-    else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
+    setIdx(i => {
+      if (i + 1 >= words.length) { setPhase("question"); setSelected(null); setStep("match1"); return 0; }
+      setPhase("question"); setSelected(null); return i + 1;
+    });
   };
 
   // ── Step: fill-in-the-blank (Eiken style — choose the correct English word) ──
@@ -4239,17 +4268,21 @@ function Pre2VocabGameScreen({ category, onComplete }) {
     setSelected(optIdx);
     record(f.en, "fill", correct);
     setPhase(correct ? "correct" : "wrong");
+    if (correct) setTimeout(nextFill, 900);
   };
   const nextFill = () => {
-    if (idx + 1 >= words.length) {
-      const missed = words.filter(w => !(scores[w.en]?.translate && scores[w.en]?.fill));
-      const right = words.length - missed.length;
-      onComplete({
-        pct: Math.round((right/words.length)*100), right, total: words.length,
-        missed: missed.map(w => ({ word:w, scores: scores[w.en]||{} })),
-        words,
-      });
-    } else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
+    setScores(prev => {
+      if (idx + 1 >= words.length) {
+        const missed = words.filter(w => !(prev[w.en]?.translate && prev[w.en]?.fill));
+        const right = words.length - missed.length;
+        onComplete({
+          pct: Math.round((right/words.length)*100), right, total: words.length,
+          missed: missed.map(w => ({ word:w, scores: prev[w.en]||{} })),
+          words,
+        });
+      } else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
+      return prev;
+    });
   };
 
   const optColor = (idx2, correctCheck) => {
@@ -4285,7 +4318,7 @@ function Pre2VocabGameScreen({ category, onComplete }) {
             );
           })}
         </div>
-        {phase !== "question" && (
+        {phase === "wrong" && (
           <button type="button" className="btn" onClick={nextTranslate} autoFocus style={{background:category.color,boxShadow:`0 4px 0 ${category.shadow}`}}>
             {idx+1 >= words.length ? "Next: Matching →" : "Next →"}
           </button>
@@ -4352,8 +4385,8 @@ function Pre2VocabGameScreen({ category, onComplete }) {
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>3️⃣ Fill in the blank</div>
           <div style={{fontSize:11,fontWeight:700,color:"#718096",background:"#f1f5f9",padding:"3px 9px",borderRadius:20}}>{idx+1}/{words.length}</div>
         </div>
-        <div style={{background:"#f8fafc",borderRadius:14,padding:"18px 16px",textAlign:"center",marginBottom:14,fontSize:15,color:"#02020b",lineHeight:1.6,fontWeight:600}}>
-          {parts[0]}<span style={{color:category.color,fontWeight:900}}>(　　　)</span>{parts[1]}
+        <div style={{background:"#f8fafc",borderRadius:14,padding:"18px 16px",minHeight:96,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",marginBottom:14,fontSize:15,color:"#02020b",lineHeight:1.6,fontWeight:600}}>
+          <div>{parts[0]}<span style={{color:category.color,fontWeight:900}}>(　　　)</span>{parts[1]}</div>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
           {f.opts.map((opt, i) => {
@@ -4367,7 +4400,7 @@ function Pre2VocabGameScreen({ category, onComplete }) {
             );
           })}
         </div>
-        {phase !== "question" && (
+        {phase === "wrong" && (
           <button type="button" className="btn" onClick={nextFill} autoFocus style={{background:category.color,boxShadow:`0 4px 0 ${category.shadow}`}}>
             {idx+1 >= words.length ? "See results 🏆" : "Next →"}
           </button>
@@ -5390,26 +5423,27 @@ function PairMatchGame({ pairs, onDone }) {
   return (
     <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
       <div style={{textAlign:"center",fontSize:16,color:"#718096",marginBottom:24}}>左のえいごと右の日本語をむすぼう！</div>
-      <div style={{display:"flex",gap:20}}>
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
+      <div style={{display:"flex",gap:16}}>
+        <div style={{flex:"0 0 38%",display:"flex",flexDirection:"column",gap:14}}>
           {pairs.map((p, i) => (
             <button key={i} type="button" disabled={matchedEn.includes(i)} onClick={() => pickEn(i)}
-              style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${matchedEn.includes(i)?"#86efac":selectedIdx===i?"#7c3aed":"#e2e8f0"}`,
-                background:matchedEn.includes(i)?"#f0fdf4":selectedIdx===i?"#f5f3ff":"#fff",
-                fontWeight:800,fontSize:22,color:matchedEn.includes(i)?"#15803d":"#3b0764",cursor:matchedEn.includes(i)?"default":"pointer"}}>
+              style={{minHeight:72,display:"flex",alignItems:"center",justifyContent:"center",padding:"10px 12px",borderRadius:16,border:`3px solid ${matchedEn.includes(i)?"#86efac":selectedIdx===i?"#7c3aed":"#e2e8f0"}`,
+                background:matchedEn.includes(i)?"#f0fdf4":selectedIdx===i?"#f5f3ff":"#fff",textAlign:"center",
+                fontWeight:800,fontSize:20,color:matchedEn.includes(i)?"#15803d":"#3b0764",cursor:matchedEn.includes(i)?"default":"pointer"}}>
               {p.en}
             </button>
           ))}
         </div>
-        <div style={{flex:1,display:"flex",flexDirection:"column",gap:14}}>
+        <div style={{flex:"0 0 58%",display:"flex",flexDirection:"column",gap:14}}>
           {jpShuffled.map(({jp, kana, idx}) => {
             const isMatched = matchedJp.includes(idx);
+            const jpSize = jp.length > 6 ? 15 : jp.length > 4 ? 17 : 20;
             return (
               <button key={idx} type="button" disabled={isMatched} onClick={() => pickJp(idx, jp)}
-                style={{padding:"22px 16px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongIdx===idx?"#f87171":"#e2e8f0"}`,
-                  background:isMatched?"#f0fdf4":wrongIdx===idx?"#fee2e2":"#fff",
+                style={{minHeight:72,display:"flex",alignItems:"center",justifyContent:"center",padding:"10px 12px",borderRadius:16,border:`3px solid ${isMatched?"#86efac":wrongIdx===idx?"#f87171":"#e2e8f0"}`,
+                  background:isMatched?"#f0fdf4":wrongIdx===idx?"#fee2e2":"#fff",textAlign:"center",whiteSpace:"nowrap",overflow:"hidden",
                   fontWeight:700,color:isMatched?"#15803d":"#374151",cursor:isMatched?"default":"pointer"}}>
-                {kana ? <Furigana kanji={jp} kana={kana} size={20} /> : <span style={{fontSize:20}}>{jp}</span>}
+                {kana ? <Furigana kanji={jp} kana={kana} size={jpSize} /> : <span style={{fontSize:jpSize}}>{jp}</span>}
               </button>
             );
           })}
