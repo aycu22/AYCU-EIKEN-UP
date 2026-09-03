@@ -2622,6 +2622,32 @@ const VOCAB_CATEGORIES_PRE2 = [
         definition:"a behavior you repeat regularly" },
     ],
   },
+  {
+    id: "p2_a1", title: "A1 · Personality (Good Traits)", emoji: "😊", isPre2: true,
+    color: "#0891b2", shadow: "#155e75",
+    words: [
+      { en:"honest",    kanji:"正直な",       kana:"しょうじきな",       hint:"She is always _____, even when the truth is difficult.",
+        definition:"always telling the truth and not lying or cheating" },
+      { en:"kind",      kanji:"親切な",       kana:"しんせつな",         hint:"He was _____ enough to help the old man carry his bags.",
+        definition:"caring about others and willing to help them" },
+      { en:"generous",  kanji:"寛大な",       kana:"かんだいな",         hint:"My uncle is very _____ and often gives gifts to his friends.",
+        definition:"willing to give more money, time, or help than expected" },
+      { en:"patient",   kanji:"忍耐強い",     kana:"にんたいづよい",     hint:"Good teachers are _____ with students who learn slowly.",
+        definition:"able to stay calm while waiting or dealing with difficulty" },
+      { en:"confident", kanji:"自信がある",   kana:"じしんがある",       hint:"She felt _____ about her English speech.",
+        definition:"feeling sure about your own abilities" },
+      { en:"polite",    kanji:"礼儀正しい",   kana:"れいぎただしい",     hint:"It's important to be _____ to your elders.",
+        definition:"having good manners and showing respect to others" },
+      { en:"reliable",  kanji:"頼りになる",   kana:"たよりになる",       hint:"You can always count on him — he's very _____.",
+        definition:"able to be trusted to do what is expected" },
+      { en:"cheerful",  kanji:"陽気な",       kana:"ようきな",           hint:"The children were _____ and full of energy at the party.",
+        definition:"happy and positive in a way that affects others" },
+      { en:"curious",   kanji:"好奇心旺盛な", kana:"こうきしんおうせいな", hint:"My little sister is _____ about everything she sees.",
+        definition:"eager to learn or know about many things" },
+      { en:"humble",    kanji:"謙虚な",       kana:"けんきょな",         hint:"Even after winning the prize, he stayed _____.",
+        definition:"not proud or boastful about your achievements" },
+    ],
+  },
 ];
 
 /* ── Helper: get categories by Eiken level ── */
