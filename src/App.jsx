@@ -4226,13 +4226,21 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   const [phase, setPhase] = useState("question"); // question | correct | wrong
   const [selected, setSelected] = useState(null);
   const [scores, setScores] = useState({}); // { en: { translate:bool, fill:bool } }
-  const record = (en, key, correct) =>
-    setScores(prev => ({ ...prev, [en]: { ...(prev[en]||{}), [key]: correct } }));
+  const scoresRef = useRef({});
+  const record = (en, key, correct) => {
+    scoresRef.current = { ...scoresRef.current, [en]: { ...(scoresRef.current[en]||{}), [key]: correct } };
+    setScores(scoresRef.current);
+  };
 
   const otherMeanings = (word, n) =>
     shuffle(words.filter(w => w.en !== word.en).map(w => ({ kanji:w.kanji, kana:w.kana }))).slice(0, n);
   const otherWords = (word, n) =>
     shuffle(words.filter(w => w.en !== word.en).map(w => w.en)).slice(0, n);
+
+  // Guards a scheduled auto-advance against firing twice (e.g. a stacked timeout),
+  // and guards against two clicks landing before React has re-rendered disabled buttons.
+  const advanceTokenRef = useRef(0);
+  const answeredRef = useRef(false);
 
   // ── Step: translate (choose the correct Japanese meaning) ──
   const [translateOpts] = useState(() => words.map(w => ({
@@ -4241,19 +4249,25 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   })));
 
   const handleTranslateSelect = (optIdx) => {
-    if (phase !== "question") return;
+    if (phase !== "question" || answeredRef.current) return;
+    answeredRef.current = true;
     const t = translateOpts[idx];
     const correct = t.opts[optIdx].kanji === t.correctMeaning;
     setSelected(optIdx);
     record(t.en, "translate", correct);
     setPhase(correct ? "correct" : "wrong");
-    if (correct) setTimeout(nextTranslate, 900);
+    if (correct) {
+      const myToken = ++advanceTokenRef.current;
+      setTimeout(() => { if (advanceTokenRef.current === myToken) nextTranslate(); }, 900);
+    }
   };
   const nextTranslate = () => {
-    setIdx(i => {
-      if (i + 1 >= words.length) { setPhase("question"); setSelected(null); setStep("match1"); return 0; }
-      setPhase("question"); setSelected(null); return i + 1;
-    });
+    advanceTokenRef.current++;
+    answeredRef.current = false;
+    setPhase("question");
+    setSelected(null);
+    if (idx + 1 >= words.length) { setIdx(0); setStep("match1"); }
+    else { setIdx(i => i + 1); }
   };
 
   // ── Step: fill-in-the-blank (Eiken style — choose the correct English word) ──
@@ -4262,27 +4276,30 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   })));
 
   const handleFillSelect = (optIdx) => {
-    if (phase !== "question") return;
+    if (phase !== "question" || answeredRef.current) return;
+    answeredRef.current = true;
     const f = fillOpts[idx];
     const correct = f.opts[optIdx] === f.en;
     setSelected(optIdx);
     record(f.en, "fill", correct);
     setPhase(correct ? "correct" : "wrong");
-    if (correct) setTimeout(nextFill, 900);
+    if (correct) {
+      const myToken = ++advanceTokenRef.current;
+      setTimeout(() => { if (advanceTokenRef.current === myToken) nextFill(); }, 900);
+    }
   };
   const nextFill = () => {
-    setScores(prev => {
-      if (idx + 1 >= words.length) {
-        const missed = words.filter(w => !(prev[w.en]?.translate && prev[w.en]?.fill));
-        const right = words.length - missed.length;
-        onComplete({
-          pct: Math.round((right/words.length)*100), right, total: words.length,
-          missed: missed.map(w => ({ word:w, scores: prev[w.en]||{} })),
-          words,
-        });
-      } else { setIdx(i => i+1); setPhase("question"); setSelected(null); }
-      return prev;
-    });
+    advanceTokenRef.current++;
+    answeredRef.current = false;
+    if (idx + 1 >= words.length) {
+      const missed = words.filter(w => !(scoresRef.current[w.en]?.translate && scoresRef.current[w.en]?.fill));
+      const right = words.length - missed.length;
+      onComplete({
+        pct: Math.round((right/words.length)*100), right, total: words.length,
+        missed: missed.map(w => ({ word:w, scores: scoresRef.current[w.en]||{} })),
+        words,
+      });
+    } else { setIdx(i => i + 1); setPhase("question"); setSelected(null); }
   };
 
   const optColor = (idx2, correctCheck) => {
@@ -4293,9 +4310,9 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   };
 
   if (step === "translate") {
-    const t = translateOpts[idx];
+    const t = translateOpts[Math.min(idx, translateOpts.length - 1)];
     return (
-      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div className="fade" style={{width:"100%",maxWidth:480,margin:"0 auto"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>1️⃣ Choose the correct translation</div>
           <div style={{fontSize:11,fontWeight:700,color:"#718096",background:"#f1f5f9",padding:"3px 9px",borderRadius:20}}>{idx+1}/{words.length}</div>
@@ -4331,7 +4348,7 @@ function Pre2VocabGameScreen({ category, onComplete }) {
     const setWords = step === "match1" ? words.slice(0, half) : words.slice(half);
     const pairs = setWords.map(w => ({ en:w.en, jp:w.kanji, kana:w.kana }));
     return (
-      <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
+      <div className="fade" style={{width:"100%",maxWidth:600,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:6}}>
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>
             2️⃣ Matching — Set {step==="match1"?"1":"2"} of 2
@@ -4348,7 +4365,7 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   if (step === "review1") {
     const missed = words.filter(w => !scores[w.en]?.translate);
     return (
-      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div className="fade" style={{width:"100%",maxWidth:480,margin:"0 auto"}}>
         <div style={{textAlign:"center",marginBottom:14}}>
           <div style={{fontSize:34}}>📝</div>
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:17,color:"#3b0764"}}>Words to review</div>
@@ -4376,17 +4393,20 @@ function Pre2VocabGameScreen({ category, onComplete }) {
   }
 
   if (step === "fill") {
-    const w = words[idx];
-    const f = fillOpts[idx];
+    const safeIdx = Math.min(idx, words.length - 1);
+    const w = words[safeIdx];
+    const f = fillOpts[safeIdx];
     const parts = w.hint.split("_____");
+    const sentLen = w.hint.length;
+    const sentSize = sentLen > 90 ? 12.5 : sentLen > 70 ? 13.5 : sentLen > 55 ? 14.5 : 15;
     return (
-      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div className="fade" style={{width:"100%",maxWidth:480,margin:"0 auto"}}>
         <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
           <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:15,color:category.color}}>3️⃣ Fill in the blank</div>
           <div style={{fontSize:11,fontWeight:700,color:"#718096",background:"#f1f5f9",padding:"3px 9px",borderRadius:20}}>{idx+1}/{words.length}</div>
         </div>
-        <div style={{background:"#f8fafc",borderRadius:14,padding:"18px 16px",minHeight:96,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",marginBottom:14,fontSize:15,color:"#02020b",lineHeight:1.6,fontWeight:600}}>
-          <div>{parts[0]}<span style={{color:category.color,fontWeight:900}}>(　　　)</span>{parts[1]}</div>
+        <div style={{background:"#f8fafc",borderRadius:14,padding:"18px 16px",height:110,display:"flex",alignItems:"center",justifyContent:"center",textAlign:"center",marginBottom:14,overflow:"hidden",color:"#02020b",lineHeight:1.6,fontWeight:600}}>
+          <div style={{fontSize:sentSize}}>{parts[0]}<span style={{color:category.color,fontWeight:900}}>(　　　)</span>{parts[1]}</div>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:12}}>
           {f.opts.map((opt, i) => {
@@ -5421,7 +5441,7 @@ function PairMatchGame({ pairs, onDone }) {
   };
 
   return (
-    <div className="fade" style={{maxWidth:600,margin:"0 auto"}}>
+    <div className="fade" style={{width:"100%",maxWidth:600,margin:"0 auto"}}>
       <div style={{textAlign:"center",fontSize:16,color:"#718096",marginBottom:24}}>左のえいごと右の日本語をむすぼう！</div>
       <div style={{display:"flex",gap:16}}>
         <div style={{flex:"0 0 38%",display:"flex",flexDirection:"column",gap:14}}>
@@ -5507,7 +5527,7 @@ function GrammarPartScreen({ part, onDone, onBack }) {
 
   if (step === "match") {
     return (
-      <div className="fade" style={{maxWidth:480,margin:"0 auto"}}>
+      <div className="fade" style={{width:"100%",maxWidth:480,margin:"0 auto"}}>
         <PairMatchGame key={part.id} pairs={part.matchPairs} onDone={() => setStep("lesson")} />
       </div>
     );
