@@ -2596,6 +2596,32 @@ const VOCAB_CATEGORIES_PRE2 = [
         definition:"animals and plants living in their natural environment" },
     ],
   },
+  {
+    id: "p2_h1", title: "H1 · Health & Medicine", emoji: "🏥", isPre2: true,
+    color: "#dc2626", shadow: "#991b1b",
+    words: [
+      { en:"health",     kanji:"健康",   kana:"けんこう",   hint:"Eating vegetables is good for your _____.",
+        definition:"your general physical or mental condition" },
+      { en:"illness",    kanji:"病気",   kana:"びょうき",   hint:"She missed school because of a long _____.",
+        definition:"the experience or period of being sick" },
+      { en:"disease",    kanji:"疾患",   kana:"しっかん",   hint:"Heart _____ is a serious problem in many countries.",
+        definition:"a specific, often named medical condition, sometimes spreadable" },
+      { en:"injury",     kanji:"怪我",   kana:"けが",       hint:"He suffered a knee _____ during the game.",
+        definition:"physical damage to part of the body" },
+      { en:"medicine",   kanji:"薬",     kana:"くすり",     hint:"Please take this _____ after every meal.",
+        definition:"something you take to treat an illness" },
+      { en:"operation",  kanji:"手術",   kana:"しゅじゅつ", hint:"My grandfather had a heart _____ last year.",
+        definition:"a medical procedure to treat an injury or disease; surgery" },
+      { en:"condition",  kanji:"状態",   kana:"じょうたい", hint:"The old car is still in good _____.",
+        definition:"the state that something or someone is in" },
+      { en:"effect",     kanji:"効果",   kana:"こうか",     hint:"Sugar can have a bad _____ on your teeth.",
+        definition:"a result that something produces" },
+      { en:"influence",  kanji:"影響",   kana:"えいきょう", hint:"Parents have a strong _____ on their children.",
+        definition:"the power to affect someone's behavior or opinions; can also mean a person who has this power" },
+      { en:"habit",      kanji:"習慣",   kana:"しゅうかん", hint:"Reading before bed is a good _____.",
+        definition:"a behavior you repeat regularly" },
+    ],
+  },
 ];
 
 /* ── Helper: get categories by Eiken level ── */
