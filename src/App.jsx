@@ -3268,8 +3268,12 @@ export default function App() {
                           <div className="wl-num" style={{color:activeCategory.color}}>{i+1}</div>
                           <div style={{flex:1}}>
                             <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:700,fontSize:13,color:"#02020b"}}>{w.en}</div>
-                            {!w.isOrdinal && <div style={{fontSize:14,color:"#a0aec0"}}>{w.kanji}</div>}
-                            {w.isOrdinal && <div style={{fontSize:15,color:activeCategory.color,fontWeight:700}}>{w.kanji}</div>}
+                            {!w.isOrdinal && (
+                              <div style={{color:"#4a5568",marginTop:2}}>
+                                {w.kana ? <Furigana kanji={w.kanji} kana={w.kana} size={20} /> : <span style={{fontSize:18}}>{w.kanji}</span>}
+                              </div>
+                            )}
+                            {w.isOrdinal && <div style={{fontSize:18,color:activeCategory.color,fontWeight:700,marginTop:2}}>{w.kanji}</div>}
                           </div>
                           <SpeakBtn text={w.en} size={26} />
                         </div>
