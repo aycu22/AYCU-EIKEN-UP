@@ -2742,9 +2742,23 @@ const VOCAB_CATEGORIES_PRE2 = [
   },
 ];
 
+// Pre-2 categories are grouped by part of speech (Nouns, Verbs, Adjectives, Adverbs,
+// Phrasal Verbs, Prepositional/Set Phrases, Synonyms, Antonyms), each in numeric order.
+const PRE2_POS_ORDER = ["n", "v", "a", "ad", "pv", "prep", "syn", "ant"];
+const pre2SortKey = id => {
+  const m = id.match(/^p2_([a-z]+)(\d+)$/);
+  if (!m) return [PRE2_POS_ORDER.length, 0];
+  const posIdx = PRE2_POS_ORDER.indexOf(m[1]);
+  return [posIdx === -1 ? PRE2_POS_ORDER.length : posIdx, Number(m[2])];
+};
+const VOCAB_CATEGORIES_PRE2_SORTED = [...VOCAB_CATEGORIES_PRE2].sort((a, b) => {
+  const [ap, an] = pre2SortKey(a.id), [bp, bn] = pre2SortKey(b.id);
+  return ap - bp || an - bn;
+});
+
 /* ── Helper: get categories by Eiken level ── */
 const getCategoriesByLevel = (level) =>
-  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : level === "p2" ? VOCAB_CATEGORIES_PRE2 : VOCAB_CATEGORIES_5;
+  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : level === "p2" ? VOCAB_CATEGORIES_PRE2_SORTED : VOCAB_CATEGORIES_5;
 
 /* ── CSS ── */
 const css = `
