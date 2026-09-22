@@ -137,6 +137,7 @@ const DIALOGUE_TOPICS = [
   { id:"g4_at_home",   title:"AT HOME",   emoji:"🏡", color:"#2563eb", shadow:"#1e3a8a", level:"4", speakerLabels: AT_HOME_LABELS },
   { id:"g4_at_school", title:"AT SCHOOL", emoji:"🏫", color:"#f97316", shadow:"#c2410c", level:"4", speakerLabels: AT_SCHOOL_LABELS },
   { id:"g4_with_friends", title:"WITH FRIENDS", emoji:"👫", color:"#db2777", shadow:"#9d174d", level:"4", speakerLabels: FRIENDS_LABELS },
+  { id:"g4_out_about", title:"OUT & ABOUT", emoji:"🚉", color:"#0d9488", shadow:"#115e59", level:"4", speakerLabels: FRIENDS_LABELS },
   { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3", speakerLabels: FRIENDS_LABELS },
   { id:"g3_directions", title:"GETTING AROUND", emoji:"🧭", color:"#65a30d", shadow:"#3f6212", level:"3", speakerLabels: FRIENDS_LABELS },
   { id:"g3_family", title:"FAMILY LIFE", emoji:"🏡", color:"#e11d48", shadow:"#881337", level:"3", speakerLabels: AT_HOME_LABELS },
@@ -1454,6 +1455,127 @@ const DIALOGUE_TESTS = {
         2,
         "「Is it yours?」→「うん、ぼくのだよ！」と答えよう！\n「Yes, he's mine!」が正解！\n「mine（わたしのもの）」はWhose~への答えにも使えるよ。\n「It's very cute.」は「cute」をくり返しているだけだよ。だまされないで！",
         "かわいい犬だね！あなたの犬？","うん、ぼくのだよ！"),
+    ],
+  },
+  g4_out_about: {
+    practice1: [
+      mkQ("Excuse me, where is the library?","🧒","( )","👨",
+        ["Yes, it is.","It's next to the park.","I like books.","At three o'clock."],
+        1,
+        "「どこ？」には場所を。",
+        "すみません、図書館はどこですか。","公園のとなりです。"),
+      mkQ("Let's go to the museum by bus.","👧","( )","🧒",
+        ["You're welcome.","It was fun.","No, thank you very much.","OK, good idea."],
+        3,
+        "「バスで行こう」にさんせいは？",
+        "バスで美術館に行こう。","うん、いいね。"),
+      mkQ("Hello. Can I speak to Ken?","🧒","( )","👦",
+        ["Speaking.","You're welcome.","It's over there.","I'm going home."],
+        0,
+        "電話で「ケンいますか？」本人が出たら？",
+        "もしもし。ケンくんはいますか。","ぼくです。"),
+      mkQ("How much is a ticket to the zoo?","🧒","( )","👩",
+        ["At the station.","Yes, it is.","It's five dollars.","I like the zoo."],
+        2,
+        "「いくら？」には値段を。",
+        "動物園のチケットはいくらですか。","5ドルです。"),
+      mkQ("What time does the next train come?","🧒","( )","👨",
+        ["It's a train.","At ten o'clock.","Yes, it does.","To Tokyo."],
+        1,
+        "「何時？」には時こくを。",
+        "次の電車は何時に来ますか。","10時です。"),
+    ],
+    practice2: [
+      mkQ("How long does it take to the airport?","🧒","( )","👨",
+        ["It's far.","By taxi.","Yes, it is.","About thirty minutes."],
+        3,
+        "「どれくらいかかる？」には時間を。",
+        "空港までどのくらいかかりますか。","約30分です。"),
+      mkQ("Hello. Can I speak to Mrs. Green?","🧒","( )","👧",
+        ["Just a moment, please.","Speaking.","You're welcome.","It's over there."],
+        0,
+        "本人じゃない人が「少々お待ちを」は？",
+        "もしもし。グリーン先生はいらっしゃいますか。","少々お待ちください。"),
+      mkQ("It's a nice day. Why don't we walk to school?","👦","( )","🧒",
+        ["At school.","Yes, I walked.","Sounds good!","It was fun."],
+        2,
+        "「歩いて行こうよ」にさんせいは？",
+        "いい天気だね。学校まで歩かない？","いいね！"),
+      mkQ("I went to the summer festival last night.","👧","( )","🧒",
+        ["Good luck.","How was it?","I'm going to go.","Yes, you did."],
+        1,
+        "「行った」に「どうだった？」は？",
+        "昨夜、夏祭りに行ったよ。","どうだった？"),
+      mkQ("Where are you going to go this Sunday?","👨","( )","🧒",
+        ["I went to the beach.","Yes, I am.","It was fun.","I'm going to go to the aquarium."],
+        3,
+        "「日曜どこ行く？」未来 → going to。",
+        "今度の日曜日はどこに行くの？","水族館に行くつもりだよ。"),
+    ],
+    practice3: [
+      mkQ("Excuse me. ( )","🧒","Take the number 5 bus.","👩",
+        ["What time is it?","Is it far?","How can I get to the station?","Do you like buses?"],
+        2,
+        "答え「5番のバスに乗って」が手がかり。",
+        "すみません。駅へはどう行けばいいですか。","5番のバスに乗ってください。"),
+      mkQ("Hello. Is Emma there?","🧒","( ) She's at the library.","👩",
+        ["Speaking.","Yes, please.","You're welcome.","Sorry, she's not home now."],
+        3,
+        "「図書館にいる」が手がかり。エマは家にいる？",
+        "もしもし。エマさんはいますか。","ごめんなさい、今家にいないの。"),
+      mkQ("Let's meet at the station.","👦","( )","🧒",
+        ["What time?","Where is it?","How much?","Who is coming?"],
+        0,
+        "答え「4時に」が手がかり。",
+        "駅で会おう。","何時に？",
+        { text:"At four o'clock.", trans:"4時に。" }),
+      mkQ("Why don't we go by bike?","👧","( ) Let's take the train.","🧒",
+        ["Bikes are fun.","It's going to rain.","Yes, let's.","The park is nice."],
+        1,
+        "「電車にしよう」の前だから、自転車をやめる理由は？",
+        "自転車で行かない？","雨が降りそうだよ。"),
+      mkQ("The zoo is far. Let's go by car.","👨","( )","🧒",
+        ["No, I'm sorry.","It was fun.","OK, that's a good idea.","How much is it?"],
+        2,
+        "「車で行こう」にさんせいは？",
+        "動物園は遠いね。車で行こう。","うん、いいね。"),
+    ],
+    quiz: [
+      mkQ("Excuse me, where is the post office?","🧒","( )","👨",
+        ["Yes, it is.","It's near the bank.","I like it.","At noon."],
+        1,
+        "「どこ？」には場所を。\n「It's near the bank.」が正解！",
+        "すみません、郵便局はどこですか。","銀行の近くです。"),
+      mkQ("Hello. Can I speak to Lucy?","🧒","( )","👧",
+        ["You're welcome.","It's over there.","I'm going out.","Speaking."],
+        3,
+        "電話で本人が出たときの答えは？\n「Speaking.」が正解！",
+        "もしもし。ルーシーさんはいますか。","わたしです。"),
+      mkQ("How much is a bus ticket?","🧒","( )","👩",
+        ["It's two dollars.","At the station.","Yes, it is.","I like buses."],
+        0,
+        "「いくら？」には値段を。\n「It's two dollars.」が正解！",
+        "バスのチケットはいくらですか。","2ドルです。"),
+      mkQ("Excuse me. ( )","🧒","Go straight and turn left.","👨",
+        ["What time is it?","Is it open?","How do I get to the park?","Do you like parks?"],
+        2,
+        "答えのあとにヒントがあるよ！「Go straight and turn left.」に合う質問は？\n「How do I get to the park?」が正解！",
+        "すみません。公園へはどう行けばいいですか。","まっすぐ行って、左に曲がってください。"),
+      mkQ("Let's go to the beach by train.","👦","( )","🧒",
+        ["No, thank you very much.","Sounds great!","It was fun.","Yes, I went."],
+        1,
+        "「電車で行こう」にさんせいの返事は？\n「Sounds great!」が正解！",
+        "電車でビーチに行こう。","いいね！"),
+      mkQ("How long does it take to the station?","🧒","( )","👨",
+        ["By bus.","It's far.","Yes, it does.","About ten minutes."],
+        3,
+        "「どれくらいかかる？」には時間を。\n「About ten minutes.」が正解！",
+        "駅までどのくらいかかりますか。","約10分です。"),
+      mkQ("Where are you going to go this weekend?","👩","( )","🧒",
+        ["I'm going to go to the mountains.","I went to the mountains.","It was great.","Because I like hiking."],
+        0,
+        "みらいのことをきかれているよ。「I'm going to go to the mountains.」が正解！\n「I went to the mountains.」は過去形だから注意！",
+        "今週末どこに行く予定？","山に行くつもりだよ。"),
     ],
   },
 };
@@ -5087,7 +5209,7 @@ function Hi({ color, children }) {
   return <span style={{ color, fontWeight: 900 }}>{children}</span>;
 }
 
-const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed", request:"#2563eb" };
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed", request:"#2563eb", phone:"#0d9488" };
 
 function NoteSection({ label, isNew, children }) {
   return (
@@ -5312,6 +5434,32 @@ function NotesG3Directions() {
   );
 }
 
+function NotesG4OutAbout() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="おさらい">
+        <div>過去／未来 <Hi color={c.future}>going to</Hi>／さそう <Hi color={c.invite}>Let's…</Hi>・<Hi color={c.invite}>Why don't we…?</Hi>／<Hi color={c.reason}>Why → Because</Hi>／<Hi color={c.past}>How was it?</Hi></div>
+      </NoteSection>
+      <NoteSection label="🆕 電話 (Phone)" isNew>
+        <div><Hi color={c.phone}>Can I speak to Ken?</Hi> → <Hi color={c.phone}>Speaking.</Hi>（本人だよ）</div>
+        <div><Hi color={c.phone}>Just a moment, please.</Hi>（少々お待ちを＝本人じゃない人のとき）</div>
+      </NoteSection>
+      <NoteSection label="🆕 道をきく (Directions)" isNew>
+        <div><Hi color={c.direction}>Excuse me, where is the station?</Hi> → It's next to the park. / Go straight.</div>
+        <div><Hi color={c.direction}>How do I get to…?</Hi> → Take the bus. / Turn left.</div>
+      </NoteSection>
+      <NoteSection label="とくべつ">
+        <div>乗り物は <Hi color={c.direction}>by</Hi> ~ → Let's go <Hi color={c.direction}>by bus</Hi> / <Hi color={c.direction}>by train</Hi>。</div>
+      </NoteSection>
+      <NoteSection>
+        <div>💡 <Hi color={c.reason}>How long does it take?</Hi> → 時間で答える（About ten minutes.）</div>
+        <div style={{marginTop:4}}>💡 <Hi color={c.reason}>How much…?</Hi> → 値段で答える。</div>
+      </NoteSection>
+    </>
+  );
+}
+
 function NotesG3Family() {
   const c = NOTE_COLORS;
   return (
@@ -5340,7 +5488,7 @@ function NotesG3Family() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5Pages, at_school: NotesGrade5Pages, with_friends: NotesGrade5Pages, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
+const DIALOGUE_NOTES = { at_home: NotesGrade5Pages, at_school: NotesGrade5Pages, with_friends: NotesGrade5Pages, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g4_out_about: NotesG4OutAbout, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const notesEntry = DIALOGUE_NOTES[topic.id];
