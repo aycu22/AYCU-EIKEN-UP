@@ -2743,18 +2743,38 @@ const VOCAB_CATEGORIES_PRE2 = [
 ];
 
 // Pre-2 categories are grouped by part of speech (Nouns, Verbs, Adjectives, Adverbs,
-// Phrasal Verbs, Prepositional/Set Phrases, Synonyms, Antonyms), each in numeric order.
+// Phrasal Verbs, Prepositional/Set Phrases, Synonyms, Antonyms), each in numeric order,
+// and every category in a group shares that group's color.
 const PRE2_POS_ORDER = ["n", "v", "a", "ad", "pv", "prep", "syn", "ant"];
-const pre2SortKey = id => {
-  const m = id.match(/^p2_([a-z]+)(\d+)$/);
-  if (!m) return [PRE2_POS_ORDER.length, 0];
-  const posIdx = PRE2_POS_ORDER.indexOf(m[1]);
-  return [posIdx === -1 ? PRE2_POS_ORDER.length : posIdx, Number(m[2])];
+const PRE2_POS_COLORS = {
+  n:    { color:"#2563eb", shadow:"#1e40af" }, // Nouns — blue
+  v:    { color:"#dc2626", shadow:"#991b1b" }, // Verbs — red
+  a:    { color:"#0891b2", shadow:"#155e75" }, // Adjectives — cyan
+  ad:   { color:"#ea580c", shadow:"#9a3412" }, // Adverbs — orange
+  pv:   { color:"#7c3aed", shadow:"#5b21b6" }, // Phrasal Verbs — purple
+  prep: { color:"#ca8a04", shadow:"#854d0e" }, // Prepositional/Set Phrases — amber
+  syn:  { color:"#059669", shadow:"#065f46" }, // Synonyms — emerald
+  ant:  { color:"#e11d48", shadow:"#9f1239" }, // Antonyms — rose
 };
-const VOCAB_CATEGORIES_PRE2_SORTED = [...VOCAB_CATEGORIES_PRE2].sort((a, b) => {
-  const [ap, an] = pre2SortKey(a.id), [bp, bn] = pre2SortKey(b.id);
-  return ap - bp || an - bn;
-});
+const pre2Pos = id => {
+  const m = id.match(/^p2_([a-z]+)(\d+)$/);
+  return m ? m[1] : null;
+};
+const pre2SortKey = id => {
+  const pos = pre2Pos(id);
+  const posIdx = pos ? PRE2_POS_ORDER.indexOf(pos) : -1;
+  const m = id.match(/(\d+)$/);
+  return [posIdx === -1 ? PRE2_POS_ORDER.length : posIdx, m ? Number(m[1]) : 0];
+};
+const VOCAB_CATEGORIES_PRE2_SORTED = [...VOCAB_CATEGORIES_PRE2]
+  .sort((a, b) => {
+    const [ap, an] = pre2SortKey(a.id), [bp, bn] = pre2SortKey(b.id);
+    return ap - bp || an - bn;
+  })
+  .map(cat => {
+    const posColors = PRE2_POS_COLORS[pre2Pos(cat.id)];
+    return posColors ? { ...cat, ...posColors } : cat;
+  });
 
 /* ── Helper: get categories by Eiken level ── */
 const getCategoriesByLevel = (level) =>
