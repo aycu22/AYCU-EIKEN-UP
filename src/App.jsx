@@ -83,6 +83,46 @@ const GRAMMAR_PART_PROGRESS_KEY = "eiken_grammar_part_progress_v1";
 const GRAMMAR_FINAL_PROGRESS_KEY = "eiken_grammar_final_progress_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 
+// All student data lives in localStorage, which is tied to this browser/computer.
+// These helpers let a teacher move everything (profiles, scores, missed words,
+// grammar progress) to a new computer as a single downloadable file.
+const BACKUP_PREFIX = "eiken_";
+function exportBackup() {
+  const data = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    if (key && key.startsWith(BACKUP_PREFIX)) data[key] = localStorage.getItem(key);
+  }
+  const payload = { savedAt: new Date().toISOString(), data };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const stamp = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `eiken-backup-${stamp}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function importBackupFile(file, onDone) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const payload = JSON.parse(reader.result);
+      const data = payload.data || payload; // tolerate a raw {key: value} file too
+      Object.entries(data).forEach(([key, value]) => {
+        if (key.startsWith(BACKUP_PREFIX) && typeof value === "string") localStorage.setItem(key, value);
+      });
+      onDone(true);
+    } catch {
+      onDone(false);
+    }
+  };
+  reader.onerror = () => onDone(false);
+  reader.readAsText(file);
+}
+
 /* ── Dialogue Test Data ── */
 // Per-topic relationship labels shown above each chat bubble (fallback to DEFAULT_SPEAKER_LABEL by emoji)
 const AT_HOME_LABELS   = { "👩":"Mom", "👨":"Dad", "👧":"Girl", "👦":"Boy", "🧒":"You" };
@@ -3655,10 +3695,27 @@ function LoginScreen({ profiles, onLogin, onNewProfile }) {
   const [name,            setName]            = useState("");
   const [selectedLevel,   setSelectedLevel]   = useState("5");
   const [selectedProfile, setSelectedProfile] = useState(profiles[0]?.id || "");
+  const [showBackup,      setShowBackup]      = useState(false);
+  const [importMsg,       setImportMsg]       = useState(null); // { ok:bool, text:string }
+  const fileInputRef = useRef(null);
 
   const handleNew = () => {
     if (!name.trim()) return;
     onNewProfile({ id: Date.now().toString(), name: name.trim(), level: selectedLevel, createdAt: Date.now() });
+  };
+
+  const handleImportPick = e => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    importBackupFile(file, ok => {
+      if (ok) {
+        setImportMsg({ ok:true, text:"Restored! Reloading…" });
+        setTimeout(() => window.location.reload(), 900);
+      } else {
+        setImportMsg({ ok:false, text:"That file couldn't be read. Make sure it's a backup exported from this app." });
+      }
+    });
+    e.target.value = "";
   };
 
   return (
@@ -3717,6 +3774,39 @@ function LoginScreen({ profiles, onLogin, onNewProfile }) {
           <button type="button" className="btn btn-pink" onClick={handleNew} disabled={!name.trim()}>
             Start learning! 🌟
           </button>
+        </div>
+      )}
+
+      {/* Backup & Restore — moves all profiles/scores/progress to a new computer */}
+      <div style={{textAlign:"center",marginTop:22}}>
+        <button type="button" onClick={() => { setShowBackup(v => !v); setImportMsg(null); }}
+          style={{background:"none",border:"none",color:"#a0aec0",fontSize:12,fontWeight:700,cursor:"pointer",textDecoration:"underline"}}>
+          💾 Backup & Restore data
+        </button>
+      </div>
+      {showBackup && (
+        <div className="fade" style={{marginTop:12,background:"#fff",border:"1.5px solid #e8edf3",borderRadius:14,padding:"16px 18px"}}>
+          <div style={{fontSize:13,color:"#4a5568",lineHeight:1.6,marginBottom:12}}>
+            Moving to a new computer? <strong>Export</strong> here first, save the file somewhere safe
+            (USB drive, email, Google Drive), then <strong>Import</strong> it on the new computer to bring
+            back every student's profiles, scores, and missed words.
+          </div>
+          <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+            <button type="button" onClick={exportBackup}
+              style={{flex:1,minWidth:140,padding:"10px 14px",borderRadius:11,border:"2px solid #34d399",background:"#ecfdf5",color:"#065f46",fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:13,cursor:"pointer"}}>
+              ⬇️ Export backup
+            </button>
+            <button type="button" onClick={() => fileInputRef.current?.click()}
+              style={{flex:1,minWidth:140,padding:"10px 14px",borderRadius:11,border:"2px solid #93c5fd",background:"#eff6ff",color:"#1e40af",fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:13,cursor:"pointer"}}>
+              ⬆️ Import backup
+            </button>
+            <input ref={fileInputRef} type="file" accept="application/json" onChange={handleImportPick} style={{display:"none"}} />
+          </div>
+          {importMsg && (
+            <div style={{marginTop:10,fontSize:12,fontWeight:700,color:importMsg.ok?"#065f46":"#991b1b"}}>
+              {importMsg.text}
+            </div>
+          )}
         </div>
       )}
     </div>
