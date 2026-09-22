@@ -1736,13 +1736,13 @@ const PRONOUN_PARTS = [
       { en:"We",   jp:"わたしたち" },
     ],
     lessonRows: [
-      { jp:[{t:"わたしは",c:"blue"},{t:"サッカーが"},{t:"好きです。"}], en:[{t:"I",c:"blue"},{t:"like soccer."}] },
-      { jp:[{t:"あなたは",c:"blue"},{t:"えいごが"},{t:"じょうずです。"}], en:[{t:"You",c:"blue"},{t:"are good at English."}] },
-      { jp:[{t:"かれは",c:"blue"},{t:"わたしの"},{t:"先生です。"}], en:[{t:"He",c:"blue"},{t:"is my teacher."}] },
-      { jp:[{t:"かのじょは",c:"blue"},{t:"毎日"},{t:"走ります。"}], en:[{t:"She",c:"blue"},{t:"runs every day."}] },
-      { jp:[{t:"それは",c:"blue"},{t:"わたしの"},{t:"ねこです。"}], en:[{t:"It",c:"blue"},{t:"is my cat."}] },
-      { jp:[{t:"わたしたちは",c:"blue"},{t:"ともだちです。"}], en:[{t:"We",c:"blue"},{t:"are friends."}] },
-      { jp:[{t:"かれらは",c:"blue"},{t:"がっこうに"},{t:"います。"}], en:[{t:"They",c:"blue"},{t:"are at school."}] },
+      { jp:[{t:"わたしは",c:"blue"},{t:"サッカーが",c:"orange"},{t:"好きです。",c:"pink"}], en:[{t:"I",c:"blue"},{t:"like",c:"pink"},{t:"soccer.",c:"orange"}] },
+      { jp:[{t:"あなたは",c:"blue"},{t:"えいごが",c:"orange"},{t:"じょうずです。",c:"pink"}], en:[{t:"You",c:"blue"},{t:"are good at",c:"pink"},{t:"English.",c:"orange"}] },
+      { jp:[{t:"かれは",c:"blue"},{t:"わたしの",c:"orange"},{t:"先生です。",c:"pink"}], en:[{t:"He",c:"blue"},{t:"is",c:"pink"},{t:"my",c:"orange"},{t:"teacher.",c:"pink"}] },
+      { jp:[{t:"かのじょは",c:"blue"},{t:"毎日",c:"orange"},{t:"走ります。",c:"pink"}], en:[{t:"She",c:"blue"},{t:"runs",c:"pink"},{t:"every day.",c:"orange"}] },
+      { jp:[{t:"それは",c:"blue"},{t:"わたしの",c:"orange"},{t:"ねこです。",c:"pink"}], en:[{t:"It",c:"blue"},{t:"is",c:"pink"},{t:"my",c:"orange"},{t:"cat.",c:"pink"}] },
+      { jp:[{t:"わたしたちは",c:"blue"},{t:"ともだちです。",c:"pink"}], en:[{t:"We",c:"blue"},{t:"are friends.",c:"pink"}] },
+      { jp:[{t:"かれらは",c:"blue"},{t:"がっこうに",c:"orange"},{t:"います。",c:"pink"}], en:[{t:"They",c:"blue"},{t:"are",c:"pink"},{t:"at school.",c:"orange"}] },
     ],
     lessonNote: "英語では「だれが」がいちばん最初にくるよ！",
     questions: [
@@ -6109,7 +6109,7 @@ function DialogueQuizResults({ score, total, answers, onBack, onRetry, topicTitl
    GRAMMAR SCREENS
 ══════════════════════════════════════════════ */
 
-const GRAMMAR_CHIP_COLORS = { blue:{bg:"#dbeafe",text:"#1e40af"}, yellow:{bg:"#fef9c3",text:"#854d0e"}, green:{bg:"#dcfce7",text:"#15803d"}, orange:{bg:"#ffedd5",text:"#c2410c"} };
+const GRAMMAR_CHIP_COLORS = { blue:{bg:"#dbeafe",text:"#1e40af"}, yellow:{bg:"#fef9c3",text:"#854d0e"}, green:{bg:"#dcfce7",text:"#15803d"}, orange:{bg:"#ffedd5",text:"#c2410c"}, pink:{bg:"#fce7f3",text:"#9d174d"} };
 function GrammarChip({ color, children }) {
   const c = GRAMMAR_CHIP_COLORS[color] || { bg:"#f1f5f9", text:"#334155" };
   return <span style={{background:c.bg,color:c.text,fontWeight:800,fontSize:12,padding:"4px 9px",borderRadius:8,display:"inline-block"}}>{children}</span>;
