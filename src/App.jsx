@@ -141,6 +141,7 @@ const DIALOGUE_TOPICS = [
   { id:"g3_travel", title:"TRAVEL & VACATION", emoji:"✈️", color:"#0891b2", shadow:"#155e75", level:"3", speakerLabels: FRIENDS_LABELS },
   { id:"g3_directions", title:"GETTING AROUND", emoji:"🧭", color:"#65a30d", shadow:"#3f6212", level:"3", speakerLabels: FRIENDS_LABELS },
   { id:"g3_family", title:"FAMILY LIFE", emoji:"🏡", color:"#e11d48", shadow:"#881337", level:"3", speakerLabels: AT_HOME_LABELS },
+  { id:"g3_plans", title:"MAKING PLANS", emoji:"📅", color:"#7c3aed", shadow:"#4c1d95", level:"3", speakerLabels: FRIENDS_LABELS },
 ];
 
 // Fallback label when a topic has no speakerLabels entry for that emoji
@@ -1576,6 +1577,132 @@ const DIALOGUE_TESTS = {
         0,
         "みらいのことをきかれているよ。「I'm going to go to the mountains.」が正解！\n「I went to the mountains.」は過去形だから注意！",
         "今週末どこに行く予定？","山に行くつもりだよ。"),
+    ],
+  },
+  g3_plans: {
+    practice1: [
+      mkQ("( ) to the movies tonight?","👦","Sure! What do you want to see?","👧",
+        ["Why don't we go","Why we go","Why don't we going","Why we don't go"],
+        0,
+        "Why don't we + 原形。「Why we go」「Why don't we going」「Why we don't go」は形がちがうよ。",
+        "今夜映画に行かない？","いいね！何見たい？"),
+      mkQ("You play soccer, ( )","👦","Yes, every weekend.","👧",
+        ["do you?","don't you?","are you?","aren't you?"],
+        1,
+        "肯定文 play → 後ろは don't you?。are you? / aren't you? はbe動詞用だよ。",
+        "サッカーするよね？","うん、毎週末。"),
+      mkQ("Let's meet at 3, ( ) the movie starts at 3:30.","👦","OK, see you then.","👧",
+        ["but","or","because","and then"],
+        2,
+        "「3時半に始まるから3時集合」＝理由。but / or / and thenは合わないよ。",
+        "3時に集合しよう、映画は3時半に始まるから。","うん、また後で。"),
+      mkQ("How about playing tennis on Sunday?","👦","( ) I love tennis.","👧",
+        ["No, thanks.","You're welcome.","It's mine.","That sounds great!"],
+        3,
+        "ことわりの「No, thanks.」や無関係な「You're welcome.」「It's mine.」は合わないよ。",
+        "日曜にテニスするのはどう？","いいね！テニス大好き。"),
+      mkQ("Can we meet at 5 instead of 4?","👦","( ) 5 is fine for me.","👧",
+        ["Sure, no problem.","No, you can't come.","I don't know you.","It's raining."],
+        0,
+        "「5時でいいよ」の返事に合うのは？他は流れに合わないよ。",
+        "4時じゃなくて5時に会える？","うん、大丈夫。5時でいいよ。"),
+    ],
+    practice2: [
+      mkQ("Do you want to study together?","👦","Yes! ( )","👧",
+        ["Let's meet at the noisy café.","Let's go to the library.","I don't like studying.","Where's my bag?"],
+        1,
+        "Aが「図書館は静か」と言っているから2が正解。うるさいカフェは逆、3・4は無関係。",
+        "一緒に勉強する？","うん！図書館に行こう。",
+        { text:"Great, the library is quiet.", trans:"いいね、静かだよ。" }),
+      mkQ("We had a math test yesterday, ( )","👦","Yes, it was really hard!","👧",
+        ["didn't we?","did we?","weren't we?","haven't we?"],
+        0,
+        "肯定の過去 had → 後ろは didn't we?。他は形がちがうよ。",
+        "昨日数学のテストあったよね？","うん、本当に難しかった！"),
+      mkQ("I can't come to the party on Friday.","👦","I have to visit my grandmother, ( )","👦",
+        ["but I'll be there.","or I'll stay home.","so I love parties.","so I can't make it."],
+        3,
+        "1「行く」は矛盾／2・3 は流れに合わないよ。",
+        "金曜日のパーティーに行けないんだ。","おばあちゃんを訪ねなきゃいけなくて、だから行けないんだ。",
+        null, "Oh no, why not?", "👧", "えー、なんで？"),
+      mkQ("It's raining hard. Let's change our plan.","👦","OK. ( )","👧",
+        ["Let's play at the park.","Let's go swimming outside.","Let's watch a movie at my house instead.","I want to walk in the rain."],
+        2,
+        "雨の中で外遊びの1・2・4は「計画変更」と逆だよ。",
+        "雨がひどいね。計画を変えよう。","うん。かわりにうちで映画を見よう。",
+        { text:"Perfect, I'll bring snacks.", trans:"いいね、おかし持っていくね。" }),
+      mkQ("Why don't we surprise Mom with a cake?","👦","( ) I was just thinking that!","👧",
+        ["No, let's not.","That's a great idea!","I don't like Mom.","Cakes are expensive."],
+        1,
+        "1はことわり／3・4は「今それ考えてた」と合わないよ。",
+        "ケーキでママをおどろかせない？","いいね！ちょうどそれ考えてた！"),
+    ],
+    practice3: [
+      mkQ("You went to Mika's party last night, ( )","👦","Yes, it was a lot of fun.","👧",
+        ["did you?","went you?","didn't you?","weren't you?"],
+        2,
+        "肯定の過去 went → 後ろは didn't you?。他は形がちがうよ。",
+        "昨夜ミカのパーティーに行ったよね？","うん、すごく楽しかった。"),
+      mkQ("Let's take the early train to the concert.","👦","( )","👧",
+        ["The later train is better.","Let's leave early so we don't miss it.","I don't want to go.","Concerts are boring."],
+        1,
+        "Aが「早く着く方が安心」に賛成する流れ→2。1は逆／3・4は無関係。",
+        "コンサートに早い電車で行こう。","うん、逃さないように早く出よう。",
+        { text:"You're right, it's safer to arrive early.", trans:"だね、早い方が安心だね。" }),
+      mkQ("Can we change our meeting to Sunday? ( )","👦","No problem. Sunday works for me too.","👧",
+        ["Saturday is great.","I don't want to meet.","I have no plans at all.","Something came up on Saturday."],
+        3,
+        "1・3 は「変更」と矛盾／2 は失礼で「会いたい」と逆だよ。",
+        "集合を日曜に変えられる？土曜に用事ができちゃって。","大丈夫だよ。日曜も空いてる。"),
+      mkQ("You aren't busy tomorrow, ( )","👦","No, I'm free all day.","👧",
+        ["are you?","aren't you?","do you?","don't you?"],
+        0,
+        "否定文 aren't → 後ろは肯定 are you?。他はちがう形だよ。",
+        "明日忙しくないよね？","うん、一日中ひまだよ。"),
+      mkQ("I'm bored. ( )","👦","Sure! I'll get my bike. Let's ride to the river.","👧",
+        ["Did you ride your bike?","Where is your bike?","How about riding our bikes?","Do you like bikes?"],
+        2,
+        "Bは「自転車取ってくる、走ろう」→さそいの返事。1・2・4は質問形式で合わないよ。",
+        "ひまだな。自転車に乗らない？","いいね！取ってくるよ。川まで走ろう。"),
+    ],
+    quiz: [
+      mkQ("( ) have lunch together tomorrow?","👦","Sure, let's meet at noon.","👧",
+        ["Why don't we","Why we don't","Why don't we to","Why not we"],
+        0,
+        "Why don't we + 原形だよ。他は形がちがうよ。",
+        "明日一緒にお昼を食べない？","いいね、正午に会おう。"),
+      mkQ("You can swim, ( )","👦","Yes, I learned last year.","👧",
+        ["do you?","can you?","can't you?","don't you?"],
+        2,
+        "肯定 can → 後ろは can't you?だよ。",
+        "泳げるよね？","うん、去年習ったよ。"),
+      mkQ("Why do you want to leave now?","👦","The last bus comes at nine, ( )","👧",
+        ["but I'll stay.","or I'll walk home.","so buses are slow.","so we should go."],
+        3,
+        "1・2・3は理由になっていないよ。",
+        "どうして今出たいの？","最終バスが9時に来るから、行こう。"),
+      mkQ("I'm sorry, I can't play tennis today.","👦","That's OK. ( )","👧",
+        ["Tennis is my favorite.","Can we play another day?","You played very well.","I don't have a racket."],
+        1,
+        "1・3・4は流れに合わないよ。",
+        "ごめん、今日テニスできないんだ。","大丈夫。別の日にできる？",
+        { text:"Yes, let's do it tomorrow instead.", trans:"うん、かわりに明日やろう。" }),
+      mkQ("( )","👦","Great minds think alike! I was going to ask you the same thing.","👧",
+        ["Where do you live?","How old are you?","Do you like camping?","Shall we go camping this weekend?"],
+        3,
+        "1・2・3は「同じこと」と言えるさそいじゃないよ。",
+        "今週末キャンプに行かない？","気が合うね！同じこと聞こうと思ってた。"),
+      mkQ("Let's have the picnic on Saturday.","👦","( )","👧",
+        ["Saturday is perfect.","But the weather will be bad on Saturday.","I love picnics.","Let's meet at eight."],
+        1,
+        "1・3・4は「日曜に変えよう」につながらないよ。",
+        "土曜にピクニックしよう。","でも土曜は天気が悪いよ。",
+        { text:"Good point. Let's do Sunday when it's sunny.", trans:"たしかに。晴れる日曜にしよう。" }),
+      mkQ("You didn't forget the tickets, ( )","👦","Don't worry, I have them right here.","👧",
+        ["did you?","didn't you?","do you?","have you?"],
+        0,
+        "否定の過去 didn't → 後ろは肯定 did you?だよ。",
+        "チケット忘れてないよね？","大丈夫、ここにあるよ。"),
     ],
   },
 };
@@ -5209,7 +5336,7 @@ function Hi({ color, children }) {
   return <span style={{ color, fontWeight: 900 }}>{children}</span>;
 }
 
-const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed", request:"#2563eb", phone:"#0d9488" };
+const NOTE_COLORS = { past:"#ef4444", future:"#3b82f6", reason:"#f97316", compare:"#16a34a", advice:"#db2777", invite:"#7c3aed", experience:"#0891b2", challenge:"#db2777", direction:"#65a30d", too:"#ef4444", enough:"#16a34a", purpose:"#7c3aed", request:"#2563eb", phone:"#0d9488", tag:"#9333ea", changePlan:"#ca8a04" };
 
 function NoteSection({ label, isNew, children }) {
   return (
@@ -5488,7 +5615,30 @@ function NotesG3Family() {
   );
 }
 
-const DIALOGUE_NOTES = { at_home: NotesGrade5Pages, at_school: NotesGrade5Pages, with_friends: NotesGrade5Pages, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g4_out_about: NotesG4OutAbout, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family };
+function NotesG3Plans() {
+  const c = NOTE_COLORS;
+  return (
+    <>
+      <NoteSection label="🆕 付加疑問文 (Tag Questions)" isNew>
+        <div><Hi color={c.tag}>～だよね？</Hi> → 前が肯定なら後ろは否定、前が否定なら後ろは肯定。</div>
+        <div style={{marginTop:4}}>You play tennis, <Hi color={c.tag}>don't you?</Hi> / You aren't busy, <Hi color={c.tag}>are you?</Hi></div>
+        <ExampleWarning q="You walked the dog," wrong="did you?" right="didn't you?" />
+      </NoteSection>
+      <NoteSection label="🆕 計画を変える (Changing plans)" isNew>
+        <div><Hi color={c.changePlan}>Can we change it to ～?</Hi> / <Hi color={c.changePlan}>Let's make it ～ instead.</Hi> / <Hi color={c.changePlan}>Something came up.</Hi></div>
+      </NoteSection>
+      <NoteSection label="🔁 リマインド">
+        <div>さそい <Hi color={c.invite}>Why don't we～</Hi>／<Hi color={c.invite}>Shall we～</Hi>／<Hi color={c.invite}>How about～ing?</Hi></div>
+        <div style={{marginTop:4}}>賛成 <Hi color={c.invite}>That sounds great!</Hi>／理由・結果 <Hi color={c.reason}>so</Hi> / <Hi color={c.reason}>because</Hi></div>
+      </NoteSection>
+      <NoteSection>
+        <div>💡 コツ: 付加疑問は「前が肯定→後ろ否定」。動詞の種類（do/be/can/did）もそろえよう。</div>
+      </NoteSection>
+    </>
+  );
+}
+
+const DIALOGUE_NOTES = { at_home: NotesGrade5Pages, at_school: NotesGrade5Pages, with_friends: NotesGrade5Pages, g4_at_home: NotesAtHome, g4_at_school: NotesAtSchool, g4_with_friends: NotesWithFriends, g4_out_about: NotesG4OutAbout, g3_travel: NotesG3Travel, g3_directions: NotesG3Directions, g3_family: NotesG3Family, g3_plans: NotesG3Plans };
 
 function DialogueNotesScreen({ topic, onContinue }) {
   const notesEntry = DIALOGUE_NOTES[topic.id];
