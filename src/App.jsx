@@ -2597,7 +2597,7 @@ const VOCAB_CATEGORIES_PRE2 = [
     ],
   },
   {
-    id: "p2_h1", title: "H1 · Health & Medicine", emoji: "🏥", isPre2: true,
+    id: "p2_n2", title: "N2 · Health & Medicine", emoji: "🏥", isPre2: true,
     color: "#dc2626", shadow: "#991b1b",
     words: [
       { en:"health",     kanji:"健康",   kana:"けんこう",   hint:"Eating vegetables is good for your _____.",
@@ -2646,6 +2646,52 @@ const VOCAB_CATEGORIES_PRE2 = [
         definition:"eager to learn or know about many things" },
       { en:"humble",    kanji:"謙虚な",       kana:"けんきょな",         hint:"Even after winning the prize, he stayed _____.",
         definition:"not proud or boastful about your achievements" },
+    ],
+  },
+  {
+    id: "p2_ad1", title: "AD1 · Frequency & Degree", emoji: "🔁", isPre2: true,
+    color: "#ea580c", shadow: "#9a3412",
+    words: [
+      { en:"rarely",     kanji:"めったに～しない", kana:"めったに～しない",
+        hint:"My grandfather _____ uses a computer, so he always asks me for help.",
+        definition:"almost never; not often (frequency)",
+        sentenceJp:"祖父はめったにコンピューターを使わないので、いつも私に助けを求めます。" },
+      { en:"hardly",     kanji:"ほとんど～ない",   kana:"ほとんど～ない",
+        hint:"The room was so dark that I could _____ see my own hands.",
+        definition:"barely able to; almost not at all (degree)",
+        sentenceJp:"部屋がとても暗くて、自分の手さえほとんど見えませんでした。" },
+      { en:"fairly",     kanji:"まあまあ",         kana:"まあまあ",
+        hint:"The math test was _____ easy, so most of us finished early.",
+        definition:"to a moderate degree; quite (used before an adjective)",
+        sentenceJp:"数学のテストはまあまあ簡単だったので、ほとんどが早く終えました。" },
+      { en:"widely",     kanji:"広く",             kana:"ひろく",
+        hint:"English is _____ spoken in many countries around the world.",
+        definition:"over a large area, or by many people",
+        sentenceJp:"英語は世界中の多くの国で広く話されています。" },
+      { en:"mainly",     kanji:"主に",             kana:"おもに",
+        hint:"This restaurant _____ serves seafood, but it has a few meat dishes too.",
+        definition:"chiefly; mostly",
+        sentenceJp:"このレストランは主に海鮮料理を出しますが、肉料理も少しあります。" },
+      { en:"regularly",  kanji:"定期的に",         kana:"ていきてきに",
+        hint:"She goes to the dentist _____, once every six months.",
+        definition:"at regular, repeated intervals",
+        sentenceJp:"彼女は6か月に一度、定期的に歯医者に通っています。" },
+      { en:"altogether", kanji:"全部で",           kana:"ぜんぶで",
+        hint:"I bought two shirts and a cap, so I spent 5,000 yen _____.",
+        definition:"in total; counting everything",
+        sentenceJp:"シャツ2枚と帽子を買ったので、全部で5,000円使いました。" },
+      { en:"indeed",     kanji:"本当に",           kana:"ほんとうに",
+        hint:"The concert last night was wonderful _____.",
+        definition:"truly; used to emphasize a statement",
+        sentenceJp:"昨夜のコンサートは本当に素晴らしかったです。" },
+      { en:"clearly",    kanji:"はっきりと",       kana:"はっきりと",
+        hint:"Please write your name _____ so the teacher can read it.",
+        definition:"in a clear, easy-to-understand manner",
+        sentenceJp:"先生が読めるように、名前をはっきりと書いてください。" },
+      { en:"directly",   kanji:"直接に",           kana:"ちょくせつに",
+        hint:"If you have a question, you can email the manager _____.",
+        definition:"without anything or anyone in between",
+        sentenceJp:"質問があれば、直接マネージャーにメールできます。" },
     ],
   },
 ];
@@ -3572,6 +3618,11 @@ function StudyScreen({ category, onStart }) {
               {w.hint && (
                 <div style={{fontSize:15,color:"#4a5568",marginTop:6,textAlign:"left",lineHeight:1.5}}>
                   {w.hint.replace("_____", w.en)}
+                </div>
+              )}
+              {w.sentenceJp && (
+                <div style={{fontSize:15,color:"#4a5568",marginTop:4,textAlign:"left",lineHeight:1.5}}>
+                  {w.sentenceJp}
                 </div>
               )}
             </div>
