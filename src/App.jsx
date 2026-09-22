@@ -82,6 +82,7 @@ const MISSED_WORDS_KEY = "eiken_missed_words_v1";
 const GRAMMAR_PART_PROGRESS_KEY = "eiken_grammar_part_progress_v1";
 const GRAMMAR_FINAL_PROGRESS_KEY = "eiken_grammar_final_progress_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
+const QUICK_VOCAB_KEY = "eiken_quick_vocab_v1";
 
 // All student data lives in localStorage, which is tied to this browser/computer.
 // These helpers let a teacher move everything (profiles, scores, missed words,
@@ -3444,6 +3445,7 @@ export default function App() {
   const [dialogueProgress, setDialogueProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_PROGRESS_KEY)) || {}; } catch { return {}; }});
   const [dialogueNotesSeen, setDialogueNotesSeen] = useState(() => { try { return JSON.parse(localStorage.getItem(DIALOGUE_NOTES_SEEN_KEY)) || {}; } catch { return {}; }});
   const [missedWords,    setMissedWords]    = useState(() => { try { return JSON.parse(localStorage.getItem(MISSED_WORDS_KEY)) || {}; } catch { return {}; }});
+  const [quickVocab,     setQuickVocab]     = useState(() => { try { return JSON.parse(localStorage.getItem(QUICK_VOCAB_KEY)) || {}; } catch { return {}; }});
 
   const [screen,         setScreen]         = useState(currentProfile ? "dashboard" : "login");
   const [activeCategory, setActiveCategory] = useState(null);
@@ -3463,6 +3465,13 @@ export default function App() {
   const saveProfiles       = p  => { setProfiles(p);       localStorage.setItem(PROFILES_KEY, JSON.stringify(p)); };
   const saveCurrentProfile = p  => { setCurrentProfile(p); localStorage.setItem(CURRENT_KEY,  JSON.stringify(p)); };
   const saveProgress       = pr => { setProgress(pr);      localStorage.setItem(PROGRESS_KEY, JSON.stringify(pr)); };
+
+  const isQuickVocab = quickVocab[currentProfile?.id] || false;
+  const toggleQuickVocab = () => {
+    const next = { ...quickVocab, [currentProfile.id]: !isQuickVocab };
+    setQuickVocab(next);
+    localStorage.setItem(QUICK_VOCAB_KEY, JSON.stringify(next));
+  };
 
   const login  = p => { saveCurrentProfile(p); setScreen("dashboard"); };
   const logout = () => { saveCurrentProfile(null); setScreen("login"); };
@@ -3897,7 +3906,8 @@ export default function App() {
               )}
               {screen === "vocab_list" && (
                 <VocabListScreen categories={categories} getCatProgress={getCatProgress}
-                  onSelect={cat => { setActiveCategory(cat); setScreen("vocab_study"); }} />
+                  onSelect={cat => { setActiveCategory(cat); setScreen("vocab_study"); }}
+                  quickMode={isQuickVocab} onToggleQuickMode={toggleQuickVocab} />
               )}
               {screen === "vocab_study" && activeCategory && (
                 <StudyScreen category={activeCategory} onStart={() => setScreen("vocab_game")} />
@@ -3912,7 +3922,7 @@ export default function App() {
                   }} />
               )}
               {screen === "vocab_game" && activeCategory && !activeCategory.isPre2 && (
-                <VocabGameScreen key={activeCategory.id} category={activeCategory}
+                <VocabGameScreen key={activeCategory.id} category={activeCategory} quickMode={isQuickVocab}
                   onComplete={results => {
                     markCategoryDone(activeCategory.id, results.pct);
                     updateMissedWords(activeCategory.id, results);
@@ -4172,10 +4182,29 @@ function ScoreCircle({ pct, size = 44 }) {
 }
 
 /* ── Vocab List ── */
-function VocabListScreen({ categories, getCatProgress, onSelect }) {
+function VocabListScreen({ categories, getCatProgress, onSelect, quickMode, onToggleQuickMode }) {
+  const hasSpellingCategories = categories.some(c => !c.isPre2);
   return (
     <div className="fade">
       <div className="slabel">Choose a category</div>
+      {hasSpellingCategories && (
+        <button type="button" onClick={onToggleQuickMode}
+          style={{display:"flex",alignItems:"center",gap:10,width:"100%",textAlign:"left",cursor:"pointer",
+            background:quickMode?"#ecfdf5":"#f8fafc",border:`1.5px solid ${quickMode?"#34d399":"#e2e8f0"}`,
+            borderRadius:13,padding:"11px 14px",marginBottom:14}}>
+          <div style={{width:38,height:22,borderRadius:20,padding:2,flexShrink:0,transition:"background .15s",
+            background:quickMode?"#34d399":"#cbd5e1"}}>
+            <div style={{width:18,height:18,borderRadius:"50%",background:"#fff",transition:"transform .15s",
+              transform:quickMode?"translateX(16px)":"translateX(0)"}} />
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:800,fontSize:13,color:quickMode?"#065f46":"#374151"}}>
+              ⚡ Quick mode {quickMode ? "ON" : "OFF"}
+            </div>
+            <div style={{fontSize:11,color:"#a0aec0",marginTop:1}}>Skip typing & unscramble — just match and choose the answer</div>
+          </div>
+        </button>
+      )}
       <div className="cat-grid">
         {categories.map(cat => {
           const pct = getCatProgress(cat.id);
@@ -4434,7 +4463,7 @@ function IrregularVerbGame({ word, allWords, color, shadow, onScore, onNext }) {
 }
 
 /* ── Vocab Game ── */
-function VocabGameScreen({ category, onComplete }) {
+function VocabGameScreen({ category, onComplete, quickMode }) {
   const BATCH       = Math.min(6, category.words.length);
   const words       = useMemo(() => shuffle(category.words).slice(0, BATCH), [category.id]);
   const scramble    = useMemo(() => shuffle([...words]), [category.id]);
@@ -4442,10 +4471,16 @@ function VocabGameScreen({ category, onComplete }) {
   const isIrregularCat  = !!category.isIrregularVerb;
   // Categories where typing the full phrase is impractical — treat like dialogue
   const isDialogueCat = ["dialogue_expressions","dialogue_expressions_2","g4_dialogue","g4_phrasal_1","g4_phrasal_2","g4_wh_questions","what_questions","how_questions","g3_phrasal_verbs_1","g3_phrasal_verbs_2","g3_prepositions_1","g3_prepositions_2","g3_connectors","g3_collocations","g3_grammar_patterns","g3_conversational_1","g3_conversational_2"].includes(category.id);
+  // Quick mode (student opt-out of spelling): skip the typed-spelling step and the unscramble part.
+  // Irregular verbs combine match+spell+fill in one mini-game, so quick mode doesn't apply to them.
+  const skipSpelling  = quickMode && !isIrregularCat;
   // Ordinals: match + spell only. Dialogue/WH phrases: match + fill only. Irregular verbs: match + spell + fill. Others: all 3.
-  const scoreParts    = isIrregularCat ? ["match","spell","fill"] : isOrdinalCat ? ["match","spell"] : isDialogueCat ? ["match","fill"] : ["match","spell","fill"];
-  // Skip Part C for ordinals (no sentences) and dialogue/WH (tiles = the phrase, covered by fill)
-  const skipPartC     = isOrdinalCat || isDialogueCat || isIrregularCat;
+  const scoreParts    = isIrregularCat ? ["match","spell","fill"]
+    : isOrdinalCat ? (skipSpelling ? ["match"] : ["match","spell"])
+    : isDialogueCat ? ["match","fill"]
+    : (skipSpelling ? ["match","fill"] : ["match","spell","fill"]);
+  // Skip Part C for ordinals (no sentences), dialogue/WH (tiles = the phrase, covered by fill), and quick mode
+  const skipPartC     = isOrdinalCat || isDialogueCat || isIrregularCat || skipSpelling;
 
   const [part,   setPart]   = useState("A");
   const [idx,    setIdx]    = useState(0);
@@ -4497,17 +4532,17 @@ function VocabGameScreen({ category, onComplete }) {
       <div className="phdr">
         <div className="plabel">PART {part} · {idx+1}/{list.length}</div>
         <div className="ptitle" style={{color:c}}>
-          {part==="A" ? (isIrregularCat ? "⏪ Irregular Verb Quiz" : isDialogueCat ? "🔤 Match" : "🔤 Match & Spell") : part==="B"?"🔍 Fill in the Blank":"🧩 Unscramble"}
+          {part==="A" ? (isIrregularCat ? "⏪ Irregular Verb Quiz" : isDialogueCat || skipSpelling ? "🔤 Match" : "🔤 Match & Spell") : part==="B"?"🔍 Fill in the Blank":"🧩 Unscramble"}
         </div>
       </div>
 
       {part==="A" && isIrregularCat && <IrregularVerbGame key={`IRR-${idx}`} word={w} allWords={words} color={c} shadow={sh}
         onScore={(t,ok)=>record(w.en,t,ok)} onNext={goNext} />}
       {part==="A" && !isIrregularCat && <PartA key={`A-${idx}`} word={w} allWords={words} color={c} shadow={sh}
-        isDialogue={isDialogueCat} categoryId={category.id}
+        isDialogue={isDialogueCat} skipSpelling={skipSpelling} categoryId={category.id}
         onScore={(t,ok)=>record(w.en,t,ok)} onNext={goNext} />}
       {part==="B" && <PartB key={`B-${idx}-${w.en}`} word={w} allWords={words} color={c} shadow={sh}
-        isDialogue={isDialogueCat}
+        isDialogue={isDialogueCat} showUnscrambleNote={!skipPartC}
         onScore={ok=>record(w.en,"fill",ok)} onNext={goNext} />}
       {part==="C" && <PartC key={`C-${idx}`} word={w} color={c} shadow={sh} onNext={goNext} />}
     </div>
@@ -4515,7 +4550,7 @@ function VocabGameScreen({ category, onComplete }) {
 }
 
 /* ── Part A ── */
-function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, categoryId }) {
+function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, skipSpelling, categoryId }) {
   const [matchDone,    setMatchDone]    = useState(false);
   const [matchedWord,  setMatchedWord]  = useState(null);
   const [spellVal,     setSpellVal]     = useState("");
@@ -4538,7 +4573,7 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
     setMatchDone(true);
     onScore("match", correct);
     setTimeout(() => speak(word.en, 0.85), 300);
-    if (!isDialogue) setTimeout(() => spellRef.current?.focus(), 350);
+    if (!isDialogue && !skipSpelling) setTimeout(() => spellRef.current?.focus(), 350);
   };
 
   const handleSpell = () => {
@@ -4553,14 +4588,14 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
     if (ok) setTimeout(onNext, 1500);
   };
 
-  // Dialogue mode: auto-advance after match if correct
+  // Dialogue mode (and quick mode, which skips spelling): auto-advance after match if correct
   useEffect(() => {
-    if (isDialogue && matchDone && matchedWord === word.en) {
+    if ((isDialogue || skipSpelling) && matchDone && matchedWord === word.en) {
       setTimeout(onNext, 1500);
     }
   }, [matchDone]);
 
-  const canNext = isDialogue ? (matchDone && matchedWord !== word.en) : (matchDone && spellDone && spellState !== "correct");
+  const canNext = (isDialogue || skipSpelling) ? (matchDone && matchedWord !== word.en) : (matchDone && spellDone && spellState !== "correct");
 
   return (
     <div>
@@ -4603,8 +4638,8 @@ function PartA({ word, allWords, color, shadow, onScore, onNext, isDialogue, cat
         })}
       </div>
 
-      {/* Spelling card — skip for dialogue expressions */}
-      {!isDialogue && (
+      {/* Spelling card — skip for dialogue expressions and quick mode */}
+      {!isDialogue && !skipSpelling && (
         <div className="card">
           <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:7}}>
             <div style={{fontSize:11,fontWeight:700,color:"#a0aec0"}}>
@@ -4668,7 +4703,7 @@ function TransDisp({ trans }) {
 }
 
 /* ── Part B ── */
-function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
+function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue, showUnscrambleNote = true }) {
   const [chosen, setChosen] = useState(null);
   const [done,   setDone]   = useState(false);
 
@@ -4719,7 +4754,7 @@ function PartB({ word, allWords, color, shadow, onScore, onNext, isDialogue }) {
               {parts[0]}<span className="blank">_____</span>{parts[1]||""}
             </div>
             {word.trans && <TransDisp trans={word.trans} />}
-            <div className="pc-note">💡 You'll unscramble this sentence in Part C!</div>
+            {showUnscrambleNote && <div className="pc-note">💡 You'll unscramble this sentence in Part C!</div>}
           </div>
         )}
         <div style={{fontSize:12,fontWeight:700,color:"#a0aec0",marginBottom:9}}>
