@@ -41,66 +41,121 @@ export function SpeakingHomeScreen({ onSelect, isDone }) {
   );
 }
 
-/* ── Vocabulary: tap a word to show its Japanese ── */
-function VocabList({ vocab }) {
-  const [open, setOpen] = useState({});
+/* ── Escape text for use inside a RegExp ── */
+const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/* Build the list of words/phrases to underline in the article for a set.
+   Vocab entries like "cap (v./n.)" or "karoshi / death from overwork" produce several match terms. */
+function buildTerms(vocab) {
+  const terms = [];
+  vocab.forEach(v => {
+    const forms = new Set();
+    v.en.split("/").forEach(part => {
+      const cleaned = part.replace(/\(.*?\)/g, "").trim();
+      if (cleaned) forms.add(cleaned);
+    });
+    (v.match || []).forEach(m => forms.add(m));
+    forms.forEach(f => terms.push({ text: f, entry: v }));
+  });
+  return terms.sort((a, b) => b.text.length - a.text.length); // longest phrase first
+}
+
+/* Split a paragraph into plain text and vocab hits */
+function splitByVocab(text, terms) {
+  if (!terms.length) return [{ text }];
+  const re = new RegExp(`\\b(${terms.map(t => escapeRe(t.text)).join("|")})(?:s|es|ed|d|ing)?\\b`, "gi");
+  const out = [];
+  let last = 0, m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push({ text: text.slice(last, m.index) });
+    const base = m[1].toLowerCase();
+    const term = terms.find(t => t.text.toLowerCase() === base);
+    out.push({ text: m[0], entry: term?.entry });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push({ text: text.slice(last) });
+  return out;
+}
+
+/* One underlined word: hover (mouse) or tap (touch) shows the Japanese */
+function VocabWord({ entry, children }) {
+  const [tip, setTip] = useState(null); // {x, y}
+  const ref = useRef(null);
+  const show = () => {
+    const r = ref.current.getBoundingClientRect();
+    const width = Math.min(240, window.innerWidth - 16);
+    const x = Math.max(8, Math.min(r.left + r.width / 2 - width / 2, window.innerWidth - width - 8));
+    setTip({ x, y: r.top, width });
+  };
   return (
-    <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-      {vocab.map((v, i) => {
-        const shown = !!open[i];
-        return (
-          <button type="button" key={i} onClick={() => setOpen(o => ({ ...o, [i]: !o[i] }))}
-            style={{ display:"flex", alignItems:"center", gap:10, textAlign:"left", cursor:"pointer", width:"100%",
-              background: shown ? "#f5f3ff" : "#fafafa", border:`1.5px solid ${shown ? "#c4b5fd" : "#e2e8f0"}`,
-              borderRadius:10, padding:"8px 12px" }}>
-            <div style={{ flex:1 }}>
-              <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:800, fontSize:14, color:"#1f2937" }}>{v.en}</div>
-              <div style={{ fontSize:12, color:"#718096", marginTop:1 }}>{v.meaning}</div>
-            </div>
-            <div style={{ fontWeight:800, fontSize:15, color: shown ? PURPLE : "#a0aec0", minWidth:70, textAlign:"right" }}>
-              {shown ? v.jp : "日本語 👁"}
-            </div>
-          </button>
-        );
-      })}
-    </div>
+    <span ref={ref} onMouseEnter={show} onMouseLeave={() => setTip(null)}
+      onClick={() => (tip ? setTip(null) : show())}
+      style={{ textDecoration:"underline", textDecorationStyle:"dotted", textDecorationColor:PURPLE,
+        textUnderlineOffset:3, cursor:"help", color:"#1f2937" }}>
+      {children}
+      {tip && (
+        <span style={{ position:"fixed", left:tip.x, top:tip.y - 8, transform:"translateY(-100%)", width:tip.width,
+          background:"#1e1b4b", color:"#fff", borderRadius:10, padding:"7px 11px", fontSize:13, lineHeight:1.4,
+          textAlign:"left", textIndent:0, textDecoration:"none", fontWeight:400, zIndex:50,
+          boxShadow:"0 4px 14px rgba(0,0,0,.25)", pointerEvents:"none" }}>
+          <span style={{ display:"block", fontWeight:800, fontSize:15 }}>{entry.jp}</span>
+          <span style={{ display:"block", fontSize:11, color:"#c4b5fd", marginTop:1 }}>{entry.meaning}</span>
+        </span>
+      )}
+    </span>
+  );
+}
+
+/* A justified, indented paragraph with vocab underlined */
+function Paragraph({ text, terms, plain }) {
+  return (
+    <p lang="en" style={{ fontSize:14, lineHeight:1.85, color:"#374151", margin:"0 0 10px",
+      textAlign: plain ? "left" : "justify", textIndent: plain ? 0 : "2em", hyphens:"auto" }}>
+      {splitByVocab(text, terms).map((seg, i) =>
+        seg.entry ? <VocabWord key={i} entry={seg.entry}>{seg.text}</VocabWord> : <span key={i}>{seg.text}</span>)}
+    </p>
   );
 }
 
 /* ── Step 1: reading page ── */
 function ReadingPage({ set, onNext }) {
-  const para = { fontSize:14, lineHeight:1.75, color:"#374151", margin:"0 0 10px" };
+  const terms = buildTerms(set.vocab);
   return (
     <div>
       <div style={cardStyle}>
         <div style={{ fontSize:11, fontWeight:800, color:PURPLE }}>📰 READING · No. {set.qNo}</div>
-        <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:900, fontSize:18, color:"#02020b", margin:"4px 0 10px" }}>{set.headline}</div>
-        {set.intro.map((p, i) => <p key={i} style={para}>{p}</p>)}
+        <div style={{ fontFamily:"'Nunito',sans-serif", fontWeight:900, fontSize:18, color:"#02020b", margin:"4px 0 6px", textAlign:"left" }}>{set.headline}</div>
+        <div style={{ fontSize:11, color:"#a0aec0", marginBottom:10, textAlign:"left" }}>Hover over (or tap) an underlined word to see the Japanese.</div>
+        {set.intro.map((p, i) => <Paragraph key={i} text={p} terms={terms} />)}
       </div>
 
       <div style={{ ...cardStyle, background:"#f0fdf4", borderColor:"#86efac" }}>
-        <div style={{ ...h2Style, color:"#15803d" }}>✅ Positive view</div>
-        {set.positive.map((p, i) => <p key={i} style={para}>{p}</p>)}
+        <div style={{ ...h2Style, color:"#15803d", textAlign:"left" }}>✅ Positive view</div>
+        {set.positive.map((p, i) => <Paragraph key={i} text={p} terms={terms} />)}
       </div>
 
       <div style={{ ...cardStyle, background:"#fef2f2", borderColor:"#fca5a5" }}>
-        <div style={{ ...h2Style, color:"#b91c1c" }}>❌ Negative view</div>
-        {set.negative.map((p, i) => <p key={i} style={para}>{p}</p>)}
+        <div style={{ ...h2Style, color:"#b91c1c", textAlign:"left" }}>❌ Negative view</div>
+        {set.negative.map((p, i) => <Paragraph key={i} text={p} terms={terms} />)}
       </div>
 
-      <div style={cardStyle}>
-        <div style={h2Style}>📚 Vocabulary <span style={{ fontSize:11, fontWeight:600, color:"#a0aec0" }}>— tap a word to see the Japanese</span></div>
-        <VocabList vocab={set.vocab} />
-      </div>
-
-      <div style={{ ...cardStyle, background:"#fffbeb", borderColor:"#fde68a" }}>
+      <div style={{ ...cardStyle, background:"#fffbeb", borderColor:"#fde68a", textAlign:"left" }}>
         <div style={{ ...h2Style, color:"#b45309" }}>💡 Key Takeaways</div>
-        <ul style={{ margin:0, paddingLeft:20, fontSize:14, lineHeight:1.8, color:"#4b5563" }}>
-          {set.keyTakeaways.map((k, i) => <li key={i}>{k}</li>)}
+        <ul style={{ margin:0, paddingLeft:20, fontSize:14, lineHeight:1.8, color:"#4b5563", textAlign:"left" }}>
+          {set.keyTakeaways.map((k, i) => {
+            const kind = k.startsWith("For:") ? "for" : k.startsWith("Against:") ? "against" : null;
+            const color = kind === "for" ? "#15803d" : kind === "against" ? "#b91c1c" : "#4b5563";
+            const label = kind === "for" ? "For:" : kind === "against" ? "Against:" : "";
+            return (
+              <li key={i} style={{ color }}>
+                {label && <strong>{label}</strong>}{label ? k.slice(label.length) : k}
+              </li>
+            );
+          })}
         </ul>
       </div>
 
-      <div style={{ ...cardStyle, background:"#f8fafc", borderColor:"#e2e8f0" }}>
+      <div style={{ ...cardStyle, background:"#f8fafc", borderColor:"#e2e8f0", textAlign:"left" }}>
         <div style={h2Style}>🔗 Read more</div>
         {set.links.map((l, i) => (
           <div key={i} style={{ fontSize:13, marginBottom:4 }}>
@@ -262,6 +317,7 @@ function QuestionPage({ set, onBackToReading, onDone, done }) {
   const [showModel, setShowModel] = useState(false);
   const [showPhrases, setShowPhrases] = useState(false);
   const data = side ? set[side] : null;
+  const terms = buildTerms(set.vocab);
 
   return (
     <div>
@@ -304,7 +360,7 @@ function QuestionPage({ set, onBackToReading, onDone, done }) {
           </button>
           {showModel && (
             <div style={{ marginTop:6, background:"#faf5ff", border:"1px solid #e9d5ff", borderRadius:10, padding:"10px 12px", fontSize:14, lineHeight:1.7, color:"#374151" }}>
-              {data.model}
+              <Paragraph text={data.model} terms={terms} plain />
               <div><button type="button" onClick={() => listen(data.model)}
                 style={{ marginTop:4, background:"none", border:"none", cursor:"pointer", fontSize:12, fontWeight:700, color:PURPLE }}>🔈 Listen</button></div>
             </div>
