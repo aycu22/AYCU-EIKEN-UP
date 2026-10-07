@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
+import { SpeakingHomeScreen, SpeakingSetScreen } from "./Speaking.jsx";
+import { SPEAKING_SETS } from "./speakingData.js";
 
 const fontLink = document.createElement("link");
 fontLink.rel = "stylesheet";
@@ -83,6 +85,7 @@ const GRAMMAR_PART_PROGRESS_KEY = "eiken_grammar_part_progress_v1";
 const GRAMMAR_FINAL_PROGRESS_KEY = "eiken_grammar_final_progress_v1";
 const DIALOGUE_NOTES_SEEN_KEY = "eiken_dialogue_notes_seen_v1";
 const QUICK_VOCAB_KEY = "eiken_quick_vocab_v1";
+const SPEAKING_PROGRESS_KEY = "eiken_speaking_progress_v1";
 
 // All student data lives in localStorage, which is tied to this browser/computer.
 // These helpers let a teacher move everything (profiles, scores, missed words,
@@ -1909,6 +1912,7 @@ const EIKEN_LEVELS = [
   { id: "4", label: "Grade 4", emoji: "⭐⭐",   color: "#ff9500", desc: "Junior high entry level" },
   { id: "3", label: "Grade 3", emoji: "⭐⭐⭐", color: "#7fb069", desc: "Junior high intermediate" },
   { id: "p2", label: "Pre-2", emoji: "🎓",       color: "#6366f1", desc: "Upper intermediate — 準2級" },
+  { id: "p1", label: "Pre-1", emoji: "🏅",       color: "#0f766e", desc: "Advanced — 準1級 speaking practice" },
 ];
 
 /* ── Ordinal data ── */
@@ -3255,7 +3259,7 @@ const VOCAB_CATEGORIES_PRE2_SORTED = [...VOCAB_CATEGORIES_PRE2]
 
 /* ── Helper: get categories by Eiken level ── */
 const getCategoriesByLevel = (level) =>
-  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : level === "p2" ? VOCAB_CATEGORIES_PRE2_SORTED : VOCAB_CATEGORIES_5;
+  level === "4" ? VOCAB_CATEGORIES_4 : level === "3" ? VOCAB_CATEGORIES_3 : level === "p2" ? VOCAB_CATEGORIES_PRE2_SORTED : level === "p1" ? [] : VOCAB_CATEGORIES_5;
 
 /* ── CSS ── */
 const css = `
@@ -3466,6 +3470,15 @@ export default function App() {
   const saveCurrentProfile = p  => { setCurrentProfile(p); localStorage.setItem(CURRENT_KEY,  JSON.stringify(p)); };
   const saveProgress       = pr => { setProgress(pr);      localStorage.setItem(PROGRESS_KEY, JSON.stringify(pr)); };
 
+  const [speakingProgress, setSpeakingProgress] = useState(() => { try { return JSON.parse(localStorage.getItem(SPEAKING_PROGRESS_KEY)) || {}; } catch { return {}; }});
+  const [speakingSet, setSpeakingSet] = useState(null);
+  const isSpeakingDone = setId => !!speakingProgress[`${currentProfile?.id}_${setId}`];
+  const markSpeakingDone = setId => {
+    const next = { ...speakingProgress, [`${currentProfile.id}_${setId}`]: true };
+    setSpeakingProgress(next);
+    localStorage.setItem(SPEAKING_PROGRESS_KEY, JSON.stringify(next));
+  };
+
   const isQuickVocab = quickVocab[currentProfile?.id] || false;
   const toggleQuickVocab = () => {
     const next = { ...quickVocab, [currentProfile.id]: !isQuickVocab };
@@ -3552,6 +3565,8 @@ export default function App() {
   const getGrammarFinalProgress = (topicId) => grammarFinalProgress[`${currentProfile?.id}_${topicId}`] || null;
 
   const goBack = () => {
+    if (screen === "speaking_set")      { setScreen("speaking_home"); setSpeakingSet(null); return; }
+    if (screen === "speaking_home")     { setScreen("dashboard"); return; }
     if (screen === "dialogue_notes")    { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_practice") { setScreen("dialogue_topic"); setDialoguePractice(null); return; }
     if (screen === "dialogue_topic")    { setScreen("dialogue_home"); setDialogueTopic(null); return; }
@@ -3578,6 +3593,8 @@ export default function App() {
     dialogue_topic: dialogueTopic?.title || "Dialogue Tests",
     dialogue_notes: dialogueTopic?.title ? `${dialogueTopic.title} · Notes` : "Dialogue Tests",
     dialogue_practice: dialogueTopic?.title || "Dialogue Tests",
+    speaking_home: "Speaking",
+    speaking_set: speakingSet ? `No. ${speakingSet.qNo} · ${speakingSet.topic}` : "Speaking",
     grammar_home: "Grammar",
     grammar_topic: grammarTopic?.title || "Grammar",
     grammar_part: grammarPart ? `${grammarPart.short}. ${grammarPart.title}` : "Grammar",
@@ -3590,6 +3607,7 @@ export default function App() {
   const twoCol = ["dashboard","vocab_list","vocab_study","vocab_game","vocab_results","vocab_review"].includes(screen);
   // Dialogue and Grammar screens use full-width single column
   const isDialogueScreen = ["dialogue_home","dialogue_topic","dialogue_notes","dialogue_practice"].includes(screen);
+  const isSpeakingScreen = ["speaking_home","speaking_set"].includes(screen);
   const isGrammarScreen = ["grammar_home","grammar_topic","grammar_part","grammar_overview","grammar_final","grammar_final_results"].includes(screen);
 
   return (
@@ -3604,7 +3622,7 @@ export default function App() {
           <div style={{flex:1}}>
             <div className="hdr-title">{headerTitle}</div>
             <div className="hdr-sub">
-              {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : currentProfile?.level === "p2" ? "Pre-2 · えいけん準2きゅう" : "Grade 5 · えいけん5きゅう"}
+              {currentProfile?.level === "4" ? "Grade 4 · えいけん4きゅう" : currentProfile?.level === "3" ? "Grade 3 · えいけん3きゅう" : currentProfile?.level === "p2" ? "Pre-2 · えいけん準2きゅう" : currentProfile?.level === "p1" ? "Pre-1 · えいけん準1きゅう" : "Grade 5 · えいけん5きゅう"}
             </div>
           </div>
           <button type="button" className="hdr-fullscreen" onClick={toggleFullscreen} title={isFullscreen ? "Exit full screen" : "Full screen"}>
@@ -3645,6 +3663,21 @@ export default function App() {
             {screen === "dialogue_practice" && dialogueTopic && dialoguePractice && (
               <DialoguePracticeScreen key={dialogueTopic.id + dialoguePractice} topic={dialogueTopic} setKey={dialoguePractice} onBack={() => { setScreen("dialogue_topic"); setDialoguePractice(null); }}
                 onComplete={(score, total) => markDialogueSetDone(dialogueTopic.id, dialoguePractice, score, total)} />
+            )}
+          </div>
+        )}
+
+        {/* Speaking screens — full-width scrollable */}
+        {isSpeakingScreen && currentProfile && (
+          <div style={{flex:1,overflowY:"auto",padding:"20px 24px"}}>
+            {screen === "speaking_home" && (
+              <SpeakingHomeScreen isDone={isSpeakingDone}
+                onSelect={set => { setSpeakingSet(set); setScreen("speaking_set"); }} />
+            )}
+            {screen === "speaking_set" && speakingSet && (
+              <SpeakingSetScreen key={speakingSet.id} set={speakingSet}
+                done={isSpeakingDone(speakingSet.id)}
+                onMarkDone={() => markSpeakingDone(speakingSet.id)} />
             )}
           </div>
         )}
@@ -3708,6 +3741,28 @@ export default function App() {
 
                 const cellStyle = { padding:"4px 5px", fontSize:10, textAlign:"center", borderTop:"1px solid #f1f5f9" };
                 const headStyle = { padding:"5px", fontSize:9, fontWeight:800, color:"#fff", textAlign:"center", textTransform:"uppercase" };
+
+                if ((currentProfile?.level) === "p1") {
+                  const spDone = SPEAKING_SETS.filter(s => isSpeakingDone(s.id)).length;
+                  return (
+                    <>
+                      <div className="sidebar-title">Progress Report</div>
+                      <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:13,color:"#0f766e",marginBottom:6}}>
+                        🎤 Speaking — {spDone}/{SPEAKING_SETS.length}
+                      </div>
+                      <table style={{width:"100%",borderCollapse:"collapse",tableLayout:"fixed"}}>
+                        <tbody>
+                          {SPEAKING_SETS.map(s => (
+                            <tr key={s.id} style={{background:isSpeakingDone(s.id)?"#dcfce7":"#fff"}}>
+                              <td style={{...cellStyle,textAlign:"left",color:"#4a5568",fontWeight:700,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>No.{s.qNo} {s.topic}</td>
+                              <td style={{...cellStyle,color:isSpeakingDone(s.id)?"#15803d":"#cbd5e0",width:28}}>{isSpeakingDone(s.id)?"✓":"—"}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </>
+                  );
+                }
 
                 return (
                   <>
@@ -3901,6 +3956,7 @@ export default function App() {
                 <DashboardScreen profile={currentProfile} onVocab={() => setScreen("vocab_list")}
                   onDialogue={() => setScreen("dialogue_home")}
                   onGrammar={() => setScreen("grammar_home")}
+                  onSpeaking={() => setScreen("speaking_home")}
                   categories={categories} getCatProgress={getCatProgress}
                   onLevelChange={changeLevel} />
               )}
@@ -4074,14 +4130,16 @@ function LoginScreen({ profiles, onLogin, onNewProfile }) {
 }
 
 /* ── Dashboard ── */
-function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, getCatProgress, onLevelChange }) {
+function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, onSpeaking, categories, getCatProgress, onLevelChange }) {
   const initials  = profile.name.slice(0,2).toUpperCase();
   const done      = categories.filter(c => getCatProgress(c.id) >= 70).length;
+  const isPre1    = profile.level === "p1";
   const levels    = [
     { id:"5", label:"Grade 5", sub:"えいけん5きゅう", color:"#D36135" },
     { id:"4", label:"Grade 4", sub:"えいけん4きゅう", color:"#6366f1" },
     { id:"3", label:"Grade 3", sub:"えいけん3きゅう", color:"#7fb069" },
     { id:"p2", label:"Pre-2",  sub:"えいけん準2きゅう", color:"#9333ea" },
+    { id:"p1", label:"Pre-1",  sub:"えいけん準1きゅう", color:"#0f766e", speakingOnly:true },
   ];
 
   return (
@@ -4090,7 +4148,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
         <div className="avatar">{initials}</div>
         <div style={{flex:1}}>
           <div className="av-name">Hi, {profile.name}! 👋</div>
-          <div className="av-lvl">Eiken {EIKEN_LEVELS.find(l=>l.id===profile.level)?.label || `Grade ${profile.level}`} · {done}/{categories.length} categories done</div>
+          <div className="av-lvl">Eiken {EIKEN_LEVELS.find(l=>l.id===profile.level)?.label || `Grade ${profile.level}`} · {isPre1 ? "Speaking practice" : `${done}/${categories.length} categories done`}</div>
         </div>
       </div>
 
@@ -4113,7 +4171,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
                 </div>
                 <div style={{fontSize:11,color:"#a0aec0",marginTop:2}}>{lvl.sub}</div>
                 <div style={{fontSize:11,color:active?lvl.color:"#cbd5e0",marginTop:4,fontWeight:700}}>
-                  {lvlDone}/{lvlTotal} cleared
+                  {lvl.speakingOnly ? `${SPEAKING_SETS.length} speaking sets` : `${lvlDone}/${lvlTotal} cleared`}
                 </div>
               </button>
             );
@@ -4128,6 +4186,17 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
 
       <div className="slabel">Modules</div>
       <div className="mod-grid">
+        {isPre1 && (
+          <button type="button" className="mod-card" onClick={onSpeaking}>
+            <div className="mod-icon" style={{background:"#f0fdfa"}}>🎤</div>
+            <div>
+              <div style={{fontFamily:"'Nunito',sans-serif",fontWeight:900,fontSize:18,color:"#02020b"}}>Speaking</div>
+              <div style={{fontSize:12,color:"#a0aec0",marginTop:3}}>{SPEAKING_SETS.length} topics · read, learn words & answer out loud</div>
+            </div>
+            <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
+          </button>
+        )}
+        {!isPre1 && (<>
         <button type="button" className="mod-card" onClick={onVocab}>
           <div className="mod-icon" style={{background:"#fdf5e8"}}>📖</div>
           <div>
@@ -4152,6 +4221,7 @@ function DashboardScreen({ profile, onVocab, onDialogue, onGrammar, categories, 
           </div>
           <span style={{marginLeft:"auto",fontSize:20,color:"#cbd5e0"}}>→</span>
         </button>
+        </>)}
       </div>
     </div>
   );
